@@ -1,6 +1,7 @@
 #抓取檔案(開放選擇)
 #cd C:\Users\OXO\OneDrive\01 Book\00 Test program
 #pyinstaller -F P00package1.py
+#加入輸入文號功能
 import shutil
 import os #用來避免檔案已經存在的異常
 def move_docutment():
