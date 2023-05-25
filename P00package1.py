@@ -41,7 +41,7 @@ def move_docutment():
 
     #目標資料夾
     if judge1 == 1:
-        dest_folder = r"/content/" +  File
+        dest_folder = r"/content/" + "/" + "new" +  File
     elif judge1 == 2:
         dest_folder = r"C:\Users\OXO\OneDrive\01 Book\00 Test program" + "\\" + "new" + File
     elif judge1 == 3:
