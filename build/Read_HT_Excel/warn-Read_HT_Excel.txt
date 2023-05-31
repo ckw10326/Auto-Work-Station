@@ -103,7 +103,6 @@ missing module named 'odf.table' - imported by pandas.io.excel._odfreader (delay
 missing module named 'odf.opendocument' - imported by pandas.io.excel._odfreader (delayed), pandas.io.excel._odswriter (delayed)
 missing module named cStringIO - imported by cPickle (top-level), xlrd.timemachine (conditional)
 missing module named copy_reg - imported by cPickle (top-level), cStringIO (top-level)
-missing module named pyxlsb - imported by pandas.io.excel._pyxlsb (delayed)
 missing module named 'odf.element' - imported by pandas.io.excel._odfreader (delayed)
 missing module named 'odf.namespaces' - imported by pandas.io.excel._odfreader (delayed)
 missing module named odf - imported by pandas.io.excel._odfreader (delayed)

@@ -1,3 +1,5 @@
+#cd C:\Users\OXO\OneDrive\01 Book\00 Test program\Auto-Work-Station
+#pyinstaller -F Read_TC_Excel.py
 
 import os
 import openpyxl
@@ -54,18 +56,15 @@ def Read_TC_Excel(folder_path):
                         Letter_title_block.append(Letter_titl_value)#來文標題O2
                         file_path_block.append(file_path)
 
-                        print("------------------------")
                         print("批次序號",i)
                         print("圖號:",DrawingNo_value)
                         print("圖名:",Drawing_Title_value)
                         print("版次:",DrawinVision_value)
-                        print("來文號碼:",worksheet["A2"].value)
-                        print("來文日期:",worksheet["C2"].value)
-                        print("來文名稱:",worksheet["I2"].value)
+                        print("來文號碼:",Letter_Num_value)
+                        print("來文日期:",Letter_Date_value)
+                        print("來文名稱:",Letter_titl_value)
                         print("路徑",file_path)
-                        print("------------------------")
-                        print(Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value)
-                        return Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value
+                        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
                     workbook.close()
                 except FileNotFoundError:
                     # 處理找不到檔案的錯誤
@@ -86,18 +85,14 @@ def Read_TC_Excel(folder_path):
     df = pd.DataFrame(data)
 
     #輸出Excel檔案
-    OutputName = 'TC_output.xlsx'
-    Output_path = os.path.join(folder_path, OutputName)
+    basename  = os.path.basename(file_path)
+    filename_without_extension = os.path.splitext(basename)[0]
+    NewExcelfile = "Done_" +  filename_without_extension + ".xlsx"
+    Output_path = os.path.join(folder_path, NewExcelfile)
+    #輸出成"Done_HT-D1-CTC-GEL-23-1171.xlsx"(範例)
     df.to_excel(Output_path, index=False)
-    print("完成輸出檔案\n路徑:",Output_path,"\n檔名:",OutputName)
-
-#全路徑參考目錄
-Test_Path = r"/content/sample_data/"
-Cloud_path = r"/content/sample_data/TC"
-Home_path = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC"
-Company_path = r"D:\\00 興達計劃\\05 EPC提供資料\\TC/0TPC-TC(C0)-CD-23-0004"
-path_map = {"0":Test_Path, "1" : Cloud_path, "2" : Home_path, "3" : Company_path}
-#調試路徑
+    return Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value
 
 Test_Path = input("請輸入路徑:")
-Read_TC_Excel(Test_Path)
+Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value = Read_TC_Excel(Test_Path)
+print("來文名稱：", Letter_titl_value, "\n版次：" , DrawinVision_value, "\n來文號碼：", Letter_Num_value,"\n來文日期：", Letter_Date_value )
