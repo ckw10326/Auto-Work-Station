@@ -246,31 +246,28 @@ def Convert_xlsb(File_folder):
     df.to_excel(Xlsb_to_xlsx_Path)
     print("輸出檔案：", Xlsb_to_xlsx_Path)
     return None
-def Text_Generator(Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value, PlanNo):
+def Text_Generator(Letter_Title, Drawing_Vision, Letter_Num, Letter_Date, PlanNo):
 
     Plan_No = int(PlanNo)
-    Doc_content = Letter_titl_value
-    Doc_Vision = DrawinVision_value
-    Doc_No = Letter_Num_value
-    Doc_Date = Letter_Date_value
-
     My_company_Num = str(input("請輸入審查意見填寫單位:"))
     Pages = str(input("請輸入審查意見頁數:"))
     My_company = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
     Consult_Company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
 
     #複製套印文件
-    shutil.copy(src_path, dst_path)
+    Pring_page_StandardFile = r"D:\00 興達計劃\HT套印標準.rtf"#套印檔案路徑
+    Print_page_File = dest_folder + r"\套印_" + Letter_Num + ".rtf"
+    shutil.copy(Pring_page_StandardFile, Print_page_File)
     
-    date_obj = datetime.datetime.strptime(Doc_Date, "%Y/%m/%d")
+    date_obj = datetime.datetime.strptime(Letter_Date, "%Y/%m/%d")
     month = date_obj.strftime("%m")
     day = date_obj.strftime("%d")
-    Plan_Name = "興達" if "CTC" in Doc_No else "台中"
+    Plan_Name = "興達" if "CTC" in Letter_Num else "台中"
 
-    contents0 = "本文係" + My_company[My_company_Num] + "對統包商提送「" + Doc_content + "」" + "Rev." + str(Doc_Vision) +"所提審查意見(共" + Pages + "頁)" + "，未逾合約規範，已電傳" + Consult_Company[Plan_No] + "，擬陳閱後文存。"
-    contents1 = "檢送" + Plan_Name + "電廠燃氣機組更新改建計畫" + Doc_content + "Rev." + str(Doc_Vision) + "，" + My_company[My_company_Num] + "之審查意見（如附，共" + Pages + "頁）供卓參，請查照。"
-    contents2 = "依據GE/CTCI 112年" + month + "月" + day +"日" + Doc_No + "號辦理。"
-    contents4 = "本文係統包商提送「" + Doc_content + "」" + "Rev." + str(Doc_Vision) +"，本組無意見，已Email通知" + Consult_Company[Plan_No] + "公司" + "，擬陳閱後文存。"
+    contents0 = "本文係" + My_company[My_company_Num] + "對統包商提送「" + Letter_Title + "」" + "Rev." + str(Drawing_Vision) +"所提審查意見(共" + Pages + "頁)" + "，未逾合約規範，已電傳" + Consult_Company[Plan_No] + "，擬陳閱後文存。"
+    contents1 = "檢送" + Plan_Name + "電廠燃氣機組更新改建計畫" + Letter_Title + "Rev." + str(Drawing_Vision) + "，" + My_company[My_company_Num] + "之審查意見（如附，共" + Pages + "頁）供卓參，請查照。"
+    contents2 = "依據GE/CTCI 112年" + month + "月" + day +"日" + Letter_Num + "號辦理。"
+    contents4 = "本文係統包商提送「" + Letter_Title + "」" + "Rev." + str(Drawing_Vision) +"，本組無意見，已Email通知" + Consult_Company[Plan_No] + "公司" + "，擬陳閱後文存。"
     print("----------------他單位審查意見簽辦------------------")
     print(contents0)
     print("----------------傳真------------------")
@@ -306,7 +303,7 @@ def main():
     Drawing_Vision = ""#來文資訊
     Letter_Num = ""#來文資訊
     Letter_Date = ""#來文資訊
-    Pring_page_StandardFile = r"D:\00 興達計劃\HT套印標準.rtf"#套印檔案路徑
+    Pring_page_StandardFile = ""#套印檔案路徑
     Print_page_File = ""
     
     PlanNo, DocNo = Get_DocNo()
@@ -331,10 +328,10 @@ def main():
         Convert_xlsb(dest_folder)
         print(r"----------------------Convert_xlsb Done!-----------------------------------")
         Letter_Title, Drawing_Vision, Letter_Num, Letter_Date = Read_HT_Excel(dest_folder)
-    print("來文名稱：", Letter_titl_value, "\n版次：" , DrawinVision_value, "\n來文號碼：", Letter_Num_value,"\n來文日期：", Letter_Date_value )
+    print("來文名稱：", Letter_Title, "\n版次：" , Drawing_Vision, "\n來文號碼：", Letter_Num,"\n來文日期：", Letter_Date )
     print(r"----------------------Read_Excel Done!------------------------------------------")   
     
-    Print_page_File = dest_folder + r"\套印_" + Doc_No + ".rtf"
+    
     Text_Generator(Letter_Title, Drawing_Vision, Letter_Num, Letter_Date, PlanNo)
     print(r"----------------------Text_Generator Done!------------------------------------------") 
     input("Press enter to exit...")
