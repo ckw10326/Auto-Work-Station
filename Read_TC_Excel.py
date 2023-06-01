@@ -96,3 +96,4 @@ def Read_TC_Excel(folder_path):
 Test_Path = input("請輸入路徑:")
 Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value = Read_TC_Excel(Test_Path)
 print("來文名稱：", Letter_titl_value, "\n版次：" , DrawinVision_value, "\n來文號碼：", Letter_Num_value,"\n來文日期：", Letter_Date_value )
+input("Press enter to exit...")
