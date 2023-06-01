@@ -1,6 +1,6 @@
 #簡化修正版
-#cd C:\Users\OXO\OneDrive\01 Book\00 Test program
-#pyinstaller -F Pack.py
+#cd C:\Users\OXO\OneDrive\01 Book\00 Test program\Auto-Work-Station
+#pyinstaller -F ()Main.py
 import shutil
 import os #用來避免檔案已經存在的異常
 import openpyxl
