@@ -14,6 +14,7 @@ def Read_HT_Excel(folder_path):
     Letter_title_block =[]#I2
     file_path_block = []
     filetype = ".xlsx"
+    file_path = ""
     for root, dirs, files in os.walk(folder_path):
         for file in files:
             #比對副檔名條件
@@ -30,21 +31,21 @@ def Read_HT_Excel(folder_path):
                     #讀取表格文件數量
                     DrawingsNums = 0
                     for i in range(0,19):
-                      if worksheet["B"+str(2+i)].value:
-                        DrawingsNums = 1 + DrawingsNums
-                      else:
-                          break
+                        if worksheet["B"+str(2+i)].value:
+                            DrawingsNums = 1 + DrawingsNums
+                        else:
+                            break
                     print("文件數量",DrawingsNums)
 
                     #讀取資料
                     for i in range(0,DrawingsNums):
                         #print("讀取路徑", file_path, "第",i+1,"個檔案", )
-                        DrawingNo_value = worksheet["E"+str(2+i)].value
-                        Drawing_Title_value = worksheet["F"+str(2+i)].value
-                        DrawinVision_value = worksheet["G"+str(2+i)].value
+                        DrawingNo_value = worksheet["F"+str(2+i)].value
+                        Drawing_Title_value = worksheet["G"+str(2+i)].value
+                        DrawinVision_value = worksheet["H"+str(2+i)].value
                         Letter_Num_value = worksheet["B2"].value
-                        Letter_Date_value = worksheet["H2"].value
-                        Letter_titl_value = worksheet["O2"].value
+                        Letter_Date_value = worksheet["D2"].value
+                        Letter_titl_value = worksheet["M2"].value
                         
                         Excute_Num_block.append(i)
                         DrawingNo_block.append(DrawingNo_value)
@@ -83,16 +84,20 @@ def Read_HT_Excel(folder_path):
             }
     df = pd.DataFrame(data)
 
+    '''
     #輸出Excel檔案
     basename  = os.path.basename(file_path)
+    print(basename)
     filename_without_extension = os.path.splitext(basename)[0]
     NewExcelfile = "Done_" +  filename_without_extension + ".xlsx"
     Output_path = os.path.join(folder_path, NewExcelfile)
     #輸出成"Done_HT-D1-CTC-GEL-23-1171.xlsx"(範例)
     df.to_excel(Output_path, index=False)
+    '''
     return Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value
 
-Test_Path = input("請輸入路徑:")
+#Test_Path = input("請輸入路徑:")
+Test_Path = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT\HT-D1-CTC-GEL-23-1188"
 Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value = Read_HT_Excel(Test_Path)
 print("來文名稱：", Letter_titl_value, "\n版次：" , DrawinVision_value, "\n來文號碼：", Letter_Num_value,"\n來文日期：", Letter_Date_value )
 input("Press enter to exit...")

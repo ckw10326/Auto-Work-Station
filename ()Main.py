@@ -7,6 +7,7 @@ import openpyxl
 import fnmatch
 import pandas as pd
 import datetime
+import pyxlsb
 # TC_abbreviation = ["TPC", "TC(C0))", "CD", "23"]
 # HT_abbreviation = ["HT", "D1", "CTC", "GEL", "23"]
 Easy_Dict = {"1":"HT", "2":"TC", "99":""}
@@ -117,7 +118,7 @@ def Read_HT_Excel(folder_path):
                         Drawing_Title_value = worksheet["F"+str(2+i)].value
                         DrawinVision_value = worksheet["G"+str(2+i)].value
                         Letter_Num_value = worksheet["B2"].value
-                        Letter_Date_value = worksheet["H2"].value
+                        Letter_Date_value = worksheet["L2"].value
                         Letter_titl_value = worksheet["O2"].value
                         
                         Excute_Num_block.append(i)
@@ -250,22 +251,24 @@ def Read_TC_Excel(folder_path):
     df.to_excel(Output_path, index=False)
     return Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value
 
-def Convert_xlsb(File_Path):
-    for file in os.listdir(File_Path):
+def Convert_xlsb(File_folder):
+    for file in os.listdir(File_folder):
         if fnmatch.fnmatch(file, '*.xlsb'):
-            File_Path =os.path.join(File_Path, file)
+            File_Path =os.path.join(File_folder, file)
             print("找到檔案：", File_Path)
     #顯示表格
     df = pd.read_excel(File_Path, sheet_name='Data1', engine='pyxlsb')
-
-    Xlsx_File_Path = os.path.splitext(File_Path)[0] + ".xlsx"
-    print("輸出檔案：", Xlsx_File_Path)
+    Xlsx_File_Path = os.path.splitext(File_Path)[0] + "_converted.xlsx"
     #輸出檔案
     df.to_excel(Xlsx_File_Path)
-    return File_Path
+    print("輸出檔案：", Xlsx_File_Path)
+    print("return ", File_folder)
+    input("暫停一下")
+    return File_folder
 
 def Text_Generator(Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value, PlanNo):
-    PlanNo = int(PlanNo)
+    print(PlanNo)
+    Plan_No = int(PlanNo)
     Doc_content = Letter_titl_value
     Doc_Vision = DrawinVision_value
     Doc_No = Letter_Num_value
@@ -274,25 +277,26 @@ def Text_Generator(Letter_titl_value, DrawinVision_value, Letter_Num_value, Lett
     # PlanNo :  1 = 興達計畫, 2 = 台中計畫, 99 = 指定路徑
     My_company = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
     Consult_Company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
-    Pages = input("請輸入審查意見頁數:")
+    Pages = str(input("請輸入審查意見頁數:"))
 
     date_obj = datetime.datetime.strptime(Doc_Date, "%Y/%m/%d")
     month = date_obj.strftime("%m")
     day = date_obj.strftime("%d")
-
     Plan_Name = "興達" if "CTC" in Doc_No else "台中"
-    contents0 = "本文係" + My_company[PlanNo] + "對統包商提送「" + Doc_content + "」" + "Rev." + Doc_Vision +"所提審查意見(共" + str(Pages) + "頁)" + "，未逾合約規範，已電傳" + Consult_Company[PlanNo] + "，擬陳閱後文存。"
-    contents1 = "檢送" + Plan_Name + "電廠燃氣機組更新改建計畫" + Doc_content + "Rev." + Doc_Vision + "，" + My_company[PlanNo] + "之審查意見（如附，共" + str(Pages) + "頁）供卓參，請查照。"
+
+    contents0 = "本文係" + My_company[Plan_No] + "對統包商提送「" + Doc_content + "」" + "Rev." + str(Doc_Vision) +"所提審查意見(共" + Pages + "頁)" + "，未逾合約規範，已電傳" + Consult_Company[Plan_No] + "，擬陳閱後文存。"
+    contents1 = "檢送" + Plan_Name + "電廠燃氣機組更新改建計畫" + Doc_content + "Rev." + str(Doc_Vision) + "，" + My_company[Plan_No] + "之審查意見（如附，共" + Pages + "頁）供卓參，請查照。"
     contents2 = "依據GE/CTCI 112年" + month + "月" + day +"日" + Doc_No + "號辦理。"
-    contents4 = "本文係統包商提送「" + Doc_content + "」" + "Rev." + Doc_Vision +"，本組無意見，已Email通知" + Consult_Company[PlanNo] + "公司" + "，擬陳閱後文存。"
+    contents4 = "本文係統包商提送「" + Doc_content + "」" + "Rev." + str(Doc_Vision) +"，本組無意見，已Email通知" + Consult_Company[Plan_No] + "公司" + "，擬陳閱後文存。"
     print("----------------他單位審查意見簽辦------------------")
     print(contents0)
     print("----------------傳真------------------")
     print(contents1)
-    print(contents2)
+    #print(contents2)
     print("----------------主辦簽辦------------------")
-    print(contents4)
-    return
+    #print(contents4)
+    input("暫停")
+    return 0
 
 def main():
     PlanNo, DocNo = Get_DocNo()
@@ -312,7 +316,8 @@ def main():
         Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value = Read_TC_Excel(dest_folder)
     else:
         #若為興達計畫，則額外執行.xlsb轉換.xlsx動作
-        Convert_xlsb(dest_folder)
+        Xlsx_File_Path = Convert_xlsb(dest_folder)
+        print(r"----------------------Convert_xlsb Done!--------------------------------------")
         Letter_titl_value, DrawinVision_value, Letter_Num_value, Letter_Date_value = Read_HT_Excel(dest_folder)
     print("來文名稱：", Letter_titl_value, "\n版次：" , DrawinVision_value, "\n來文號碼：", Letter_Num_value,"\n來文日期：", Letter_Date_value )
     print(r"----------------------Read_Excel Done!------------------------------------------")   
