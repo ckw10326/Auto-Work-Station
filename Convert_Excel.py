@@ -20,3 +20,4 @@ def Convert_xlsb(File_Path):
 
 Test_Path = input("請輸入路徑:")
 Convert_xlsb(Test_Path)
+input("Press enter to exit...")
