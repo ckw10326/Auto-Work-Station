@@ -1,9 +1,13 @@
-"轉換路徑中.xlsb檔案為.xlsx"
+""""
+轉換路徑中.xlsb檔案為.xlsx
+pip install pyxlsb
+"""
 
 import os
 import fnmatch
 import pandas as pd
 import pyxlsb
+import openpyxl
 def convert_xlsb(file_path):
     "轉換路徑中.xlsb檔案為.xlsx"
     for file in os.listdir(file_path):
@@ -16,9 +20,9 @@ def convert_xlsb(file_path):
     print("輸出檔案：", xlsx_path)
     #輸出檔案
     data_frame.to_excel(xlsx_path)
-    print(file_path)
+    print("輸出檔案及位置:",xlsx_path)
     input("暫停一下")
-    return file_path
+    return xlsx_path
 
 PATH1 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT\HT_HT-D1-CTC-GEL-23-1171"
 PATH2 = r"/workspaces/Auto-Work-Station/HT"
