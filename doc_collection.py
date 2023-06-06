@@ -8,6 +8,7 @@ import pandas as pd
 PLAN_LIST = ["", "HT", "TC"]
 DOC_NO_STRUCTURE = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],
                 "TC" : ["TPC", "TC(C0)", "CD", "23"]
+                "HT2" : ["HT", "D1", "GEI", "GEL", "23"]
                 }
 #CONSTANT
 CLOUD_HT = r"/content/sample_data/HT"
