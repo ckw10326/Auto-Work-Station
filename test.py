@@ -1,17 +1,19 @@
-
 """
 主程式
 前置作業
 pip install pyxlsb
 pip install openpyxl
+cd C:\Users\OXO\OneDrive\01 Book\00 Test program\Auto-Work-Station
+pyinstaller -F test.py
 """
-import os 
-import shutil
-import pandas as pd
+import sys
+import os
 import doc_collection
 import convert_excel
+import read_ht_excel
+import read_tc_excel
 import text_gen
-
+sys.path.append(r'C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station')
 PLAN_LIST = ["", "HT", "TC"]
 LOCATION = ["", "家庭", "公司", "雲端"]
 DOC_NO_STRUCTURE = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],
@@ -20,7 +22,7 @@ DOC_NO_STRUCTURE = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],
                 }
 #CONSTANT
 CLOUD_HT = r"/content/sample_data/HT"
-CLOUD_HT = r"/content/sample_data/TC"
+CLOUD_TC = r"/content/sample_data/TC"
 HOME_HT = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT"
 HOME_TC = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC"
 SOURCE_HT = r"\\10.162.10.58\全處共用區\_Dwg\興達電廠燃氣機組更新計畫"
@@ -52,6 +54,7 @@ TC_COMMENT_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC 審查意見 sample.do
 source_customized = ""
 destiny_customized = ""
 plan_no = ""
+doc_path = ""
 location_no = ""
 doc_no = ""
 source_folder = ""#資料來源資料夾
@@ -63,35 +66,39 @@ letter_vision = ""#來文資訊
 letter_num = ""#來文資訊
 letter_date = ""#來文資訊
 
-print("asf414165464646asdfasdf)
-'''
+
 def main():
+    "主程式"
     while True:
-        plan_no, location_no, doc_no = Get_DocNo()
-
-        source_folder, dest_folder= Gen_path(PlanNo, DocNo)
-
-        move_docutment(source_folder, dest_folder)
-
+        global letter_num, source_folder, dest_folder
+        global letter_title, letter_vision, letter_num, letter_date
+        letter_num, source_folder, dest_folder = doc_collection.file_path_process()
+        print("1",letter_num)
+        print("2",source_folder)
+        print("3",dest_folder)
+        doc_collection.move_docutment(source_folder, dest_folder)
         os.startfile(dest_folder)
-
         if "TC(C0)" in dest_folder:
-            Letter_Title, Drawing_Vision, Letter_Num, Letter_Date = Read_TC_Excel(dest_folder)
+            print("TC(C0)")
+            letter_title, letter_vision, letter_num, letter_date = read_tc_excel.read_tc_excel(dest_folder)
+        elif "HT" in dest_folder:
+            converted_xlsx_path = convert_excel.convert_xlsb(dest_folder)
+            letter_title, letter_vision, letter_num, letter_date = read_ht_excel.read_ctc_ht_excel(dest_folder)
         else:
-            #若為興達計畫，則額外執行.xlsb轉換.xlsx動作
-            Convert_xlsb(dest_folder)
-            print(r"----------------------Convert_xlsb Done!-----------------------------------")
-            Letter_Title, Drawing_Vision, Letter_Num, Letter_Date = Read_HT_Excel(dest_folder)
-        print("來文名稱：", Letter_Title, "\n版次：" , Drawing_Vision, "\n來文號碼：", Letter_Num,"\n來文日期：", Letter_Date )
-        print(r"----------------------Read_Excel Done!------------------------------------------")   
+            return None
 
-        Text_Generator(Letter_Title, Drawing_Vision, Letter_Num, Letter_Date, PlanNo)
-        print(r"----------------------Text_Generator Done!------------------------------------------") 
+        text_gen(letter_title, letter_vision, letter_num, letter_date)
         input("Press enter to exit...")
-'''
-        
+
+def update_value(new_value1, new_value2, new_value3):
+    "更新變數值"
+    #global HT_path
+    #HT_path = new_value
+    return None
+
 def main2():
-    doc_collection.file_path_process()
+    """[summary]"""
+    return None
 
 if __name__ == '__main__':
-    main2()
+    main()

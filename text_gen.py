@@ -1,8 +1,14 @@
-def Text_Generator(def_l_title, def_l_vision, def_l_Num, Letter_Date, PlanNo):
-    Plan_No = int(PlanNo)
+def text_gen(def_l_title, def_l_vision, def_l_Num, Letter_Date):
+    if "HT" in def_l_Num:
+        Plan_No = 1
+    elif "TC" in def_l_Num:
+        Plan_No = 2
+    else:
+        Plan_No = 3
+    print("Plan_No：", Plan_No)
     judge00 = input("是否有意見，有請輸入1，無請輸入0：")
     if int(judge00):
-        My_company_Num = str(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠"))
+        My_company_Num = str(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠\n"))
         Pages = str(input("請輸入審查意見頁數:"))
         My_company = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
         Consult_Company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
@@ -37,3 +43,16 @@ def Text_Generator(def_l_title, def_l_vision, def_l_Num, Letter_Date, PlanNo):
         input("暫停")
 
     return 0
+
+def main():
+    "主程式"
+    text_gen('HRSG Chimney-General Arrangement of Concrete Roof & Layout of Permanent Shutter to Roof Slab', 'A', 'TPC-TC(C0)-CD-23-0002', '2023/02/02')
+    input("Press enter to exit...")
+    return None
+
+def test():
+    "測試程式"
+    return None
+
+if __name__ == '__main__':
+    main()
