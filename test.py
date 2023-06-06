@@ -63,6 +63,7 @@ letter_vision = ""#來文資訊
 letter_num = ""#來文資訊
 letter_date = ""#來文資訊
 
+print("asf414165464646asdfasdf)
 '''
 def main():
     while True:
