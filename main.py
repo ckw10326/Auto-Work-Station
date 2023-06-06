@@ -1,4 +1,7 @@
 """
+前置作業
+pip install pyxlsb
+pip install openpyxl
 主程式
 """
 import os 

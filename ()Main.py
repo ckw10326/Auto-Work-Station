@@ -3,11 +3,9 @@
 #pyinstaller -F ()Main.py
 import shutil
 import os #用來避免檔案已經存在的異常
-import openpyxl
 import fnmatch
 import pandas as pd
 import datetime
-import pyxlsb
 
 Easy_Dict = {"1":"HT", "2":"TC", "99":""}
 Plan_Dict = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],

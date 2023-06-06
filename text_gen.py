@@ -1,5 +1,4 @@
 def Text_Generator(def_l_title, def_l_vision, def_l_Num, Letter_Date, PlanNo):
-    global 
     Plan_No = int(PlanNo)
     judge00 = input("是否有意見，有請輸入1，無請輸入0：")
     if int(judge00):
