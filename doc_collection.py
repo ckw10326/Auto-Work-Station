@@ -1,43 +1,10 @@
 """
-請說明內容
+Doc collection
 """
 import os 
 import shutil
 import pandas as pd
 
-PLAN_LIST = ["", "HT", "TC"]
-DOC_NO_STRUCTURE = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],
-                "TC" : ["TPC", "TC(C0)", "CD", "23"]
-                "HT2" : ["HT", "D1", "GEI", "GEL", "23"]
-                }
-#CONSTANT
-CLOUD_HT = r"/content/sample_data/HT"
-CLOUD_HT = r"/content/sample_data/TC"
-HOME_HT = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT"
-HOME_TC = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC"
-SOURCE_HT = r"\\10.162.10.58\全處共用區\_Dwg\興達電廠燃氣機組更新計畫"
-DESTINY_HT = r"D:\00 興達計劃\05 EPC提供資料\HT"
-SOURCE_TC = r"\\\10.162.10.58\全處共用區\_Dwg\台中發電廠新建燃氣機組計畫"
-DESTINY_TC = r"D:\00 台中計劃\05 EPC提供資料\TC"
-#variable
-source_customized = ""
-destiny_customized = ""
-#來文資料
-plan_no = ""
-doc_no = ""
-source_folder = ""#資料來源資料夾
-dest_folder = ""#存放路徑資料夾
-
-Xlsb_to_xlsx_Path = ""#轉檔路徑
-Letter_Title = ""#來文資訊
-Drawing_Vision = ""#來文資訊
-Letter_Num = ""#來文資訊
-Letter_Date = ""#來文資訊
-#Pring_page_StandardFile = r"D:\00 興達計劃\HT套印標準.rtf"#套印檔案路徑
-Pring_page_StandardFile = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT套印標準.rtf"
-Print_page_File = ""
-Source_Fax_PageFile = r"D:\00 台中計畫\05 EPC提供資料\台中傳真 -Sample.doc"
-Source_Comment_PageFile = r"D:\00 台中計畫\05 EPC提供資料\台中意見 -Sample.doc"
 
 #輸入 計畫名稱、末4號碼
 #輸出 計畫代號、完整文號
