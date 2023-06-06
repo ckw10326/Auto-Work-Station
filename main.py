@@ -1,12 +1,14 @@
 
 import sys
 import os
+import datetime
 import shutil
+import fnmatch
 import openpyxl
 import pandas as pd
 
-
 sys.path.append(r'C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station')
+
 PLAN_LIST = ["", "HT", "TC"]
 LOCATION = ["", "家庭", "公司", "雲端"]
 DOC_NO_STRUCTURE = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],
@@ -23,26 +25,26 @@ DESTINY_HT = r"D:\00 興達計劃\05 EPC提供資料\HT"
 SOURCE_TC = r"\\\10.162.10.58\全處共用區\_Dwg\台中發電廠新建燃氣機組計畫"
 DESTINY_TC = r"D:\00 台中計劃\05 EPC提供資料\TC"
 #套印文件 [1興達2台中]+[1家庭 2公司 3雲端]
-HT_PRINT_STD_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT套印標準.rtf"
-HT_PRINT_STD_FILE12 = r"D:\00 興達計劃\HT套印標準.rtf"
-HT_PRINT_STD_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT套印標準.doc"
-TC_PRINT_STD_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC套印標準.rtf"
-TC_PRINT_STD_FILE22 = r"D:\00 台中計畫\TC套印標準.rtf"
-TC_PRINT_STD_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC套印標準.rtf"
+PRINT_STD_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT套印標準.rtf"
+PRINT_STD_FILE12 = r"D:\00 興達計劃\HT套印標準.rtf"
+PRINT_STD_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT套印標準.doc"
+PRINT_STD_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC套印標準.rtf"
+PRINT_STD_FILE22 = r"D:\00 台中計畫\TC套印標準.rtf"
+PRINT_STD_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC套印標準.rtf"
 #傳真文件
-HT_FAX_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT 傳真 sample.doc"
-HT_FAX_FILE12 = r"D:\00 興達計劃\HT 傳真 sample.doc"
-HT_FAX_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT 傳真 sample.doc"
-TC_FAX_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC 傳真 sample.doc"
-TC_FAX_FILE22 = r"D:\00 台中計畫\TC 傳真 sample.doc"
-TC_FAX_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC 傳真 sample.doc"
+FAX_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT 傳真 sample.doc"
+FAX_FILE12 = r"D:\00 興達計劃\HT 傳真 sample.doc"
+FAX_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT 傳真 sample.doc"
+FAX_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC 傳真 sample.doc"
+FAX_FILE22 = r"D:\00 台中計畫\TC 傳真 sample.doc"
+FAX_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC 傳真 sample.doc"
 #審查意見
-HT_COMMENT_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT 審查意見 sample.doc"
-HT_COMMENT_FILE12 = r"D:\00 興達計劃\HT 審查意見 sample.doc"
-HT_COMMENT_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT 審查意見 sample.doc"
-TC_COMMENT_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC 審查意見 sample.doc"
-TC_COMMENT_FILE22 = r"D:\00 台中計畫\TC 審查意見 sample.doc"
-TC_COMMENT_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC 審查意見 sample.doc"
+COMMENT_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT 審查意見 sample.doc"
+COMMENT_FILE12 = r"D:\00 興達計劃\HT 審查意見 sample.doc"
+COMMENT_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT 審查意見 sample.doc"
+COMMENT_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC 審查意見 sample.doc"
+COMMENT_FILE22 = r"D:\00 台中計畫\TC 審查意見 sample.doc"
+COMMENT_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC 審查意見 sample.doc"
 #variable
 source_customized = ""
 destiny_customized = ""
@@ -142,21 +144,10 @@ def text_gen(def_l_title, def_l_vision, def_l_Num, Letter_Date):
     print("Plan_No：", Plan_No)
     judge00 = input("是否有意見，有請輸入1，無請輸入0：")
     if int(judge00):
-        My_company_Num = str(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠\n"))
+        My_company_Num = int(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠\n"))
         Pages = str(input("請輸入審查意見頁數:"))
         My_company = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
         Consult_Company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
-        
-        #複製套印文件
-        Print_page_File = dest_folder + r"\套印_" + def_l_Num + ".rtf"
-        print(Pring_page_StandardFile)
-        print(dest_folder)
-        print(Print_page_File)
-        input("plz enter any key")
-        shutil.copy(Pring_page_StandardFile, Print_page_File)
-        #複製傳真文件
-        Fax_PageFile = dest_folder + r"\Fax_" + def_l_Num + ".doc"
-        shutil.copy(Source_Fax_PageFile, Fax_PageFile)
         
         date_obj = datetime.datetime.strptime(Letter_Date, "%Y/%m/%d")
         month = date_obj.strftime("%m")
@@ -174,8 +165,30 @@ def text_gen(def_l_title, def_l_vision, def_l_Num, Letter_Date):
         print(contents2)
         print("----------------主辦簽辦------------------")
         print(contents4)
-        input("暫停")
+        input("enter to exit")
 
+        '''
+        #複製套印文件
+        print_judge = input("是否需印套印文件，是請輸入1，否請輸入0：")
+        if int(print_judge):
+            local_judge = input("請輸入特徵碼\n [1興達2台中]+[1家庭 2公司 3雲端]")
+            print("local_judge:", local_judge)
+            print_path = "PRINT_STD_FILE" + str(local_judge)
+            #會跑出PRINT_STD_FILE11
+            shutil.copytree(print_path, def_dest_folder)
+        else:
+            print("不印套印文件")
+            return 0
+        Print_page_File = dest_folder + r"\套印_" + def_l_Num + ".rtf"
+        print(Pring_page_StandardFile)
+        print(dest_folder)
+        print(Print_page_File)
+        input("plz enter any key")
+        shutil.copy(Pring_page_StandardFile, Print_page_File)
+        #複製傳真文件
+        Fax_PageFile = dest_folder + r"\Fax_" + def_l_Num + ".doc"
+        shutil.copy(Source_Fax_PageFile, Fax_PageFile)
+        '''
     return 0
 
 def read_ctc_ht_excel(def_dest_folder):
@@ -376,24 +389,57 @@ def read_tc_excel(def_dest_folder):
     df.to_excel(Output_path, index=False)
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
-
+def convert_xlsb(folder_path):
+    xlsx_path = ""
+    "尋找檔案是否存在"
+    if os.path.exists(folder_path):
+        print("找到目標資料夾：", folder_path)
+        for file in os.listdir(folder_path):
+            #確認xlsb檔案是否存在
+            if fnmatch.fnmatch(file, '*.xlsb'):
+                file_path =os.path.join(folder_path, file)
+                print("找到目標檔案路徑：", file_path)
+                #抓到隱藏檔案(檔名有關鍵字：~$H，不動作
+                if "~$" in file_path:
+                    print(file_path,"抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+                    return None
+                else:
+                    xlsx_path = os.path.splitext(file_path)[0] + "_converted.xlsx"
+                    print("輸出檔案：", xlsx_path)
+                    if os.path.exists(xlsx_path):
+                        print("_converted.xlsx" + "檔案已存在，不動作")
+                        return None
+                    else:
+                        data_frame = pd.read_excel(file_path, sheet_name='Data1', engine='pyxlsb')
+                        data_frame.to_excel(xlsx_path)
+                        print(r"----------------------Convert_xlsb Done!------------------------")
+                        input("enter any keys to exit")
+                        return xlsx_path
+            else:
+                print("找不到目標檔案：", file)
+                return None
+    else:
+        "若找不到資料夾，則回傳None"
+        print("找不到目標資料夾：", folder_path)
+        return None
+    
 def main():
     "主程式"
     while True:
         global letter_num, source_folder, dest_folder
         global letter_title, letter_vision, letter_num, letter_date
-        letter_num, source_folder, dest_folder = doc_collection.file_path_process()
+        letter_num, source_folder, dest_folder = file_path_process()
         print("1",letter_num)
         print("2",source_folder)
         print("3",dest_folder)
-        doc_collection.move_docutment(source_folder, dest_folder)
+        move_docutment(source_folder, dest_folder)
         os.startfile(dest_folder)
         if "TC(C0)" in dest_folder:
             print("TC(C0)")
-            letter_title, letter_vision, letter_num, letter_date = read_tc_excel.read_tc_excel(dest_folder)
+            letter_title, letter_vision, letter_num, letter_date = read_tc_excel(dest_folder)
         elif "HT" in dest_folder:
-            converted_xlsx_path = convert_excel.convert_xlsb(dest_folder)
-            letter_title, letter_vision, letter_num, letter_date = read_ht_excel.read_ctc_ht_excel(dest_folder)
+            converted_xlsx_path = convert_xlsb(dest_folder)
+            letter_title, letter_vision, letter_num, letter_date = read_ctc_ht_excel(dest_folder)
         else:
             return None
 
