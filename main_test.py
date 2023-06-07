@@ -3,7 +3,7 @@
 前置作業
 pip install pyxlsb
 pip install openpyxl
-cd C:\Users\OXO\OneDrive\01 Book\00 Test program\Auto-Work-Station
+cd path
 pyinstaller -F test.py
 """
 import sys

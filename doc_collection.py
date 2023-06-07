@@ -4,7 +4,7 @@ Doc collection
 import os
 import shutil
 import sys
-from test import (CLOUD_HT, CLOUD_TC, DESTINY_HT, DESTINY_TC, DOC_NO_STRUCTURE,
+from main_test import (CLOUD_HT, CLOUD_TC, DESTINY_HT, DESTINY_TC, DOC_NO_STRUCTURE,
                   HOME_HT, HOME_TC, PLAN_LIST, SOURCE_HT, SOURCE_TC)
 sys.path.append(r'C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station')
 #輸入 計畫名稱、末4號碼
