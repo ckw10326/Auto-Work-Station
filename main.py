@@ -1,4 +1,6 @@
-
+'''
+pyinstaller -F main.py
+'''
 import sys
 import os
 import datetime
