@@ -1,13 +1,16 @@
-
+"""
+引用constant.py內常數
+輸出相關文字
+"""
 import shutil
 import datetime
 import constants
 
 #text_gen(letter_title, letter_vision, letter_num, def_letter_date)
 def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_date, dest_folder):
+    "內容生成"
     HT_PRINT_STD_FILE13 = constants.HT_PRINT_STD_FILE13
     HT_FAX_FILE13 = constants.HT_FAX_FILE13
-    "內容生成"
     if "HT" in def_letter_num:
         plan_no = 1
     elif "TC" in def_letter_num:
@@ -17,11 +20,10 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
     print("plan_no：", plan_no)
     judge00 = input("是否有意見，有請輸入1，無請輸入0：")
     if int(judge00):
-        my_company_num = int(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠\n"))
+        my_company_num = int(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n3 = 興達發電廠 \n 4 =台中發電廠\n"))
         pages = str(input("請輸入審查意見頁數:"))
         company_name = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
         consult_company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
-        
         #複製套印文件
         print_dest_file = dest_folder + r"\套印_" + def_letter_num + ".rtf"
         print("套印檔案:", HT_PRINT_STD_FILE13)
@@ -36,7 +38,6 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
         print("輸出位置:", fax_dest_file)
         input("plz enter any key")
         shutil.copy(HT_FAX_FILE13, fax_dest_file)
-        
         date_obj = datetime.datetime.strptime(def_letter_date, "%Y/%m/%d")
         month = date_obj.strftime("%m")
         day = date_obj.strftime("%d")
@@ -46,9 +47,9 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
                     + "」" + "Rev." + str(def_letter_vision)  + "所提審查意見(共" + pages + "頁)"
                     + "，未逾合約規範，已電傳" + consult_company[plan_no] + "，擬陳閱後文存。")
         contents1 = ("檢送" + plan_name + "電廠燃氣機組更新改建計畫"  + def_letter_title + "Rev."
-                    + str(def_letter_vision) + "，" + company_name[my_company_num] 
+                    + str(def_letter_vision) + "，" + company_name[my_company_num]
                     + "之審查意見（如附，共" + pages + "頁）供卓參，請查照。")
-        contents2 = ("依據GE/CTCI 112年" + month + "月" + day +"日" + def_letter_num + "號辦理。")
+        contents2 = "依據GE/CTCI 112年" + month + "月" + day +"日" + def_letter_num + "號辦理。"
         contents4 = ("本文係統包商提送「" + def_letter_title + "」" + "Rev." + str(def_letter_vision)
                     +"，本組無意見，已Email通知" + consult_company[plan_no] + "公司" + "，擬陳閱後文存。")
         print("----------------他單位審查意見簽辦------------------")
@@ -64,7 +65,8 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
 def main():
     "主程式"
     dest_folder = "The_file_need_to_convert/HT-D1-GEI-GEL-23-1412"
-    text_gen('HRSG Chimney-General Arrangement of Concrete Roof & Layout of Permanent Shutter to Roof Slab', 'A', 'TPC-TC(C0)-CD-23-0002', '2023/02/02', dest_folder)
+    text_gen('HRSG Chimney-General Arrangement of Concrete Roof & Layout of Permanent Shutter to Roof Slab',
+             'A', 'TPC-TC(C0)-CD-23-0002', '2023/02/02', dest_folder)
     input("Press enter to exit...")
     return None
 
