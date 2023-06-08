@@ -13,7 +13,9 @@ import convert_excel
 import read_ht_excel
 import read_tc_excel
 import text_gen
-sys.path.append(r'C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station')
+ROOT_PATH1 = "ckw10326/Auto-Work-Station/read_tc_excel.py"
+ROOT_PATH2 = "C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station"
+sys.path.append(r)
 PLAN_LIST = ["", "HT", "TC"]
 LOCATION = ["", "家庭", "公司", "雲端"]
 DOC_NO_STRUCTURE = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],
@@ -21,8 +23,8 @@ DOC_NO_STRUCTURE = {"HT" : ["HT", "D1", "CTC", "GEL", "23"],
                 "HT2" : ["HT", "D1", "GEI", "GEL", "23"]
                 }
 #CONSTANT
-CLOUD_HT = r"/content/sample_data/HT"
-CLOUD_TC = r"/content/sample_data/TC"
+CLOUD_HT = r"ckw10326/Auto-Work-Station/The_file_need_to_convert/"
+CLOUD_TC = r"ckw10326/Auto-Work-Station/The_file_need_to_convert/"
 HOME_HT = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT"
 HOME_TC = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC"
 SOURCE_HT = r"\\10.162.10.58\全處共用區\_Dwg\興達電廠燃氣機組更新計畫"
@@ -32,24 +34,24 @@ DESTINY_TC = r"D:\00 台中計劃\05 EPC提供資料\TC"
 #套印文件 [1興達2台中]+[1家庭 2公司 3雲端]
 HT_PRINT_STD_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT套印標準.rtf"
 HT_PRINT_STD_FILE12 = r"D:\00 興達計劃\HT套印標準.rtf"
-HT_PRINT_STD_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT套印標準.doc"
+HT_PRINT_STD_FILE13 = r"ckw10326/Auto-Work-Station/Reference_FilesHT套印標準.doc"
 TC_PRINT_STD_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC套印標準.rtf"
 TC_PRINT_STD_FILE22 = r"D:\00 台中計畫\TC套印標準.rtf"
-TC_PRINT_STD_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC套印標準.rtf"
+TC_PRINT_STD_FILE23 = r"ckw10326/Auto-Work-Station/Reference_FilesTC套印標準.rtf"
 #傳真文件
 HT_FAX_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT 傳真 sample.doc"
 HT_FAX_FILE12 = r"D:\00 興達計劃\HT 傳真 sample.doc"
-HT_FAX_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT 傳真 sample.doc"
+HT_FAX_FILE13 = r"ckw10326/Auto-Work-Station/Reference_FilesHT 傳真 sample.doc"
 TC_FAX_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC 傳真 sample.doc"
 TC_FAX_FILE22 = r"D:\00 台中計畫\TC 傳真 sample.doc"
-TC_FAX_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC 傳真 sample.doc"
+TC_FAX_FILE23 = r"ckw10326/Auto-Work-Station/Reference_FilesTC 傳真 sample.doc"
 #審查意見
 HT_COMMENT_FILE11 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT 審查意見 sample.doc"
 HT_COMMENT_FILE12 = r"D:\00 興達計劃\HT 審查意見 sample.doc"
-HT_COMMENT_FILE13 = r"ckw10326/Auto-Work-Station/Files/HT 審查意見 sample.doc"
+HT_COMMENT_FILE13 = r"ckw10326/Auto-Work-Station/Reference_Files/HT 審查意見 sample.doc"
 TC_COMMENT_FILE21 = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC 審查意見 sample.doc"
 TC_COMMENT_FILE22 = r"D:\00 台中計畫\TC 審查意見 sample.doc"
-TC_COMMENT_FILE23 = r"ckw10326/Auto-Work-Station/Files/TC 審查意見 sample.doc"
+TC_COMMENT_FILE23 = r"ckw10326/Auto-Work-Station/Reference_Files/TC 審查意見 sample.doc"
 #variable
 source_customized = ""
 destiny_customized = ""
