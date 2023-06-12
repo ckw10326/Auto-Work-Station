@@ -4,8 +4,9 @@ Doc collection
 import os
 import shutil
 import sys
-from main_test import (CLOUD_HT, CLOUD_TC, DESTINY_HT, DESTINY_TC, DOC_NO_STRUCTURE,
-                  HOME_HT, HOME_TC, PLAN_LIST, SOURCE_HT, SOURCE_TC)
+from constants import (CLOUD_HT, CLOUD_TC, COM_DESTINY_HT, COM_DESTINY_TC, DOC_NO_STRUCTURE, 
+                       HOME_SOURCE_HT, HOME_DESTINY_HT, HOME_SOURCE_TC, HOME_DESTINY_TC, 
+                       PLAN_LIST, COM_SOURCE_HT, COM_SOURCE_TC)
 sys.path.append(r'C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station')
 #輸入 計畫名稱、末4號碼
 #輸出 計畫代號、完整文號
@@ -29,14 +30,14 @@ def file_path_process():
         #pre_path = ["HT", "D1", "CTC", "GEL", "23"]
         file_doc_num = "-".join(ana_num) + "-" + doc_end_num
         #file_doc_num = HT-D1-CTC-GEL-23 + "-1234"
-    """
+    '''
     pathway : #1 = 雲端硬碟路徑, #2 = 家庭硬碟路徑, #3 = 公司硬碟路徑, #0 = 指定路徑\
     plan_no : 1 = 興達計畫, 2 = 台中計畫, 99 = 指定路徑\
     代碼組合 : (source_folder, dest_folder)
-    """
+    '''
     path_map = {"11":(CLOUD_HT, CLOUD_HT), "12":(CLOUD_TC, CLOUD_TC),
-                "21":(HOME_HT, HOME_HT), "22":(HOME_TC, HOME_TC),
-                "31":(SOURCE_HT, DESTINY_HT), "32":(SOURCE_TC, DESTINY_TC),
+                "21":(HOME_SOURCE_HT, HOME_DESTINY_HT), "22":(HOME_SOURCE_TC, HOME_DESTINY_TC),
+                "31":(COM_SOURCE_HT, COM_DESTINY_HT), "32":(COM_SOURCE_TC, COM_DESTINY_TC),
                 "0":("","")
                 }
     path_way = input("請輸入使用路徑(0 = 自訂, 1 = 雲端, 2 = 家庭, 3 = 公司 ：)")
@@ -72,16 +73,20 @@ def move_docutment(def_source_folder, def_dest_folder):
             else:
                 print("您選擇0，保留原本資料夾，不複製")
         else:
+            print("開始複製資料夾")
             shutil.copytree(def_source_folder, def_dest_folder)
+            os.startfile(def_dest_folder)
             #開啟複製好的資料價
     else:
         print("查「無」指定資料夾")
         return None
     print(r"----------------------move_docutment Done!--------------------------------------")
-    input("按任意鍵結束")
+    input("複製資料完成/已存在資料，請按任意鍵")
     return None
 
 def main():
+    file_doc_num, file_source_folder, file_dest_folder = file_path_process()
+    move_docutment(file_source_folder, file_dest_folder)
     "主要執行內容"
     return None
 
@@ -90,4 +95,4 @@ def test1():
     return None
 
 if __name__ == '__main__':
-    test1()
+    main()

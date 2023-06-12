@@ -1,9 +1,9 @@
-# cd C:\Users\OXO\OneDrive\01 Book\00 Test program\Auto-Work-Station
-# pyinstaller -F Read_HT_Excel.py
+'''
+轉換興達計畫excel檔案
+'''
 import os
 import openpyxl
 import pandas as pd
-import convert_excel
 
 def read_ctc_ht_excel(def_dest_folder):
     # 遍歷所有資料夾、檔案
@@ -32,7 +32,7 @@ def read_ctc_ht_excel(def_dest_folder):
     for root, dirs, files in os.walk(def_dest_folder):
         for file in files:
             #比對副檔名條件
-            if file.endswith(file_type) * file.count("-") > 3:
+            if file.endswith(file_type) * file.count("-") * ("Done" not in file)> 3:
                 file_path = os.path.join(root, file)
                 #確認 1.無檔案 2.非有效Excel檔
                 try:
@@ -105,12 +105,12 @@ def read_ctc_ht_excel(def_dest_folder):
     df.to_excel(Output_path, index=False)
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
-def main():
+def test1():
     "主程式"
-    path = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT\HT-D1-CTC-GEL-23-1169"
+    path = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT\HT_HT-D1-CTC-GEL-23-1188"
     #convert_excel.convert_xlsb(path)
     print(read_ctc_ht_excel(path))
-    input("Press enter to exit...")
+    input("測試功能完成...")
     return None
 
 
@@ -120,4 +120,4 @@ def test():
 
 
 if __name__ == '__main__':
-    main()
+    test1()

@@ -13,35 +13,34 @@ import convert_excel
 import read_ht_excel
 import read_tc_excel
 import text_gen
+from constants import (CLOUD_HT, CLOUD_TC, COM_DESTINY_HT, COM_DESTINY_TC, DOC_NO_STRUCTURE, 
+                       HOME_SOURCE_HT, HOME_DESTINY_HT, HOME_SOURCE_TC, HOME_DESTINY_TC, 
+                       PLAN_LIST, COM_SOURCE_HT, COM_SOURCE_TC)
 
 ROOT_HOME = r"C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station"
 ROOT_GIT = r"/workspaces/Auto-Work-Station"
-sys.path.append(ROOT_GIT)
-
-
+sys.path.append(ROOT_HOME)
 
 def main():
     "主程式"
     while True:
-        global letter_num, source_folder, dest_folder
-        global letter_title, letter_vision, letter_num, letter_date
         letter_num, source_folder, dest_folder = doc_collection.file_path_process()
-        print("1",letter_num)
-        print("2",source_folder)
-        print("3",dest_folder)
         doc_collection.move_docutment(source_folder, dest_folder)
-        os.startfile(dest_folder)
+
         if "TC(C0)" in dest_folder:
-            print("TC(C0)")
+            print("開始讀取「台中」檔案")
             letter_title, letter_vision, letter_num, letter_date = read_tc_excel.read_tc_excel(dest_folder)
         elif "HT" in dest_folder:
+            print("開始讀取「興達」檔案")
             converted_xlsx_path = convert_excel.convert_xlsb(dest_folder)
             letter_title, letter_vision, letter_num, letter_date = read_ht_excel.read_ctc_ht_excel(dest_folder)
-        else:
-            return None
 
-        text_gen(letter_title, letter_vision, letter_num, letter_date)
-        input("Press enter to exit...")
+        else:
+            print("找不到「計畫」關鍵字，無動作")
+            return None
+        print("dest_folder:", dest_folder)
+        text_gen.text_gen(letter_title, letter_vision, letter_num, letter_date, dest_folder)
+        input("完成，請按任意鍵Press enter to exit...")
 
 def update_value(new_value1, new_value2, new_value3):
     "更新變數值"

@@ -4,40 +4,64 @@
 """
 import shutil
 import datetime
-import constants
+from constants import (HT_PRINT_STD_FILE11, HT_PRINT_STD_FILE12, HT_PRINT_STD_FILE10, TC_PRINT_STD_FILE21, 
+                       TC_PRINT_STD_FILE22, TC_PRINT_STD_FILE20, HT_FAX_FILE11, HT_FAX_FILE12, HT_FAX_FILE10, 
+                       TC_FAX_FILE21, TC_FAX_FILE22, TC_FAX_FILE20, HT_COMMENT_FILE11, HT_COMMENT_FILE12, 
+                       HT_COMMENT_FILE10, TC_COMMENT_FILE21, TC_COMMENT_FILE22, TC_COMMENT_FILE20)
 
 #text_gen(letter_title, letter_vision, letter_num, def_letter_date)
 def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_date, dest_folder):
     "內容生成"
-    HT_PRINT_STD_FILE13 = constants.HT_PRINT_STD_FILE13
-    HT_FAX_FILE13 = constants.HT_FAX_FILE13
+    #判斷計畫類別
     if "HT" in def_letter_num:
         plan_no = 1
     elif "TC" in def_letter_num:
         plan_no = 2
     else:
         plan_no = 3
-    print("plan_no：", plan_no)
-    judge00 = input("是否有意見，有請輸入1，無請輸入0：")
+    print("plan_no(1:HT, 2:TC, 3:other)：", plan_no)
+    #判斷路徑為[0雲端 1家庭 2公司 ]
+    if r"workspaces" in dest_folder:
+        location = 0
+    elif r"Test program" in  dest_folder:
+        location = 1
+    elif r"EPC提供資料" in dest_folder:
+        location = 2
+    else:
+        print("路徑可能有點問題")
+        return None
+    #判斷套印檔案、傳真、comment
+    #path_map[keys][0]
+    keys = str(plan_no) + str(location)
+    path_map = {"10":(HT_PRINT_STD_FILE10, HT_FAX_FILE10, HT_COMMENT_FILE10),
+                "11":(HT_PRINT_STD_FILE11, HT_FAX_FILE11, HT_COMMENT_FILE11),
+                "12":(HT_PRINT_STD_FILE12, HT_FAX_FILE12, HT_COMMENT_FILE12),
+                "20":(TC_PRINT_STD_FILE20, TC_FAX_FILE20, TC_COMMENT_FILE20),
+                "21":(TC_PRINT_STD_FILE21, TC_FAX_FILE21, TC_COMMENT_FILE21),
+                "22":(TC_PRINT_STD_FILE22, TC_FAX_FILE22, TC_COMMENT_FILE22)}
+
+    judge00 = input("你是否有意見?\n有請輸入1，無請輸入0：")
     if int(judge00):
-        my_company_num = int(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n3 = 興達發電廠 \n 4 =台中發電廠\n"))
+        print("copy comment file")
+    else:
+        my_company_num = int(input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠\n"))
         pages = str(input("請輸入審查意見頁數:"))
         company_name = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
         consult_company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
         #複製套印文件
         print_dest_file = dest_folder + r"\套印_" + def_letter_num + ".rtf"
-        print("套印檔案:", HT_PRINT_STD_FILE13)
+        print("套印檔案:", path_map[keys][0])
         print("目標路徑:", dest_folder)
         print("輸出位置:", print_dest_file)
         input("plz enter any key")
-        shutil.copy(HT_PRINT_STD_FILE13, print_dest_file)
+        shutil.copy(path_map[keys][0], print_dest_file)
         #複製傳真文件
         fax_dest_file = dest_folder + r"\Fax_" + def_letter_num + ".doc"
-        print("傳真檔案:", HT_FAX_FILE13)
+        print("傳真檔案:", path_map[keys][1])
         print("目標路徑:", dest_folder)
         print("輸出位置:", fax_dest_file)
         input("plz enter any key")
-        shutil.copy(HT_FAX_FILE13, fax_dest_file)
+        shutil.copy(path_map[keys][1], fax_dest_file)
         date_obj = datetime.datetime.strptime(def_letter_date, "%Y/%m/%d")
         month = date_obj.strftime("%m")
         day = date_obj.strftime("%d")
@@ -62,9 +86,9 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
         input("enter any kesy to exit")
     return 0
 
-def main():
+def test2():
     "主程式"
-    dest_folder = "The_file_need_to_convert/HT-D1-GEI-GEL-23-1412"
+    dest_folder = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT\HT_HT-D1-CTC-GEL-23-1188"
     text_gen('HRSG Chimney-General Arrangement of Concrete Roof & Layout of Permanent Shutter to Roof Slab',
              'A', 'TPC-TC(C0)-CD-23-0002', '2023/02/02', dest_folder)
     input("Press enter to exit...")
@@ -72,9 +96,8 @@ def main():
 
 def test():
     "測試程式"
-    print(constants.HT_PRINT_STD_FILE13)
     return None
 
 if __name__ == '__main__':
-    main()
-    #test()
+    test2()
+
