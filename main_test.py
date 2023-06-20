@@ -13,13 +13,11 @@ import convert_excel
 import read_ht_excel
 import read_tc_excel
 import text_gen
-from constants import (CLOUD_HT, CLOUD_TC, COM_DESTINY_HT, COM_DESTINY_TC, DOC_NO_STRUCTURE, 
-                       HOME_SOURCE_HT, HOME_DESTINY_HT, HOME_SOURCE_TC, HOME_DESTINY_TC, 
-                       PLAN_LIST, COM_SOURCE_HT, COM_SOURCE_TC)
+
 
 ROOT_HOME = r"C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station"
 ROOT_GIT = r"/workspaces/Auto-Work-Station"
-sys.path.append(ROOT_HOME)
+sys.path.append(ROOT_GIT)
 
 def main():
     "主程式"

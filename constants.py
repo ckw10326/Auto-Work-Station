@@ -1,5 +1,5 @@
 
-PLAN_LIST = ["", "HT", "TC"]
+PLAN_LIST = ["", "HT", "TC", "HT2"]
 LOCATION = ["", "家庭", "公司", "雲端"]
 DOC_NO_STRUCTURE = {"HT": ["HT", "D1", "CTC", "GEL", "23"],
                     "TC": ["TPC", "TC(C0)", "CD", "23"],

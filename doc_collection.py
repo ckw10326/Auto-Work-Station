@@ -4,12 +4,9 @@ Doc collection
 import os
 import shutil
 import sys
-from constants import (CLOUD_HT, CLOUD_TC, COM_DESTINY_HT, COM_DESTINY_TC, DOC_NO_STRUCTURE, 
-                       HOME_SOURCE_HT, HOME_DESTINY_HT, HOME_SOURCE_TC, HOME_DESTINY_TC, 
-                       PLAN_LIST, COM_SOURCE_HT, COM_SOURCE_TC)
-sys.path.append(r'C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station')
-#輸入 計畫名稱、末4號碼
-#輸出 計畫代號、完整文號
+import constants
+
+#輸出 計畫代號、文號末4碼
 def file_path_process():
     "收集關鍵字，生成文號，生成路徑"
     file_plan_no = ""
@@ -26,7 +23,7 @@ def file_path_process():
                 check_num = False
             else:
                 print("請輸入4位數字")
-        ana_num = DOC_NO_STRUCTURE.get(PLAN_LIST[int(file_plan_no)])
+        ana_num = constants.DOC_NO_STRUCTURE.get(constants.PLAN_LIST[int(file_plan_no)])
         #pre_path = ["HT", "D1", "CTC", "GEL", "23"]
         file_doc_num = "-".join(ana_num) + "-" + doc_end_num
         #file_doc_num = HT-D1-CTC-GEL-23 + "-1234"
@@ -35,9 +32,9 @@ def file_path_process():
     plan_no : 1 = 興達計畫, 2 = 台中計畫, 99 = 指定路徑\
     代碼組合 : (source_folder, dest_folder)
     '''
-    path_map = {"11":(CLOUD_HT, CLOUD_HT), "12":(CLOUD_TC, CLOUD_TC),
-                "21":(HOME_SOURCE_HT, HOME_DESTINY_HT), "22":(HOME_SOURCE_TC, HOME_DESTINY_TC),
-                "31":(COM_SOURCE_HT, COM_DESTINY_HT), "32":(COM_SOURCE_TC, COM_DESTINY_TC),
+    path_map = {"11":(constants.CLOUD_HT1, constants.CLOUD_HT1), "12":(constants.CLOUD_TC1, constants.CLOUD_TC1),
+                "21":(constants.HOME_SOURCE_HT, constants.HOME_DESTINY_HT), "22":(constants.HOME_SOURCE_TC, constants.HOME_DESTINY_TC),
+                "31":(constants.COM_SOURCE_HT, constants.COM_DESTINY_HT), "32":(constants.COM_SOURCE_TC, constants.COM_DESTINY_TC),
                 "0":("","")
                 }
     path_way = input("請輸入使用路徑(0 = 自訂, 1 = 雲端, 2 = 家庭, 3 = 公司 ：)")
@@ -50,7 +47,7 @@ def file_path_process():
     else:
         file_source_folder = path_map[path_way + file_plan_no][0] + "\\" + file_doc_num
         file_dest_folder = (path_map[path_way + file_plan_no][1] + "\\" +
-                           PLAN_LIST[int(file_plan_no)] +"_" +file_doc_num)
+                           constants.PLAN_LIST[int(file_plan_no)] +"_" +file_doc_num)
     print("來源路徑:", file_source_folder)
     print("目的路徑:", file_dest_folder)
     print("計畫代碼:", file_plan_no)
