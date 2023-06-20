@@ -13,6 +13,7 @@ import convert_excel
 import read_ht_excel
 import read_tc_excel
 import text_gen
+import constants#改成seettings
 
 
 ROOT_HOME = r"C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station"

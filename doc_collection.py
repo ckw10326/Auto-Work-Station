@@ -1,5 +1,6 @@
 """
-Doc collection
+1.file_path_process 收集資料生成路徑
+2.move_docutment 移動資料價
 """
 import os
 import shutil
@@ -32,7 +33,7 @@ def file_path_process():
     plan_no : 1 = 興達計畫, 2 = 台中計畫, 99 = 指定路徑\
     代碼組合 : (source_folder, dest_folder)
     '''
-    path_map = {"11":(constants.CLOUD_HT1, constants.CLOUD_HT1), "12":(constants.CLOUD_TC1, constants.CLOUD_TC1),
+    path_map = {"11":(constants.AZURE_SOURCE, constants.AZURE_SOURCE), "12":(constants.AZURE_SOURCE, constants.AZURE_SOURCE),
                 "21":(constants.HOME_SOURCE_HT, constants.HOME_DESTINY_HT), "22":(constants.HOME_SOURCE_TC, constants.HOME_DESTINY_TC),
                 "31":(constants.COM_SOURCE_HT, constants.COM_DESTINY_HT), "32":(constants.COM_SOURCE_TC, constants.COM_DESTINY_TC),
                 "0":("","")
@@ -42,11 +43,11 @@ def file_path_process():
     file_source_folder = ""
     file_dest_folder = ""
     if path_way == "0":
-        file_source_folder = input("請輸入您的來源路徑 :") + "\\" + file_doc_num
-        file_dest_folder = input("請輸入您的目的路徑 :") + "\\The_" +file_doc_num
+        file_source_folder = input("請輸入您的來源路徑 :") + "/" + file_doc_num
+        file_dest_folder = input("請輸入您的目的路徑 :") + "/The_" +file_doc_num
     else:
-        file_source_folder = path_map[path_way + file_plan_no][0] + "\\" + file_doc_num
-        file_dest_folder = (path_map[path_way + file_plan_no][1] + "\\" +
+        file_source_folder = path_map[path_way + file_plan_no][0] + "/" + file_doc_num
+        file_dest_folder = (path_map[path_way + file_plan_no][1] + "/" +
                            constants.PLAN_LIST[int(file_plan_no)] +"_" +file_doc_num)
     print("來源路徑:", file_source_folder)
     print("目的路徑:", file_dest_folder)
@@ -72,8 +73,11 @@ def move_docutment(def_source_folder, def_dest_folder):
         else:
             print("開始複製資料夾")
             shutil.copytree(def_source_folder, def_dest_folder)
-            os.startfile(def_dest_folder)
-            #開啟複製好的資料價
+            if "Auto-Work-Station" in def_source_folder:
+                pass
+                #開啟複製好的資料價
+            else:
+                os.startfile(def_dest_folder)
     else:
         print("查「無」指定資料夾")
         return None
@@ -87,9 +91,15 @@ def main():
     "主要執行內容"
     return None
 
-def test1():
+def test():
     "測試用"
-    return None
+
+    file_source_folder = "/workspaces/Auto-Work-Station/00source/TPC-TC(C0)-CD-23-1759"
+    file_dest_folder = "/workspaces/Auto-Work-Station/00source\TC_TPC-TC(C0)-CD-23-1759"
+    print(file_source_folder)
+    print(file_dest_folder)
+    print(os.path.exists(file_source_folder))
 
 if __name__ == '__main__':
     main()
+    #test()
