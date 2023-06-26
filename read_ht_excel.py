@@ -2,9 +2,15 @@
 轉換興達計畫excel檔案
 '''
 import os
+import fnmatch
 import openpyxl
 import pandas as pd
+import pyxlsb
 
+'''
+預設只能讀取一個檔案
+2023/6/26 補充多個檔案
+'''
 def read_ctc_ht_excel(def_dest_folder):
     # 遍歷所有資料夾、檔案
     keyword = {"CLIENTDOCNO":"圖號", "DOCVERSIONDESC":"圖名",
@@ -105,16 +111,52 @@ def read_ctc_ht_excel(def_dest_folder):
     df.to_excel(Output_path, index=False)
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
+'''
+轉換資料夾內檔案
+'''
+def convert_xlsb(folder_path):
+    xlsx_path = ""
+    "尋找檔案是否存在"
+    if os.path.exists(folder_path):
+        print("找到目標資料夾：", folder_path)
+        for file in os.listdir(folder_path):
+            #確認xlsb檔案是否存在
+            print(file)
+            if fnmatch.fnmatch(file, '*.xlsb'):
+                file_path =os.path.join(folder_path, file)
+                print("找到目標檔案路徑：", file_path)
+                #抓到隱藏檔案(檔名有關鍵字：~$H，不動作
+                if "~$" in file_path:
+                    print(file_path,"抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+                else:
+                    xlsx_path = os.path.splitext(file_path)[0] + "_converted.xlsx"
+                    print("輸出檔案：", xlsx_path)
+                    if os.path.exists(xlsx_path):
+                        print("_converted.xlsx" + "檔案已存在，不動作")
+                    else:
+                        data_frame = pd.read_excel(file_path, sheet_name='Data1', engine='pyxlsb')
+                        data_frame.to_excel(xlsx_path)
+                        print(r"----------------------Convert_xlsb Done!------------------------")
+                        input("enter any keys to exit")
+            else:
+                print("找不到目標檔案：", file)
+        return xlsx_path
+    else:
+        "若找不到資料夾，則回傳None"
+        print("找不到目標資料夾：", folder_path)
+        return None
+
 def test1():
     "主程式"
-    path = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\HT\HT_HT-D1-CTC-GEL-23-1188"
-    #convert_excel.convert_xlsb(path)
-    print(read_ctc_ht_excel(path))
+    path = r"/workspaces/Auto-Work-Station/00source"
+    #convert_xlsb(path)
+    read_ctc_ht_excel(path)
     input("測試功能完成...")
+
     return None
 
 
-def test():
+def main():
     "測試程式"
     return None
 

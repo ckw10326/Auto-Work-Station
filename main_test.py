@@ -9,7 +9,6 @@ pyinstaller -F test.py
 import sys
 import os
 import doc_collection
-import convert_excel
 import read_ht_excel
 import read_tc_excel
 import text_gen
@@ -41,15 +40,22 @@ def main():
         text_gen.text_gen(letter_title, letter_vision, letter_num, letter_date, dest_folder)
         input("完成，請按任意鍵Press enter to exit...")
 
+'''
+雲端分析功能
+'''
+def main2():
+    path = r"/workspaces/Auto-Work-Station/00source"
+    read_ht_excel.convert_xlsb(path)
+    letter_title, letter_vision, letter_num, letter_date = read_ht_excel.read_ctc_ht_excel(path)
+    text_gen.text_gen(letter_title, letter_vision, letter_num, letter_date, path)
+    input("完成，請按任意鍵Press enter to exit...")
+
 def update_value(new_value1, new_value2, new_value3):
     "更新變數值"
     #global HT_path
     #HT_path = new_value
     return None
 
-def main2():
-    """[summary]"""
-    return None
 
 if __name__ == '__main__':
-    main()
+    main2()

@@ -49,14 +49,14 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
         company_name = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
         consult_company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
         #複製套印文件
-        print_dest_file = dest_folder + r"\套印_" + def_letter_num + ".rtf"
+        print_dest_file = dest_folder + r"/套印_" + def_letter_num + ".rtf"
         print("套印檔案:", path_map[keys][0])
         print("目標路徑:", dest_folder)
         print("輸出位置:", print_dest_file)
         input("plz enter any key")
         shutil.copy(path_map[keys][0], print_dest_file)
         #複製傳真文件
-        fax_dest_file = dest_folder + r"\Fax_" + def_letter_num + ".doc"
+        fax_dest_file = dest_folder + r"/Fax_" + def_letter_num + ".doc"
         print("傳真檔案:", path_map[keys][1])
         print("目標路徑:", dest_folder)
         print("輸出位置:", fax_dest_file)
@@ -70,16 +70,17 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
         contents0 = ("本文係" + company_name[my_company_num] + "對統包商提送「" + def_letter_title
                     + "」" + "Rev." + str(def_letter_vision)  + "所提審查意見(共" + pages + "頁)"
                     + "，未逾合約規範，已電傳" + consult_company[plan_no] + "，擬陳閱後文存。")
-        contents1 = ("檢送" + plan_name + "電廠燃氣機組更新改建計畫"  + def_letter_title + "Rev."
+        contents1 = ("檢送" + plan_name + "電廠燃氣機組更新改建計畫「"  + def_letter_title + "」，Rev."
                     + str(def_letter_vision) + "，" + company_name[my_company_num]
                     + "之審查意見（如附，共" + pages + "頁）供卓參，請查照。")
         contents2 = "依據GE/CTCI 112年" + month + "月" + day +"日" + def_letter_num + "號辦理。"
         contents4 = ("本文係統包商提送「" + def_letter_title + "」" + "Rev." + str(def_letter_vision)
                     +"，本組無意見，已Email通知" + consult_company[plan_no] + "公司" + "，擬陳閱後文存。")
-        print("----------------他單位審查意見簽辦------------------")
+        print("----------------套印內容------------------")
         print(contents0)
         print("----------------傳真------------------------------")
         print(contents1)
+        print("----------------依據------------------------------")
         print(contents2)
         print("----------------主辦簽辦--------------------------")
         print(contents4)

@@ -1,6 +1,6 @@
 """
 1.file_path_process 收集資料生成路徑
-2.move_docutment 移動資料價
+2.move_docutment 移動資料夾
 """
 import os
 import shutil
@@ -101,5 +101,5 @@ def test():
     print(os.path.exists(file_source_folder))
 
 if __name__ == '__main__':
-    main()
-    #test()
+    #main()
+    test()
