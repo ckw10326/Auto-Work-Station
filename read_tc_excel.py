@@ -1,6 +1,6 @@
-#cd C:\Users\OXO\OneDrive\01 Book\00 Test program\Auto-Work-Station
-#pyinstaller -F Read_TC_Excel.py
-
+'''
+轉換台中計畫excel檔案
+'''
 import os
 import openpyxl
 import pandas as pd
@@ -26,13 +26,11 @@ def read_tc_excel(def_dest_folder):
     letter_num_value = ""
     letter_date_value = ""
     letter_titl_value = ""
+
     for root, dirs, files in os.walk(def_dest_folder):
         for file in files:
-            #比對副檔名條件
-            "測試0"
-            if file.endswith(file_type) * file.count("-") > 3:
-                "測試1"
-                print("檔案名稱",file)
+            #比對副檔名條件，跳過含有Done的檔案
+            if file.endswith(file_type) * file.count("-") * ("Done" not in file)> 3:
                 file_path = os.path.join(root, file)
                 #確認 1.無檔案 2.非有效Excel檔
                 try:
@@ -40,17 +38,17 @@ def read_tc_excel(def_dest_folder):
                     workbook = openpyxl.load_workbook(file_path)
                     # 選取Data1工作表
                     worksheet = workbook['Data1']
-                    #讀取表格文件數量
+                    # 讀取表格文件數量
                     drawings_nums = 0
-                    for i in range(0,19):
-                      if worksheet["A"+str(2+i)].value:
-                        drawings_nums = 1 + drawings_nums
-                      else:
-                          break
-                    print("文件數量",drawings_nums)
-                    #讀取資料
-                    for i in range(0,drawings_nums):
-                        #print("讀取路徑", file_path, "第",i+1,"個檔案", )
+                    for i in range(0, 19):
+                        if worksheet["A"+str(2+i)].value:
+                            drawings_nums = 1 + drawings_nums
+                        else:
+                            break
+                    print("文件數量", drawings_nums)
+                    # 讀取資料
+                    for i in range(0, drawings_nums):
+                        # print("讀取路徑", file_path, "第",i+1,"個檔案", )
                         drawing_no_value = worksheet["J"+str(2+i)].value
                         drawing_title_value = worksheet["F"+str(2+i)].value
                         drawing_vision_value = worksheet["G"+str(2+i)].value
@@ -82,7 +80,10 @@ def read_tc_excel(def_dest_folder):
                 except openpyxl.utils.exceptions.InvalidFileException:
                     # 處理無效的 Excel 檔案的錯誤
                     print("無效的 Excel 檔案:", file_path)
+            else:
+                print("無興達Excel關鍵字「.xlsx」")
 
+    # 寫入檔案
     data = {'批次序號': excute_num_block,
             '圖號': drawing_no_block,
             '圖名': drawing_title_block,
@@ -103,7 +104,10 @@ def read_tc_excel(def_dest_folder):
     df.to_excel(Output_path, index=False)
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
-def main():
+'''
+測試當地
+'''
+def testlocal():
     "主程式"
     path = r"C:\Users\OXO\OneDrive\01 Book\00 Test program\TC\TPC-TC(C0)-CD-23-0002"
     #convert_excel.convert_xlsb(path)
@@ -111,11 +115,21 @@ def main():
     input("Press enter to exit...")
     return None
 
+'''
+測試雲端
+'''
+def test2():
+    "主程式"
+    path = r"/workspaces/Auto-Work-Station/00source"
+    read_tc_excel(path)
+    input("測試功能完成...")
 
-def test():
-    "測試程式"
+    return None
+
+def main():
+    "main"
     return None
 
 
 if __name__ == '__main__':
-    main()
+    test2()

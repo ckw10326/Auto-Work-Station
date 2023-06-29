@@ -45,10 +45,17 @@ def main():
 '''
 def main2():
     path = r"/workspaces/Auto-Work-Station/00source"
-    read_ht_excel.convert_xlsb(path)
-    letter_title, letter_vision, letter_num, letter_date = read_ht_excel.read_ctc_ht_excel(path)
-    text_gen.text_gen(letter_title, letter_vision, letter_num, letter_date, path)
-    input("完成，請按任意鍵Press enter to exit...")
+    x = read_ht_excel.convert_xlsb(path)
+    if x :
+        letter_title, letter_vision, letter_num, letter_date = read_ht_excel.read_ctc_ht_excel(path)
+        text_gen.text_gen(letter_title, letter_vision, letter_num, letter_date, path)
+    else :
+        print("read_ht_excel.convert_xlsb回傳None，無符合興達分析之檔案，現在開始分析「台中」")
+        letter_title, letter_vision, letter_num, letter_date = read_tc_excel.read_tc_excel(path)
+        text_gen.text_gen(letter_title, letter_vision, letter_num, letter_date, path)
+'''
+給定資料夾一次將所有excel檔案分析完成，已經分析過得不再處理
+'''
 
 def update_value(new_value1, new_value2, new_value3):
     "更新變數值"

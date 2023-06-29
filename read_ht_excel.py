@@ -17,7 +17,6 @@ def read_ctc_ht_excel(def_dest_folder):
                "DOCREV":"版次", "TRANSMITTALNO":"來文號碼",
                "RETUREDATE":"來文日期", "DESCRIPTION":"來文名稱"
                 }
-
     excute_num_block = []
     drawing_no_block = []
     drawing_title_block = []
@@ -37,7 +36,7 @@ def read_ctc_ht_excel(def_dest_folder):
 
     for root, dirs, files in os.walk(def_dest_folder):
         for file in files:
-            #比對副檔名條件
+            #比對副檔名條件，跳過含有Done的檔案
             if file.endswith(file_type) * file.count("-") * ("Done" not in file)> 3:
                 file_path = os.path.join(root, file)
                 #確認 1.無檔案 2.非有效Excel檔
@@ -56,7 +55,6 @@ def read_ctc_ht_excel(def_dest_folder):
                         else:
                             break
                     print("文件數量", drawings_nums)
-
                     # 讀取資料
                     for i in range(0, drawings_nums):
                         # print("讀取路徑", file_path, "第",i+1,"個檔案", )
@@ -90,7 +88,10 @@ def read_ctc_ht_excel(def_dest_folder):
                 except openpyxl.utils.exceptions.InvalidFileException:
                     # 處理無效的 Excel 檔案的錯誤
                     print("無效的 Excel 檔案:", file_path)
+            else:
+                print("無興達Excel關鍵字「.xlsx」")
 
+    # 寫入檔案
     data = {'批次序號': excute_num_block,
             '圖號': drawing_no_block,
             '圖名': drawing_title_block,
@@ -102,7 +103,7 @@ def read_ctc_ht_excel(def_dest_folder):
             }
     df = pd.DataFrame(data)
 
-    #輸出Excel檔案
+    # 輸出Excel檔案
     basename = os.path.basename(file_path)
     filename_without_extension = os.path.splitext(basename)[0]
     NewExcelfile = "Done_" + filename_without_extension + ".xlsx"
@@ -111,6 +112,7 @@ def read_ctc_ht_excel(def_dest_folder):
     df.to_excel(Output_path, index=False)
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
+
 '''
 轉換資料夾內檔案
 '''
@@ -118,32 +120,32 @@ def convert_xlsb(folder_path):
     xlsx_path = ""
     "尋找檔案是否存在"
     if os.path.exists(folder_path):
-        print("找到目標資料夾：", folder_path)
+        print("convert_xlsb，找到目標資料夾：", folder_path)
         for file in os.listdir(folder_path):
             #確認xlsb檔案是否存在
-            print(file)
+            print("convert_xlsb，", file)
             if fnmatch.fnmatch(file, '*.xlsb'):
                 file_path =os.path.join(folder_path, file)
-                print("找到目標檔案路徑：", file_path)
+                print("convert_xlsb，找到目標檔案路徑：", file_path, "有符合「.xlsb」的檔案")
                 #抓到隱藏檔案(檔名有關鍵字：~$H，不動作
                 if "~$" in file_path:
-                    print(file_path,"抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+                    print(file_path,"convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
                 else:
                     xlsx_path = os.path.splitext(file_path)[0] + "_converted.xlsx"
-                    print("輸出檔案：", xlsx_path)
+                    print("convert_xlsb，輸出檔案：", xlsx_path)
                     if os.path.exists(xlsx_path):
-                        print("_converted.xlsx" + "檔案已存在，不動作")
+                        print("convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
                     else:
                         data_frame = pd.read_excel(file_path, sheet_name='Data1', engine='pyxlsb')
                         data_frame.to_excel(xlsx_path)
                         print(r"----------------------Convert_xlsb Done!------------------------")
                         input("enter any keys to exit")
             else:
-                print("找不到目標檔案：", file)
+                print("convert_xlsb，找不到目標檔案：", file)
         return xlsx_path
     else:
         "若找不到資料夾，則回傳None"
-        print("找不到目標資料夾：", folder_path)
+        print("convert_xlsb，找不到目標資料夾：", folder_path)
         return None
 
 def test1():
@@ -157,7 +159,7 @@ def test1():
 
 
 def main():
-    "測試程式"
+    "main"
     return None
 
 
