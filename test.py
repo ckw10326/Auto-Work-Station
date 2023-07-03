@@ -3,6 +3,9 @@ import time
 import pyautogui
 import numpy as np
 from math import sqrt
+from math import pi
+from math import cos
+from math import sin
 
 WEGO_X_LIST = [*range(382, 452),779,1018,1258,1378,1498,  *range(513, 568), 659, 899, 1138] #判斷x值範圍
 WEGO_CHECKING_COLOR_A = '#262d39' #判斷威格上方顏色
@@ -65,10 +68,10 @@ def move_circle(x, y, diameter, duration):
     radius = diameter / 2
     interval = duration / steps
     for i in range(steps):
-        angle = i / steps * math.pi * 2
-        dx = math.cos(angle) * radius
-        dy = math.sin(angle) * radius
-        pyautogui.moveTo(x + dx, y + dy, interval=interval)
+        angle = i / steps * pi * 2
+        dx = cos(angle) * radius
+        dy = sin(angle) * radius
+        pyautogui.moveTo(x + dx, y + dy)
 
 #將參數WEGO_X_LIST的值一直疊代下去
 def is_wego_in():
@@ -90,12 +93,24 @@ def sample_wego_in(x, screen):
         return True
     return False
 
+def sample1_wego_in(x, screen):
+    u = color_distance(get_position_color_s((x, WEGO_CHECKING_Y_A), screen), 
+                       WEGO_CHECKING_COLOR_A)
+    d = color_distance(get_position_color_s((x + WEGO_XA_XB_distance, WEGO_CHECKING_Y_B), 
+                                            screen), WEGO_CHECKING_COLOR_B)
+    if d <= WEGO_XB_COLOR_distance  and u <= WEGO_XA_COLOR_distance:
+        print('we', x, u, d)
+        return True
+    return False
+
 #學習範本
 def sample_is_wego_in():
     screen = pyautogui.screenshot()
+    #print(screen)
     li = WEGO_X_LIST
     for i in li:
-        if sample_wego_in(i, screen):
+        print(i)
+        if sample1_wego_in(i, screen):
             return True
     return False
 
@@ -118,12 +133,15 @@ def get_color():
 
 def test():
     # 判斷sr劍及UR炸彈是否出現
-    sample_is_wego_in():
-
+    #sample_is_wego_in()
+    pyautogui.moveTo(1000, 544)
+    #pyautogui.moveTo(1000, 568)
     # 将鼠标移动到 (100, 100)
-    pyautogui.moveTo(100, 100)
+    #pyautogui.moveTo(100, 100)
     # 滑动一个直径为 50 的圆圈，持续时间为 5 秒
-    move_circle(100, 100, 50, 5)
+    #move_circle(500, 500, 50, 5)
+
+
 
 
 if __name__ == '__main__':
