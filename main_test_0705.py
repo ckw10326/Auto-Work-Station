@@ -11,6 +11,7 @@ import doc_collection
 import read_ht_excel
 import read_tc_excel
 import text_gen
+import sys
 import constants#改成settings
 
 

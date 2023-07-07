@@ -53,7 +53,7 @@ def read_tc_excel(def_dest_folder):
                         drawing_title_value = worksheet["F"+str(2+i)].value
                         drawing_vision_value = worksheet["G"+str(2+i)].value
                         letter_num_value = worksheet["A2"].value
-                        letter_date_value = worksheet["C2"].value
+                        letter_date_value = worksheet["D2"].value
                         letter_titl_value = worksheet["I2"].value
 
                         excute_num_block.append(i)
