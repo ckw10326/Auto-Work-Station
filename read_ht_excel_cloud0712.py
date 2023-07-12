@@ -10,10 +10,6 @@ import openpyxl
 import pandas as pd
 import pyxlsb
 
-'''
-預設只能讀取一個檔案
-2023/6/26 補充多個檔案
-'''
 def read_ctc_ht_excel(def_dest_path):
     if "Done" in def_dest_path:
         print("包含Done檔案，已處理過不再處理")
@@ -82,7 +78,6 @@ def read_ctc_ht_excel(def_dest_path):
         print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
     workbook.close()
 
-
     # 寫入檔案
     data = {'批次序號': excute_num_block,
             '圖號': drawing_no_block,
@@ -99,6 +94,7 @@ def read_ctc_ht_excel(def_dest_path):
     filename_without_extension = os.path.splitext(def_dest_path)[0]
     Output_path  = filename_without_extension + "_Done.xlsx"
     print("輸出路徑:", Output_path)
+    #輸出成路徑 + "HT-D1-CTC-GEL-23-1171_Done.xlsx"
     df.to_excel(Output_path, index=False)
     print("--------------.xlsx分析完成-----------------")
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
@@ -155,7 +151,6 @@ def files_list(xpath, str):
 
 "測試中程式"
 def test1():
-
     path = r"/workspaces/Auto-Work-Station/00source"
     #列表，檔案清單
     the_xlsb_file_list = files_list(path, ".xlsb")
