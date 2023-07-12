@@ -112,7 +112,6 @@ def read_ctc_ht_excel(def_dest_folder):
     df.to_excel(Output_path, index=False)
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
-
 '''
 轉換資料夾內檔案
 '''
@@ -151,7 +150,7 @@ def convert_xlsb(folder_path):
 def test1():
     "主程式"
     path = r"/workspaces/Auto-Work-Station/00source"
-    #convert_xlsb(path)
+    convert_xlsb(path)
     read_ctc_ht_excel(path)
     input("測試功能完成...")
 
