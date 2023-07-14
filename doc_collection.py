@@ -85,21 +85,11 @@ def move_docutment(def_source_folder, def_dest_folder):
     input("複製資料完成/已存在資料，請按任意鍵")
     return None
 
-def main():
+def test():
     file_doc_num, file_source_folder, file_dest_folder = file_path_process()
     move_docutment(file_source_folder, file_dest_folder)
     "主要執行內容"
     return None
 
-def test():
-    "測試用"
-
-    file_source_folder = "/workspaces/Auto-Work-Station/00source/TPC-TC(C0)-CD-23-1759"
-    file_dest_folder = "/workspaces/Auto-Work-Station/00source\TC_TPC-TC(C0)-CD-23-1759"
-    print(file_source_folder)
-    print(file_dest_folder)
-    print(os.path.exists(file_source_folder))
-
 if __name__ == '__main__':
-    #main()
     test()

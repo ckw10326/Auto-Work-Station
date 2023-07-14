@@ -9,6 +9,7 @@ import fnmatch
 import openpyxl
 import pandas as pd
 import pyxlsb
+import file_list
 
 def read_ctc_ht_excel(def_dest_path):
     if "Done" in def_dest_path:
@@ -101,6 +102,7 @@ def read_ctc_ht_excel(def_dest_path):
 
 '''
 輸入檔案名稱，函數內比對資格，轉換後輸出新路徑
+這邊比較麻煩的是，當執行return converter_xlsx，分一個檔案後就會退出
 '''
 def convert_xlsb(file_path):
     if '.xlsb' in file_path:
@@ -125,35 +127,11 @@ def convert_xlsb(file_path):
     else:
         return None
 
-def files_list(xpath, str):
-    the_file_list = []
-    if str == 0:
-        for root, dirs, files in os.walk(xpath):
-            # 遍歷當前文件夾下的所有檔案
-            for file in files:
-                # 輸出檔案路徑
-                thefile = os.path.join(root, file)
-                print(thefile)
-                the_file_list.append(thefile)
-        print("----------", str, "檔案清單輸出完成-----------\n")
-        return the_file_list
-    else:
-        for root, dirs, files in os.walk(xpath):
-            # 遍歷當前文件夾下的所有檔案
-            for file in files:
-                # 輸出檔案路徑
-                thefile = os.path.join(root, file)
-                if str in thefile:
-                    print(thefile)
-                    the_file_list.append(thefile)
-        print("----------", str, "檔案清單輸出完成-----------\n")
-        return the_file_list
-
 "測試中程式"
 def test1():
     path = r"/workspaces/Auto-Work-Station/00source"
     #列表，檔案清單
-    the_xlsb_file_list = files_list(path, ".xlsb")
+    the_xlsb_file_list = file_list.files_list1(path, ".xlsb")
 
     #列表，有轉換檔案後的清單
     for filepath in the_xlsb_file_list:
@@ -161,7 +139,7 @@ def test1():
     print("convered_xlsb Done\n")
 
     #列表，輸出成converted.xlsx清單
-    the_xlsx_file_list = files_list(path, "converted.xlsx")
+    the_xlsx_file_list = file_list.files_list1(path, "converted.xlsx")
     for the_file in the_xlsx_file_list:
         read_ctc_ht_excel(the_file)
 

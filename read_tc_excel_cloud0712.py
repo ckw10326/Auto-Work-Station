@@ -6,6 +6,7 @@
 import os
 import openpyxl
 import pandas as pd
+import file_list
 
 def read_tc_excel(def_dest_path):
     if "Done" in def_dest_path:
@@ -94,30 +95,7 @@ def read_tc_excel(def_dest_path):
     print("--------------.xlsx分析完成-----------------")
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
-def files_list(xpath, str):
-    the_file_list = []
-    if str == 0:
-        for root, dirs, files in os.walk(xpath):
-            # 遍歷當前文件夾下的所有檔案
-            for file in files:
-                # 輸出檔案路徑
-                thefile = os.path.join(root, file)
-                print(thefile)
-                the_file_list.append(thefile)
-        print("----------", str, "檔案清單輸出完成-----------\n")
-        return the_file_list
-    else:
-        for root, dirs, files in os.walk(xpath):
-            # 遍歷當前文件夾下的所有檔案
-            for file in files:
-                # 輸出檔案路徑
-                thefile = os.path.join(root, file)
-                if str in thefile:
-                    print(thefile)
-                    the_file_list.append(thefile)
-        print("----------", str, "檔案清單輸出完成-----------\n")
-        return the_file_list
-    
+
 '''
 測試當地
 '''
@@ -128,19 +106,12 @@ def testlocal():
 '''
 def test2():
     path = r"/workspaces/Auto-Work-Station/00source"
-
     #列表，檔案清單
-    the_xlsb_file_list = files_list(path, ".xlsb")
-    
-    #列表，有轉換檔案後的清單
-    for filepath in the_xlsb_file_list:
-        convert_xlsb(filepath)
-    print("convered_xlsb Done\n")
+    the_xlsb_file_list = file_list.files_list1(path, ".xlsm")
 
-    #列表，輸出成converted.xlsx清單
-    the_xlsx_file_list = files_list(path, "converted.xlsx")
-    for the_file in the_xlsx_file_list:
-        read_ctc_ht_excel(the_file)
+    #讀取列表中的清單
+    for the_file in the_xlsb_file_list:
+        read_tc_excel(the_file)
 
 def main():
     "main"

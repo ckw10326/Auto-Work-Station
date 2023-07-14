@@ -15,7 +15,6 @@ import sys
 import constants#改成settings
 
 
-ROOT_HOME = r"C:/Users/OXO/OneDrive/01 Book/00 Test program/Auto-Work-Station"
 ROOT_GIT = r"/workspaces/Auto-Work-Station"
 sys.path.append(ROOT_GIT)
 

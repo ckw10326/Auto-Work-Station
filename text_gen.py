@@ -4,6 +4,7 @@
 """
 import shutil
 import datetime
+import os
 from constants import (HT_PRINT_STD_FILE11, HT_PRINT_STD_FILE12, HT_PRINT_STD_FILE10, TC_PRINT_STD_FILE21, 
                        TC_PRINT_STD_FILE22, TC_PRINT_STD_FILE20, HT_FAX_FILE11, HT_FAX_FILE12, HT_FAX_FILE10, 
                        TC_FAX_FILE21, TC_FAX_FILE22, TC_FAX_FILE20, HT_COMMENT_FILE11, HT_COMMENT_FILE12, 
@@ -54,6 +55,12 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
         print("目標路徑:", dest_folder)
         print("輸出位置:", print_dest_file)
         input("plz enter any key")
+        if os.path.exists(path_map[keys][0]) and os.path.exists(print_dest_file):
+            # 進行文件複製
+            shutil.copy(path_map[keys][0], print_dest_file)
+        else:
+            # 源文件或目標文件夾不存在
+            print("源文件或目標文件夾不存在!")
         shutil.copy(path_map[keys][0], print_dest_file)
         #複製傳真文件
         fax_dest_file = dest_folder + r"/Fax_" + def_letter_num + ".doc"
@@ -61,7 +68,12 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
         print("目標路徑:", dest_folder)
         print("輸出位置:", fax_dest_file)
         input("plz enter any key")
-        shutil.copy(path_map[keys][1], fax_dest_file)
+        if os.path.exists(path_map[keys][1]) and os.path.exists(fax_dest_file):
+            # 進行文件複製
+            shutil.copy(path_map[keys][1], fax_dest_file)
+        else:
+            # 源文件或目標文件夾不存在
+            print("源文件或目標文件夾不存在!")
         date_obj = datetime.datetime.strptime(def_letter_date, "%Y/%m/%d")
         month = date_obj.strftime("%m")
         day = date_obj.strftime("%d")
@@ -93,10 +105,6 @@ def test2():
     text_gen('HRSG Chimney-General Arrangement of Concrete Roof & Layout of Permanent Shutter to Roof Slab',
              'A', 'TPC-TC(C0)-CD-23-0002', '2023/02/02', dest_folder)
     input("Press enter to exit...")
-    return None
-
-def test():
-    "測試程式"
     return None
 
 if __name__ == '__main__':
