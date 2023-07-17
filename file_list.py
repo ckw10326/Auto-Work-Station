@@ -8,7 +8,7 @@ def files_list1(xpath, str):
             for file in files:
                 # 輸出檔案路徑
                 thefile = os.path.join(root, file)
-                print(thefile)
+                print("符合條件檔案", thefile)
                 the_file_list.append(thefile)
         print("----------", str, "檔案清單輸出完成-----------\n")
         return the_file_list
@@ -19,7 +19,7 @@ def files_list1(xpath, str):
                 # 輸出檔案路徑
                 thefile = os.path.join(root, file)
                 if str in thefile:
-                    print(thefile)
+                    print("符合條件檔案", thefile)
                     the_file_list.append(thefile)
         print("----------", str, "檔案清單輸出完成-----------\n")
         return the_file_list

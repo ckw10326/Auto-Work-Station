@@ -20,6 +20,7 @@ def read_ctc_ht_excel(def_dest_path):
                "DOCREV":"版次", "TRANSMITTALNO":"來文號碼",
                "RETUREDATE":"來文日期", "DESCRIPTION":"來文名稱"
                 }
+    #遍歷所有資料夾、檔案
     excute_num_block = []
     drawing_no_block = []
     drawing_title_block = []

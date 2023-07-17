@@ -90,6 +90,7 @@ def read_tc_excel(def_dest_path):
     #輸出Excel檔案
     filename_without_extension = os.path.splitext(def_dest_path)[0]
     Output_path  = filename_without_extension + "_Done.xlsx"
+    print("輸出路徑:", Output_path)
     #輸出成路徑 + "HT-D1-CTC-GEL-23-1171_Done.xlsx"
     df.to_excel(Output_path, index=False)
     print("--------------.xlsx分析完成-----------------")
