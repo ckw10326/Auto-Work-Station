@@ -9,14 +9,15 @@ DEST_FOLDER =  r"/workspaces/Auto-Work-Station/new_folder"
 
 def copy_excel_file(source_path, target_path):
     "測試功能"
-    source_path = "/workspaces/Auto-Work-Station/"
-    target_path = "/workspaces/Auto-Work-Station/new_folder"
+    source_path = "/workspaces/Auto-Work-Station/00source"
+    target_path = "/workspaces/Auto-Work-Station/00sdst"
 
     # 遍歷 09Past 目錄中的檔案及子目錄
     for root, dirs, files in os.walk(source_path):
         for file in files:
             # 如果找到指定的檔案
-            if file.endswith((".xlsx", ".xlsb", ".xlsm")):
+            
+            if ((file.endswith((".xlsx", ".xlsb", ".xlsm")) & ("23" in file)) & (file.count("-") >= 3):
                 print("找到檔案")
                 # 分析路徑
                 file_path = os.path.join(root, file)
