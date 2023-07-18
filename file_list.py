@@ -10,7 +10,7 @@ def files_list1(xpath, str):
                 thefile = os.path.join(root, file)
                 print("符合條件檔案", thefile)
                 the_file_list.append(thefile)
-        print("----------", str, "檔案清單輸出完成-----------\n")
+        #print("----------", str, "檔案清單輸出完成-----------\n")
         return the_file_list
     else:
         for root, dirs, files in os.walk(xpath):
@@ -21,5 +21,5 @@ def files_list1(xpath, str):
                 if str in thefile:
                     print("符合條件檔案", thefile)
                     the_file_list.append(thefile)
-        print("----------", str, "檔案清單輸出完成-----------\n")
+        #print("----------", str, "檔案清單輸出完成-----------\n")
         return the_file_list

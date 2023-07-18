@@ -89,7 +89,10 @@ def copy_stand_file(filepath):
     input("plz enter any key")
     if "HT-" in filepath:
         print_file = HT_PRINT_STD_FILE10
-    elif "-TC" in filepath:
+    else:
+        pass
+    
+    if "-TC" in filepath:
         print_file = TC_PRINT_STD_FILE20
     else:
         pass
@@ -108,13 +111,15 @@ def copy_stand_file(filepath):
     print("輸出傳真檔案:", fax_dest_file)
     input("plz enter any key")
 
-    if "HT-" in filepath:
+    if "HT" in filepath:
         fax_file = HT_FAX_FILE10
-    elif "-TC" in filepath:
+    else:
+        pass
+    
+    if "TC" in filepath:
         fax_file = TC_FAX_FILE20
     else:
         pass
-
     
     if os.path.exists(fax_file) and not os.path.exists(fax_dest_file):
         # 進行文件複製

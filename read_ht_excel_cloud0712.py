@@ -107,19 +107,19 @@ def read_ctc_ht_excel(def_dest_path):
 '''
 def convert_xlsb(file_path):
     if '.xlsb' in file_path:
-        print("開始轉換.xlsb檔案")
+        print("有抓取到.xlsb檔案")
         print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
+        converter_xlsx = os.path.splitext(file_path)[0] + "_converted.xlsx"
         #抓到隱藏檔案(檔名有關鍵字：~$H，不動作
         if "~$" in file_path:
             print(file_path,"2.convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
-
-        else:
-            #os.path.splitext [0] = 檔案名稱
-            converter_xlsx = os.path.splitext(file_path)[0] + "_converted.xlsx"
-            print("2.convert_xlsb，將要輸出檔案：", converter_xlsx)
+        else: 
             if os.path.exists(converter_xlsx):
-                print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
+                #print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
+                pass
             else:
+                #os.path.splitext [0] = 檔案名稱
+                print("2.convert_xlsb，將要輸出檔案：", converter_xlsx)
                 data_frame = pd.read_excel(file_path, sheet_name='Data1', engine='pyxlsb')
                 data_frame.to_excel(converter_xlsx)
                 print(r"3.----------------------Convert_xlsb Done!------------------------\n")

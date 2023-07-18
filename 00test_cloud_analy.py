@@ -12,6 +12,7 @@ from read_tc_excel_cloud0712 import read_tc_excel
 from doc_collection import file_path_process
 from doc_collection import move_docutment
 from text_gen import text_gen
+from text_gen import copy_stand_file
 
 file_doc_num = ""
 file_source_folder = "/workspaces/Auto-Work-Station/00source"
@@ -106,32 +107,50 @@ def cloud_total_run():
     destination_dir = "/workspaces/Auto-Work-Station/00dest"
     #複製Sample資料夾結構
     shutil.copytree(sample_folder, destination_dir)
-    print("複製完成")
+    print("複製destination_dir到00dest資料夾完成", destination_dir, "\n")
     
-    #解析.xlsb(興達資料)，用來判斷是否有興達.xlsb檔案
-    the_xlsb_file_list = files_list1(destination_dir, ".xlsb")
-    for filepath in the_xlsb_file_list:
-        print("符合.xlsb清單", filepath)
-        convert_xlsb(filepath)
-    the_xlsx_file_list = files_list1(destination_dir, "converted.xlsx")
-    for the_file in the_xlsx_file_list:
-        print("符合converted.xlsb清單:",the_file)
-        input("enter any keys to exit")
-        read_ctc_ht_excel(the_file)
-        input("enter any keys to exit")
+    listnum = 0
+    #解析.xlsb(興達資料)，判斷是否有興達.xlsb檔案
+    if 1 :
+        the_xlsb_file_list = files_list1(destination_dir, ".xlsb")
+        listnum = len(the_xlsb_file_list)
+        #若是清單有內容才會帶入解析
+        if listnum:
+            for filepath in the_xlsb_file_list:
+                print("符合興達計畫.xlsb清單", filepath)
+                #若符合.xlsb，則轉檔
+                convert_xlsb(filepath)
+        else:
+            pass
+        #將.xlsb轉換成.xlsx後，開始分析內容
+        the_xlsx_file_list = files_list1(destination_dir, "converted.xlsx")
+        listnum = len(the_xlsx_file_list)
+        #若是清單有內容才會帶入解析
+        if listnum:
+            for the_file in the_xlsx_file_list:
+                print("符合興達計畫converted.xlsb清單:",the_file)
+                input("enter any keys to exit")
+                letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value = read_ctc_ht_excel(the_file)
+                text_gen(letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value, destination_dir)
+                copy_stand_file(the_file)
+                input("enter any keys to exit")
+        else:
+            pass
 
-    #測試雲端解析台中文件
-    the_xlsm_file_list = files_list1(destination_dir, ".xlsm")
-    for filepath in the_xlsm_file_list:
-        print("符合.xlsm清單", filepath)
-        input("enter any keys to exit")
-    for the_file in the_xlsm_file_list:
-        read_tc_excel(the_file)
-        input("enter any keys to exit")
-
-    print("解析完成!")
-    print("開始產生文字")
-    input("enter any keys to exit")
+    listnum = 0
+    #解析.xlsx(台中資料)，判斷是否有台中.xlsb檔案
+    if 1 :
+        the_xlsm_file_list = files_list1(destination_dir, ".xlsm")
+        listnum = len(the_xlsm_file_list)
+        if listnum:
+            for the_file in the_xlsm_file_list:
+                print("符合台中計畫.xlsm清單", the_file)
+                input("enter any keys to exit")
+                letter_title, letter_vision, letter_num, letter_date_value = read_tc_excel(the_file)
+                text_gen(letter_title, letter_vision, letter_num, letter_date_value, destination_dir)
+                copy_stand_file(the_file)
+                input("enter any keys to exit")
+        input("----END----")
 
 if __name__ == '__main__':
     file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
@@ -149,4 +168,5 @@ if __name__ == '__main__':
 
     if os.path.exists(file_dest_folder):
         shutil.rmtree(file_dest_folder)
+        input("clear file_dest_folder, plz key any word")
     cloud_total_run()
