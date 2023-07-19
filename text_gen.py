@@ -115,7 +115,6 @@ def copy_stand_file(filepath):
     else:
         pass
 
-    
     if os.path.exists(fax_file) and not os.path.exists(fax_dest_file):
         # 進行文件複製
         shutil.copy(fax_file, fax_dest_file)
