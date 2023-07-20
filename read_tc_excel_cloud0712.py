@@ -6,7 +6,7 @@
 import os
 import openpyxl
 import pandas as pd
-import file_list
+import file_process
 
 def read_tc_excel(def_dest_path):
     if "Done" in def_dest_path:
@@ -108,7 +108,7 @@ def testlocal():
 def test2():
     path = r"/workspaces/Auto-Work-Station/00source"
     #列表，檔案清單
-    the_xlsb_file_list = file_list.files_list1(path, ".xlsm")
+    the_xlsb_file_list = file_process.files_list1(path, ".xlsm")
 
     #讀取列表中的清單
     for the_file in the_xlsb_file_list:

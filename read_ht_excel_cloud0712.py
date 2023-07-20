@@ -9,7 +9,7 @@ import fnmatch
 import openpyxl
 import pandas as pd
 import pyxlsb
-import file_list
+import file_process
 
 def read_ctc_ht_excel(def_dest_path):
     if "Done" in def_dest_path:
@@ -132,7 +132,7 @@ def convert_xlsb(file_path):
 def test1():
     path = r"/workspaces/Auto-Work-Station/00source"
     #列表，檔案清單
-    the_xlsb_file_list = file_list.files_list1(path, ".xlsb")
+    the_xlsb_file_list = file_process.files_list1(path, ".xlsb")
 
     #列表，有轉換檔案後的清單
     for filepath in the_xlsb_file_list:
@@ -140,7 +140,7 @@ def test1():
     print("convered_xlsb Done\n")
 
     #列表，輸出成converted.xlsx清單
-    the_xlsx_file_list = file_list.files_list1(path, "converted.xlsx")
+    the_xlsx_file_list = file_process.files_list1(path, "converted.xlsx")
     for the_file in the_xlsx_file_list:
         read_ctc_ht_excel(the_file)
 

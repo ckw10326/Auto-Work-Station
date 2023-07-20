@@ -123,10 +123,10 @@ def copy_stand_file(filepath):
         print("源文件或目標文件夾不存在!")
 
 
-def test2():
+def main():
     file_path = r"/workspaces/Auto-Work-Station/00dest/HT-D1-CTC-GEL-23-2638.xlsb"
     copy_stand_file(file_path)
 
 if __name__ == '__main__':
-    test2()
+    main()
 

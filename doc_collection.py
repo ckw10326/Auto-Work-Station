@@ -56,40 +56,14 @@ def file_path_process():
     print(r"----------------------file_path_process Done!--------------------------------")
     return file_doc_num, file_source_folder, file_dest_folder
 
-def move_docutment(def_source_folder, def_dest_folder):
-    "移動資料夾"
-    #檢查來源資料夾是否存在
-    if os.path.exists(def_source_folder):
-        print("已找到指定資料夾：" + def_source_folder)
-        #若存在dest_folder，則刪除
-        if os.path.exists(def_dest_folder):
-            if int(input("資料夾已存在，請選擇保留 0 或選擇 重新複製 1:")):
-                print("您選擇1，重新複製資料夾")
-                shutil.rmtree(def_dest_folder)
-                shutil.copytree(def_source_folder, def_dest_folder)
-                print(def_dest_folder,"複製完成")
-            else:
-                print("您選擇0，保留原本資料夾，不複製")
-        else:
-            print("開始複製資料夾")
-            shutil.copytree(def_source_folder, def_dest_folder)
-            if "Auto-Work-Station" in def_source_folder:
-                pass
-                #開啟複製好的資料價
-            else:
-                os.startfile(def_dest_folder)
-    else:
-        print("查「無」指定資料夾")
-        return None
-    print(r"----------------------move_docutment Done!--------------------------------------")
-    input("複製資料完成/已存在資料，請按任意鍵")
-    return None
-
 def test():
-    file_doc_num, file_source_folder, file_dest_folder = file_path_process()
-    move_docutment(file_source_folder, file_dest_folder)
+    #file_doc_num, file_source_folder, file_dest_folder = file_path_process()
+    source_folder = "/workspaces/Auto-Work-Station/00source"
+    dest_folder = "/workspaces/Auto-Work-Station/00dest"
+    move_document(source_folder, dest_folder)
     "主要執行內容"
     return None
 
 if __name__ == '__main__':
     test()
+
