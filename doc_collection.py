@@ -57,10 +57,9 @@ def file_path_process():
     return file_doc_num, file_source_folder, file_dest_folder
 
 def test():
-    #file_doc_num, file_source_folder, file_dest_folder = file_path_process()
+    file_doc_num, file_source_folder, file_dest_folder = file_path_process()
     source_folder = "/workspaces/Auto-Work-Station/00source"
     dest_folder = "/workspaces/Auto-Work-Station/00dest"
-    move_document(source_folder, dest_folder)
     "主要執行內容"
     return None
 

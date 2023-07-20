@@ -77,8 +77,7 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
 
 def copy_stand_file(filepath):
     #解析路徑
-    file_folder = os.path.split(filepath)[0]
-    file_allname = os.path.basename(filepath)
+    file_folder, file_allname = os.path.split(filepath)
     file_name = file_allname.split(".")[0]
 
     #複製套印文件
