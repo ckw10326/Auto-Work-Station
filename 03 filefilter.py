@@ -1,3 +1,6 @@
+"""
+將資料夾內不符合規格的資料刪除
+"""
 import sys
 import os
 import shutil

@@ -160,7 +160,7 @@ def cloud_total_run():
 def ht_excel_analyze(file_dest_folder):
     ht_xlsx_list = files_list(file_dest_folder, ".xlsx")
     for ht_file in ht_xlsx_list:
-        letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value = read_ctc_ht_excel(ht_file)
+        read_ctc_ht_excel(ht_file)
     pass
 
 def list_all_file(folder):
@@ -172,7 +172,7 @@ def list_all_file(folder):
             print(thefile)
 
 if __name__ == '__main__':
-    file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
+    file_dest_folder = "/workspaces/Auto-Work-Station/07docss"
     ht_excel_analyze(file_dest_folder)
 
     #test_folder_path()

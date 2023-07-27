@@ -128,6 +128,8 @@ def cloud_total_run():
                 print("符合興達計畫converted.xlsb清單:",the_file)
                 input("enter any keys to exit")
                 letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value = read_ctc_ht_excel(the_file)
+                print(letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value)
+                print("-----------將要執行text_gen--------------")
                 text_gen(letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value, destination_dir)
                 #複製套印、傳真檔案
                 copy_stand_file(the_file)
@@ -145,6 +147,7 @@ def cloud_total_run():
                 print("符合台中計畫.xlsm清單", the_file)
                 input("enter any keys to exit")
                 letter_title, letter_vision, letter_num, letter_date_value = read_tc_excel(the_file)
+                print(letter_title, letter_vision, letter_num, letter_date_value)
                 text_gen(letter_title, letter_vision, letter_num, letter_date_value, destination_dir)
                 #複製套印、傳真檔案
                 copy_stand_file(the_file)
@@ -152,10 +155,10 @@ def cloud_total_run():
         input("----END----")
 
 if __name__ == '__main__':
-    #file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
+    file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
     #test_folder_path()
 
-    #shutil.rmtree(file_dest_folder)
+    shutil.rmtree(file_dest_folder)
     #test_cloud_ht()
 
     #shutil.rmtree(file_dest_folder)
@@ -166,4 +169,7 @@ if __name__ == '__main__':
     #test_text_gen()
 
     #shutil.rmtree(file_dest_folder)
+
     cloud_total_run()
+    
+    #手動需要資料

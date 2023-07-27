@@ -1,4 +1,5 @@
 """
+在指定路徑複製指定資料夾
 find all excel file(.xlsx, .xlsb, .xlsm) of path
 """
 import os
@@ -54,15 +55,18 @@ def copy_excel_file(source_path, target_path):
 6.新資料夾不存在，建立新資料夾
 7.Excel檔案不存在，複製檔案
 """
-def copy_excel_file2(source_path, target_path):
+def copy_the_excel_file2(source_path, target_path):
     # 遍歷 09Past 目錄中的檔案及子目錄
     for root, dirs, files in os.walk(source_path):
         for file in files:
             # 如果找到符合條件之檔案
-            if ((file.endswith((".xlsx", ".xlsb", ".xlsm")) & ("23" in file)) & (file.count("-") >= 3)):
+            # 檔案路徑
+            file_path = os.path.join(root, file)
+            # 檔案大小
+            file_size = os.path.getsize(file_path)
+            if ((file.endswith((".xlsx", ".xlsb", ".xlsm")) & (("22" in file) or ("23" in file))) & (file.count("-") >= 3)) & (file_size < 1024*1024) :
                 print("找到檔案")
                 # 分析路徑
-                file_path = os.path.join(root, file)
                 print("1.檔案完整路徑file_path = ", file_path)
                 #end_path 為對比路徑 Ex:/45 copy/HT-D1-CTC-GEL-23-2068_converted.xlsx
                 end_path = file_path.replace(source_path, "")
