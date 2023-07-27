@@ -1,0 +1,48 @@
+('C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+ 'program\\Auto-Work-Station\\build\\01copy_main\\01copy_main.pkg',
+ {'BINARY': True,
+  'DATA': True,
+  'EXECUTABLE': True,
+  'EXTENSION': True,
+  'PYMODULE': True,
+  'PYSOURCE': True,
+  'PYZ': False,
+  'SPLASH': True},
+ [('PYZ-00.pyz',
+   'C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+   'program\\Auto-Work-Station\\build\\01copy_main\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+   'program\\Auto-Work-Station\\build\\01copy_main\\localpycs\\struct.pyc',
+   'PYMODULE'),
+  ('pyimod01_archive',
+   'C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+   'program\\Auto-Work-Station\\build\\01copy_main\\localpycs\\pyimod01_archive.pyc',
+   'PYMODULE'),
+  ('pyimod02_importers',
+   'C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+   'program\\Auto-Work-Station\\build\\01copy_main\\localpycs\\pyimod02_importers.pyc',
+   'PYMODULE'),
+  ('pyimod03_ctypes',
+   'C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+   'program\\Auto-Work-Station\\build\\01copy_main\\localpycs\\pyimod03_ctypes.pyc',
+   'PYMODULE'),
+  ('pyimod04_pywin32',
+   'C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+   'program\\Auto-Work-Station\\build\\01copy_main\\localpycs\\pyimod04_pywin32.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'C:\\Users\\OXO\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('01copy_main',
+   'C:\\Users\\OXO\\OneDrive\\01 Book\\00 Test '
+   'program\\Auto-Work-Station\\01copy_main.py',
+   'PYSOURCE')],
+ True,
+ False,
+ False,
+ [],
+ None,
+ None,
+ None)
