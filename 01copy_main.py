@@ -1,6 +1,5 @@
 import os
-from copy_file import copy_the_excel_file2
-
+import copy_file
 #source = "/workspaces/Auto-Work-Station/00source"
 #dest = "/workspaces/Auto-Work-Station/00dest"
 
@@ -9,5 +8,5 @@ dest = input("plz enter ur dest")
 
 if not os.path.exists(dest):
     os.makedirs(dest)
-copy_the_excel_file2(source, dest)
+copy_file.copy_the_excel_file2(source, dest)
 input("plz enter any key")

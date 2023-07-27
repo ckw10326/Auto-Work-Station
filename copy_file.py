@@ -95,4 +95,4 @@ def main():
     copy_excel_file2(source_path, target_path)
 
 if __name__ == '__main__':
-    main()
+    pass
