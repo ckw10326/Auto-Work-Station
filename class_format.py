@@ -26,7 +26,7 @@ class DocItem:
         ]
         # 將處理後的資料轉換為DataFrame
         df = pd.DataFrame(row0)
-        #print(df)
+        print(df)
         # 將DataFrame儲存為CSV檔案
         csv_path = "/workspaces/Auto-Work-Station/00dest/processed_data.csv"
         df.to_csv(csv_path, index=False)
@@ -60,8 +60,14 @@ class DocItem:
             self.letter_titl_value,
             self.file_path
         ]
+        
+        try:
+            path = "/workspaces/Auto-Work-Station/00dest/data.csv"
+            df = pd.read_csv(path)
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=['Drawing No', 'Drawing Title', 'Drawing Vision', 'Letter Num', 'Letter Date', 'Letter Title', 'File Path'])
 
-        with open('data.csv', 'w', newline='') as csvfile:
+        with open(path, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(row)
 
@@ -71,14 +77,3 @@ class DocItem:
         # 在這裡實作從資料源（例如 CSV 檔案）讀取資料的邏輯
         # 範例程式碼只是返回一個固定的 DocItem 物件作為示範
         return DocItem("123", "Sample Drawing", "A", "001", "2021-01-01", "Sample Letter", "/path/to/file.csv")
-
-# 讀取資料
-list1 = ['HT0-1-UMM01-T6933', 
-         'SAT procedure  and LCP for AmmoniaVaporizer 蒸發器SAT程序與控制面板[Ammonia Storage & Supply System]', 
-         'A', 
-         'HT-D1-CTC-GEL-23-2867', 
-         '2023/07/19', 
-         'SAT procedure  and LCP for AmmoniaVaporizer 蒸發器SAT程序與控制面板[Ammonia Storage & Supply System]', 
-         '/workspaces/Auto-Work-Station/00source/HT-D1-CTC-GEL-23-2867.xlsb']
-doc_item = DocItem(*list1)
-doc_item.process_data0()
