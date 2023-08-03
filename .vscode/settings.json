@@ -1,0 +1,10 @@
+{
+    "python.linting.pylintArgs": [
+        "--max-line-length=150"
+    ],
+    "python.pythonPath": "C:\\Python_Env\\myenv\\Scripts",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none"
+}

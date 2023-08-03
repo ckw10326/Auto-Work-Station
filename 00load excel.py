@@ -1,3 +1,6 @@
+'''
+快速讀取文件內容
+'''
 import pandas as pd
 import os
 import shutil

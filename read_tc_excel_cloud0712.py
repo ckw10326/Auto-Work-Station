@@ -9,6 +9,7 @@ import pandas as pd
 import file_process
 
 def read_tc_excel(def_dest_path):
+    """讀取台中文件"""
     if "Done" in def_dest_path:
         print("包含Done檔案，已處理過不再處理")
         return None
@@ -89,26 +90,18 @@ def read_tc_excel(def_dest_path):
 
     #輸出Excel檔案
     filename_without_extension = os.path.splitext(def_dest_path)[0]
-    Output_path  = filename_without_extension + "_Done.xlsx"
-    print("輸出路徑:", Output_path)
+    output_path  = filename_without_extension + "_Done.xlsx"
+    print("輸出路徑:", output_path)
     #輸出成路徑 + "HT-D1-CTC-GEL-23-1171_Done.xlsx"
-    df.to_excel(Output_path, index=False)
+    df.to_excel(output_path, index=False)
     print("--------------.xlsx分析完成-----------------")
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
-
-'''
-測試當地
-'''
-def testlocal():
-    None
-'''
-測試雲端
-'''
-def test2():
+def test2() -> None:
+    '''測試二'''
     path = r"/workspaces/Auto-Work-Station/00source"
     #列表，檔案清單
-    the_xlsb_file_list = file_process.files_list1(path, ".xlsm")
+    the_xlsb_file_list = file_process.files_list(path, ".xlsm")
 
     #讀取列表中的清單
     for the_file in the_xlsb_file_list:

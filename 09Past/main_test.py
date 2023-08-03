@@ -8,7 +8,7 @@ pyinstaller -F test.py
 """
 import sys
 import os
-import doc_collection
+import text_gen
 import read_ht_excel
 import read_tc_excel
 import text_gen
@@ -22,8 +22,8 @@ sys.path.append(ROOT_GIT)
 def main():
     "主程式"
     while True:
-        letter_num, source_folder, dest_folder = doc_collection.file_path_process()
-        doc_collection.move_docutment(source_folder, dest_folder)
+        letter_num, source_folder, dest_folder = text_gen.file_path_process()
+        text_gen.move_docutment(source_folder, dest_folder)
 
         if "TC(C0)" in dest_folder:
             print("開始讀取「台中」檔案")
