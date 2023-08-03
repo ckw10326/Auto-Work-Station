@@ -67,10 +67,10 @@ def work_flow():
     sample_folder = "/workspaces/Auto-Work-Station/00source"
     destination_dir = "/workspaces/Auto-Work-Station/00dest"
 
-    # 1.使用外部模組
-    if 1:
-        root_git = r"/workspaces/Auto-Work-Station"
-        sys.path.append(root_git)
+    # 1.使用外部模組，獲取程式的根目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
 
     # 2.複製檔案
     move_document(sample_folder, destination_dir)

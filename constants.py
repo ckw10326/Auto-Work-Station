@@ -116,11 +116,10 @@ def main():
         if os.path.exists(TC_COMMENT_FILE20):
             print("3. The file exists!", TC_COMMENT_FILE20)
         else:
-            print("3. The file does not exist!", TC_COMMENT_FILE20)  
+            print("3. The file does not exist!", TC_COMMENT_FILE20)
 
     test_cloud()
-
-
+    test_home()
 
 if __name__ == '__main__':
     main()
