@@ -10,7 +10,6 @@ import shutil
 import sys
 import read_ht_excel_cloud0712
 
-
 def files_list(xpath, search_str=None):
     """GPT 改良版本，輸入路徑、關鍵字"""
     the_file_list = []
@@ -23,7 +22,6 @@ def files_list(xpath, search_str=None):
                 print("符合條件檔案", thefile)
                 the_file_list.append(thefile)
     return the_file_list
-
 
 def move_document(source_folder, dest_folder):
     """
@@ -57,7 +55,6 @@ def move_document(source_folder, dest_folder):
             print("方法二：檢查資料夾", new_dest_folder, "已存在，但不刪除")
             shutil.copytree(source_folder, new_dest_folder, dirs_exist_ok=True)
     return None
-
 
 def work_flow():
     '''
