@@ -7,9 +7,8 @@ import datetime
 import os
 import constants
 
-# text_gen(letter_title, letter_vision, letter_num, def_letter_date)
 def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_date, dest_folder):
-    "內容生成"
+    """內容生成"""
     # 判斷計畫類別
     if "HT" in def_letter_num:
         plan_no = 1
@@ -73,7 +72,7 @@ def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_dat
         input("enter any kesy to exit")
     return 0
 
-def copy_stand_file(filepath):
+def copy_plan_file(filepath):
     """解析路徑"""
     file_folder, file_allname = os.path.split(filepath)
     file_name = file_allname.split(".")[0]
@@ -119,9 +118,8 @@ def copy_stand_file(filepath):
         # 源文件或目標文件夾不存在
         print("源文件或目標文件夾不存在!")
 
-
 def file_path_process():
-    "收集關鍵字，生成文號，生成路徑"
+    """收集關鍵字，生成文號，生成路徑"""
     file_plan_no = ""
     file_doc_num = ""
     file_plan_no = input("請輸入計畫\n興達請輸入\"1\" \n台中請輸入\"2\" \n自訂計畫請輸入\"99\":")
@@ -172,7 +170,6 @@ def file_path_process():
     print("文件號碼:", file_doc_num)
     print(r"----------------------file_path_process Done!--------------------------------")
     return file_doc_num, file_source_folder, file_dest_folder
-
 
 def main():
     """main"""
