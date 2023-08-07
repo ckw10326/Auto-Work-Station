@@ -3,144 +3,95 @@
 text_gen 輸出相關文字
 copy_plan_file 複製套印檔案
 file_path_process 輸入關鍵字，生成公司檔案路徑
-
+20230807
+1.完成測試功能
+2.刪除dest_folder參數
 """
 import shutil
 import datetime
 import os
 import constants
 
-def text_gen(def_letter_title, def_letter_vision, def_letter_num, def_letter_date, dest_folder):
-    """五個輸入參數，來文標題、版次、文號、日期、資料夾"""
-    # 判斷計畫類別
-    if "HT" in def_letter_num:
-        plan_no = 1
-    elif "TC" in def_letter_num:
-        plan_no = 2
-    else:
-        plan_no = 3
-    print("plan_no(1:HT, 2:TC, 3:other)：", plan_no)
-    # 判斷路徑為[0雲端 1家庭 2公司 ]
-    if r"workspaces" in dest_folder:
-        location = 0
-    elif r"Test program" in dest_folder:
-        location = 1
-    elif r"EPC提供資料" in dest_folder:
-        location = 2
-    else:
-        print("路徑可能有點問題")
-        return None
-    # 判斷套印檔案、傳真、comment
-    path_map = {"10": (constants.HT_PRINT_STD_FILE, constants.HT_FAX_FILE, constants.HT_COMMENT_FILE),
-                "11": (constants.HT_PRINT_STD_FILE, constants.HT_FAX_FILE, constants.HT_COMMENT_FILE),
-                "12": (constants.HT_PRINT_STD_FILE12, constants.HT_FAX_FILE12, constants.HT_COMMENT_FILE12),
-                "20": (constants.TC_PRINT_STD_FILE, constants.TC_FAX_FILE, constants.HT_COMMENT_FILE12),
-                "21": (constants.TC_PRINT_STD_FILE, constants.TC_FAX_FILE, constants.HT_COMMENT_FILE12),
-                "22": (constants.TC_PRINT_STD_FILE22, constants.TC_FAX_FILE22, constants.TC_COMMENT_FILE22)
-                }
+def text_gen(letter_title, letter_rev, letter_num, letter_date) -> None:
+    """四個輸入參數，來文標題、版次、文號、日期、資料夾"""
+    # 判斷有意見的單位
+    my_company_num = int(
+        input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠\n"))
+    pages = str(input("請輸入審查意見頁數:"))
+    company_name = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
+    # 判斷顧問公司
+    consult_company = "泰興公司" if "-TC" in letter_num else "吉興公司"
+    # 判斷計畫別
+    plan_name = "興達" if "CTC" in letter_num else "台中"
+    date_obj = datetime.datetime.strptime(letter_date, "%Y/%m/%d")
+    month = date_obj.strftime("%m")
+    day = date_obj.strftime("%d")
 
-    judge00 = input("你是否有意見?\n有請輸入1，無請輸入0：")
-    if int(judge00):
-        print("copy comment file")
-    else:
-        my_company_num = int(
-            input("請輸入審查意見填寫單位:\n 1 = 南部施工處 \n 2 = 中部施工處 \n 3 = 興達發電廠 \n 4 =台中發電廠\n"))
-        pages = str(input("請輸入審查意見頁數:"))
-        company_name = ["", "南部施工處", "中部施工處", "興達發電廠", "台中發電廠"]
-        consult_company = ["", "吉興公司", "泰興公司", "GE/CTCI"]
+    contents0 = ("本文係" + company_name[my_company_num] + "對統包商提送「" + letter_title
+                 + "」" + "Rev." + str(letter_rev) + "所提審查意見(共" + pages + "頁)"
+                 + "，未逾合約規範，已電傳" + consult_company + "，擬陳閱後文存。")
+    contents1 = ("檢送" + plan_name + "電廠燃氣機組更新改建計畫「" + letter_title + "」，Rev."
+                 + str(letter_rev) + "，" + company_name[my_company_num]
+                 + "之審查意見（如附，共" + pages + "頁）供卓參，請查照。")
+    contents2 = "依據GE/CTCI 112年" + month + "月" + day + "日" + letter_num + "號辦理。"
+    contents4 = ("本文係統包商提送「" + letter_title + "」" + "Rev." + str(letter_rev)
+                 + "，本組無意見，已Email通知" + consult_company + "，擬陳閱後文存。")
+    print("----------------套印內容------------------")
+    print(contents0)
+    print("----------------傳真------------------------------")
+    print(contents1)
+    print("----------------依據------------------------------")
+    print(contents2)
+    print("----------------主辦簽辦--------------------------")
+    print(contents4)
+    input("enter any kesy to exit")
+    return None
 
-        date_obj = datetime.datetime.strptime(def_letter_date, "%Y/%m/%d")
-        month = date_obj.strftime("%m")
-        day = date_obj.strftime("%d")
-        plan_name = "興達" if "CTC" in def_letter_num else "台中"
-
-        contents0 = ("本文係" + company_name[my_company_num] + "對統包商提送「" + def_letter_title
-                     + "」" + "Rev." + str(def_letter_vision) +
-                     "所提審查意見(共" + pages + "頁)"
-                     + "，未逾合約規範，已電傳" + consult_company[plan_no] + "，擬陳閱後文存。")
-        contents1 = ("檢送" + plan_name + "電廠燃氣機組更新改建計畫「" + def_letter_title + "」，Rev."
-                     + str(def_letter_vision) + "，" +
-                     company_name[my_company_num]
-                     + "之審查意見（如附，共" + pages + "頁）供卓參，請查照。")
-        contents2 = "依據GE/CTCI 112年" + month + "月" + day + "日" + def_letter_num + "號辦理。"
-        contents4 = ("本文係統包商提送「" + def_letter_title + "」" + "Rev." + str(def_letter_vision)
-                     + "，本組無意見，已Email通知" + consult_company[plan_no] + "，擬陳閱後文存。")
-        print("----------------套印內容------------------")
-        print(contents0)
-        print("----------------傳真------------------------------")
-        print(contents1)
-        print("----------------依據------------------------------")
-        print(contents2)
-        print("----------------主辦簽辦--------------------------")
-        print(contents4)
-        input("enter any kesy to exit")
-    return 0
-
-def copy_plan_file(filepath, temp_folder = None):
-    """複製套印文件，注意temp_folder必須為資料夾路徑"""
+def copy_plan_file(filepath) -> None:
+    """複製套印文件到與file_path相同資料夾，注意temp_folder必須為資料夾路徑"""
     # 取得檔案夾名稱、檔名(及副檔名)
     file_folder, file_allname = os.path.split(filepath)
     # 取得檔名
     file_name = file_allname.split(".")[0]
 
-    # 複製套印文件
+    # 套印、傳真文件名稱
     print_dest_file = os.path.join(file_folder, f"套印_{file_name}.rtf")
-    print("套印檔案:", file_allname)
-    print("目標路徑:", file_folder)
+    fax_dest_file = os.path.join(file_folder, f"傳真_{file_name}.doc")
+    print("套印檔案名稱:", file_allname)
+    print("目標資料夾路徑:", file_folder)
     print("輸出套印檔案:", print_dest_file)
-    input("請按任意鍵繼續")
+    print("輸出傳真檔案:", fax_dest_file)
+    input("plz enter any key")
 
     # 分析檔案名稱，來決定歸類
     if "HT-" in filepath:
         print_file = constants.HT_PRINT_STD_FILE
+        fax_file = constants.HT_FAX_FILE
     elif "-TC" in filepath:
         print_file = constants.TC_PRINT_STD_FILE
+        fax_file = constants.TC_FAX_FILE
     else:
         print_file = None
 
     if os.path.exists(print_file):
-        # 用來測試的，請勿砍
-        if temp_folder:
-            print_dest_file = os.path.join(temp_folder , f"套印_{file_name}.rtf")
-            # 檢查資料夾是否存在，若不存在則創建
-            if not os.path.exists(temp_folder):
-                os.makedirs(temp_folder)
-                print("資料夾已成功創建")
-            else:
-                print("資料夾已存在")
-            shutil.copy(print_file, print_dest_file)
-            input("應該已創立temp_folder請檢查，輸入任意鍵後刪除")
-            shutil.rmtree(temp_folder)
-            return None    
         print("從﹝", print_file, "﹞複製到﹝", print_dest_file, "﹞")
-        shutil.copy(print_file, print_dest_file)
+        shutil.copy2(print_file, print_dest_file)
         print("--------複製 套印文件 完成---------------")
-
     else:
         # 源文件或目標文件夾不存在
         print("源文件或目標文件夾不存在!")
-
-    # 複製傳真文件
-    fax_dest_file = file_folder + r"/Fax_" + file_name + ".doc"
-    print("傳真檔案:", fax_dest_file)
-    print("目標路徑:", file_folder)
-    print("輸出傳真檔案:", fax_dest_file)
     input("plz enter any key")
 
-    if "HT-" in filepath:
-        fax_file = constants.HT_FAX_FILE
-    elif "-TC" in filepath:
-        fax_file = constants.TC_FAX_FILE
-    else:
-        pass
-
-    if os.path.exists(fax_file) and not os.path.exists(fax_dest_file):
+    if os.path.exists(fax_file):
         # 進行文件複製
         print("從﹝", fax_file, "﹞複製到﹝", fax_dest_file, "﹞")
-        shutil.copy(fax_file, fax_dest_file)
+        shutil.copy2(fax_file, fax_dest_file)
+        print("--------複製 傳真文件 完成---------------")
     else:
         # 源文件或目標文件夾不存在
         print("源文件或目標文件夾不存在!")
+    input("plz enter any key")
+    return None
 
 def file_path_process():
     """收集關鍵字，生成文號，生成路徑"""
@@ -195,31 +146,51 @@ def file_path_process():
     print(r"----------------------file_path_process Done!--------------------------------")
     return file_doc_num, file_source_folder, file_dest_folder
 
-def test():
-    """各項測試"""
-    def test_text_gen() -> None:
-        """測試生成套印文字"""
-        dest_folder = r"/workspaces/Auto-Work-Station/00source"
-        text_gen('HRSG Chimney-General Arrangement of Concrete Roof & Layout of Permanent Shutter to Roof Slab',
-                'A', 'TPC-TC(C0)-CD-23-0002', '2023/02/02', dest_folder)
-        input("Press enter to exit...")
-        return None
-    
-    def test_copy_plan_file() -> None:
-        """測試程式"""
-        # 從Sample資料夾取得範例
-        file_path = r"/workspaces/Auto-Work-Station/08 Sample/HT-D1-CTC-GEL-23-3046_converted_Done.xlsx"
+def test_text_gen() -> None:
+    """測試生成套印文字"""
+    text_gen('HRSG Chimney-General Arrangement of Concrete Roof & Layout of Permanent Shutter to Roof Slab',
+                'A',
+                'TPC-TC(C0)-CD-23-0002',
+                '2023/02/02',)
+    input("Press enter to exit...")
+    return None
+
+def test_copy_plan_file() -> None:
+    """測試複製套印檔案"""
+    # 先複製樣本到新資料夾()Temp_folder，從Sample資料夾取得範例
+    source_file = constants.SAMPLE_EXCEL_PATH
+    target_dir = constants.TEMP_FOLDER
+    print("複製source_file到target_dir\n", source_file,"\n", target_dir)
+    # 檢查目標目錄是否存在，若不存在則創建
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+    # 複製檔案到目標目錄
+    shutil.copy2(source_file, target_dir)
+    # 創建ile_path
+    file_path = os.path.join(target_dir, os.path.split(source_file)[1])
+    print("file_path路徑:", file_path)
+    if os.path.exists(file_path):
         # 這個是測試路徑，當有有輸入temp_folder時，優先複製到temp_folder
-        temp_folder = r"/workspaces/Auto-Work-Station/()Temp_folder"
-        copy_plan_file(file_path, temp_folder)
-        """尚未完成"""
-    
-    def test_file_path_process()-> None:
-        t = 123
-    
-    test_text_gen()
-    test_copy_plan_file()
-    test_file_path_process()
-    
+        copy_plan_file(file_path)
+    else:
+        print("Sample File不存在，請檢查程式碼",file_path)
+    # 測試完成，刪除樣本資料夾
+    input("即將刪除測試文件夾", target_dir)
+    shutil.rmtree(target_dir)
+
+def test_file_path_process() -> None:
+    """正在撰寫test_file_path_process測試功能"""
+    file_path_process()
+
+def test() -> None:
+    """功能測試"""
+    functions = {
+        1: test_text_gen,
+        2: test_copy_plan_file,
+        3: test_file_path_process,
+    }
+    x = int(input("請輸入測試功能: 1.test_text_gen 2.test_copy_plan_file 3.test_file_path_process\n"))
+    functions[x]()
+
 if __name__ == '__main__':
     test()

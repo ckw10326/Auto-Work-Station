@@ -25,6 +25,9 @@ COM_SOURCE_HT = r"\\10.162.10.58\全處共用區\_Dwg\興達電廠燃氣機組�
 COM_SOURCE_TC = r"\\\10.162.10.58\全處共用區\_Dwg\台中發電廠新建燃氣機組計畫"
 COM_DEST_HT = r"D:\00 興達計劃\05 EPC提供資料\HT"
 COM_DEST_TC = r"D:\00 台中計畫\05 EPC提供資料\TC"
+# 範例文件
+SAMPLE_EXCEL_PATH = r"/workspaces/Auto-Work-Station/08 Sample/HT-D1-CTC-GEL-23-3046_converted_Done.xlsx"
+TEMP_FOLDER = r"/workspaces/Auto-Work-Station/()Temp"
 # 套印文件 [1興達2台中]+[0雲端 1家庭 2公司 ]
 HT_PRINT_STD_FILE =  os.path.join(current_dir, "08Reference_Files/HT套印標準.rtf")
 TC_PRINT_STD_FILE = os.path.join(current_dir, "08Reference_Files/TC套印標準.rtf")
