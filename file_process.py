@@ -98,7 +98,7 @@ def work_flow():
     check_ht(destination_dir)
     check_tc(destination_dir)
 
-def main():
+def test_work_flow():
     """main"""
     dest_folder = "/workspaces/Auto-Work-Station/00dest"
     if os.path.exists(dest_folder):
@@ -112,7 +112,7 @@ def test():
     read_ht_excel_cloud0712.read_ht_make_list(excel_path, old_csv_path)
 
     def test_movedoc():
-        '''測試move_doc'''
+        '''複製完整結構'''
         
         path1 = "/workspaces/Auto-Work-Station/09Past"
         path2 = "/workspaces/Auto-Work-Station/00dest"
@@ -120,4 +120,4 @@ def test():
 
 
 if __name__ == '__main__':
-    main()
+    test_work_flow()
