@@ -5,6 +5,11 @@
 # pylint: disable=invalid-name
 # pylint: disable=line-too-long
 import os
+import socket
+
+
+# 獲取當前工作目錄的路徑
+current_dir = os.getcwd()
 
 PLAN_LIST = ["", "HT", "TC", "HT2"]
 LOCATION = ["", "家庭", "公司", "雲端"]
@@ -12,10 +17,7 @@ DOC_NO_STRUCTURE = {"HT": ["HT", "D1", "CTC", "GEL", "23"],
                     "TC": ["TPC", "TC(C0)", "CD", "23"],
                     "HT2": ["HT", "D1", "GEI", "GEL", "23"]
                     }
-# CONSTANT
-"""GPT建議如何設定不同電腦不同設定"""
-# 獲取當前工作目錄的路徑
-current_dir = os.getcwd()
+
 #CONSTANT
 SOURCE_FOLDER = os.path.join(current_dir, "00source")
 DEST_FOLDER = os.path.join(current_dir, "00dest")
@@ -74,11 +76,29 @@ def main():
     test_cloud()
 
 def test():
-    '''獲取電腦名稱'''
-    #linux系統使用
-    computer_name = os.uname().nodename
-    print(computer_name)
+    """取得電腦名稱(給不同程式運行)"""
+    def get_linux_computer():
+        '''獲取linux電腦名稱'''
+        try:
+            computer_name = os.uname().nodename
+            print("linux系統名稱為:", computer_name)
+        except AttributeError:
+            # 在非 Linux 系統上執行時處理錯誤
+            print("可能為windwos系統，故無法取得computer name")
+
+    def get_windows_computer():
+        '''獲取windows電腦使用'''
+        try:
+            computer_name = socket.gethostname()
+            print("windows系統名稱為:", computer_name)
+        except AttributeError:
+            # 在非 Linux 系統上執行時處理錯誤
+            print("可能為linux系統，故無法取得computer name")
+
+    get_linux_computer()
+    get_windows_computer()
+
 
 if __name__ == '__main__':
-    main()
+    #main()
     test()

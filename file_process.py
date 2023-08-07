@@ -111,6 +111,13 @@ def test():
     old_csv_path = "/workspaces/Auto-Work-Station/01Class/data.csv"
     read_ht_excel_cloud0712.read_ht_make_list(excel_path, old_csv_path)
 
+    def test_movedoc():
+        '''測試move_doc'''
+        
+        path1 = "/workspaces/Auto-Work-Station/09Past"
+        path2 = "/workspaces/Auto-Work-Station/00dest"
+        move_document(path1, path2)
+
 
 if __name__ == '__main__':
     main()

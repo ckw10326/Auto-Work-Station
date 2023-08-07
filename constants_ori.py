@@ -154,9 +154,9 @@ def test():
     print(computer_name)
 
 if __name__ == '__main__':
-    #main()
-    #test()
+    # main()
+    # test()
+    # 取得該檔案的資料夾
     current_dir = os.getcwd()
     HT_PRINT_STD_FILE11 =  os.path.join(current_dir, "08Reference_Files/HT套印標準.rtf")
     print(HT_PRINT_STD_FILE11)
-    
