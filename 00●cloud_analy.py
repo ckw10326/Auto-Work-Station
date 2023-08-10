@@ -71,7 +71,7 @@ def test_cloud_tc():
         letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value = read_tc_excel(
             the_file)
         text_gen(letter_titl_value, drawing_vision_value,
-                 letter_num_value, letter_date_value, the_file)
+                 letter_num_value, letter_date_value)
         input("enter any keys to exit")
 
 def cloud_total_run():
@@ -133,7 +133,7 @@ def cloud_total_run():
                 print(letter_title, letter_vision,
                       letter_num, letter_date_value)
                 text_gen(letter_title, letter_vision, letter_num,
-                         letter_date_value, destination_dir)
+                         letter_date_value)
                 # 複製套印、傳真檔案
                 copy_plan_file(the_file)
                 input("enter any keys to exit")
