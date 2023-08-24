@@ -112,7 +112,7 @@ def cloud_total_run():
                       letter_num_value, letter_date_value)
                 print("-----------將要執行text_gen--------------")
                 text_gen(letter_titl_value, drawing_vision_value,
-                         letter_num_value, letter_date_value, destination_dir)
+                         letter_num_value, letter_date_value)
                 # 複製套印、傳真檔案
                 copy_plan_file(the_file)
                 input("enter any keys to exit")
