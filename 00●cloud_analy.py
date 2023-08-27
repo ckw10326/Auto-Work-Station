@@ -1,6 +1,5 @@
 '''
-測試子程式
-測試整合流程
+cloud_total_run，雲端分析
 '''
 import sys
 import os
@@ -15,7 +14,7 @@ from text_gen import text_gen
 file_doc_num = ""
 file_source_folder = "/workspaces/Auto-Work-Station/00source"
 file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
-test_folder = "/workspaces/Auto-Work-Station/08Reference_Files"
+
 
 def test_cloud_ht():
     '''
@@ -45,7 +44,7 @@ def test_cloud_ht():
         letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value = read_ctc_ht_excel(
             the_file)
         text_gen(letter_titl_value, drawing_vision_value,
-                 letter_num_value, letter_date_value, the_file)
+                 letter_num_value, letter_date_value)
         input("enter any keys to exit")
 
 # 測試雲端解析台中文件 Done 2023/07/20
