@@ -61,36 +61,22 @@ def copy_plan_file(filepath) -> None:
     print("目標資料夾路徑:", file_folder)
     print("輸出套印檔案:", print_dest_file)
     print("輸出傳真檔案:", fax_dest_file)
-    input("plz enter any key")
 
     # 分析檔案名稱，來決定歸類
-    if "HT-" in filepath:
+    print_file = ""
+    fax_file = ""
+    if "HT-" in str(filepath):
         print_file = constants.HT_PRINT_STD_FILE
         fax_file = constants.HT_FAX_FILE
-    elif "-TC" in filepath:
+    elif "-TC" in str(filepath):
         print_file = constants.TC_PRINT_STD_FILE
         fax_file = constants.TC_FAX_FILE
     else:
-        print_file = None
-
-    if os.path.exists(print_file):
-        print("從﹝", print_file, "﹞複製到﹝", print_dest_file, "﹞")
-        shutil.copy2(print_file, print_dest_file)
-        print("--------複製 套印文件 完成---------------")
-    else:
-        # 源文件或目標文件夾不存在
-        print("源文件或目標文件夾不存在!")
-    input("plz enter any key")
-
-    if os.path.exists(fax_file):
-        # 進行文件複製
-        print("從﹝", fax_file, "﹞複製到﹝", fax_dest_file, "﹞")
-        shutil.copy2(fax_file, fax_dest_file)
-        print("--------複製 傳真文件 完成---------------")
-    else:
-        # 源文件或目標文件夾不存在
-        print("源文件或目標文件夾不存在!")
-    input("plz enter any key")
+        print("---------------檔名不符合關鍵字，不動作-----------------")
+        return None
+    shutil.copy2(print_file, print_dest_file)
+    shutil.copy2(fax_file, fax_dest_file)
+    print("--------複製 套印、傳真文件 完成---------------")
     return None
 
 def file_path_process():
@@ -155,42 +141,8 @@ def test_text_gen() -> None:
     input("Press enter to exit...")
     return None
 
-def test_copy_plan_file() -> None:
-    """測試複製套印檔案"""
-    # 先複製樣本到新資料夾()Temp_folder，從Sample資料夾取得範例
-    source_file = constants.SAMPLE_EXCEL_PATH
-    target_dir = constants.TEMP_FOLDER
-    print("複製source_file到target_dir\n", source_file,"\n", target_dir)
-    # 檢查目標目錄是否存在，若不存在則創建
-    if not os.path.exists(target_dir):
-        os.makedirs(target_dir)
-    # 複製檔案到目標目錄
-    shutil.copy2(source_file, target_dir)
-    # 創建ile_path
-    file_path = os.path.join(target_dir, os.path.split(source_file)[1])
-    print("file_path路徑:", file_path)
-    if os.path.exists(file_path):
-        # 這個是測試路徑，當有有輸入temp_folder時，優先複製到temp_folder
-        copy_plan_file(file_path)
-    else:
-        print("Sample File不存在，請檢查程式碼",file_path)
-    # 測試完成，刪除樣本資料夾
-    input("即將刪除測試文件夾", target_dir)
-    shutil.rmtree(target_dir)
-
-def test_file_path_process() -> None:
-    """正在撰寫test_file_path_process測試功能"""
-    file_path_process()
-
 def test() -> None:
-    """功能測試"""
-    functions = {
-        1: test_text_gen,
-        2: test_copy_plan_file,
-        3: test_file_path_process,
-    }
-    x = int(input("請輸入測試功能: 1.test_text_gen 2.test_copy_plan_file 3.test_file_path_process\n"))
-    functions[x]()
+    test_text_gen()
 
 if __name__ == '__main__':
     test()
