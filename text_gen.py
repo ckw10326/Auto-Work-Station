@@ -27,14 +27,14 @@ def text_gen(letter_title, letter_rev, letter_num, letter_date) -> None:
     month = date_obj.strftime("%m")
     day = date_obj.strftime("%d")
 
-    contents0 = ("本文係" + company_name[my_company_num] + "對統包商提送「" + letter_title
+    contents0 = str("本文係" + company_name[my_company_num] + "對統包商提送「" + letter_title
                  + "」" + "Rev." + str(letter_rev) + "所提審查意見(共" + pages + "頁)"
                  + "，未逾合約規範，已電傳" + consult_company + "，擬陳閱後文存。")
-    contents1 = ("檢送" + plan_name + "電廠燃氣機組更新改建計畫「" + letter_title + "」，Rev."
+    contents1 = str("檢送" + plan_name + "電廠燃氣機組更新改建計畫「" + letter_title + "」，Rev."
                  + str(letter_rev) + "，" + company_name[my_company_num]
                  + "之審查意見（如附，共" + pages + "頁）供卓參，請查照。")
-    contents2 = "依據GE/CTCI 112年" + month + "月" + day + "日" + letter_num + "號辦理。"
-    contents4 = ("本文係統包商提送「" + letter_title + "」" + "Rev." + str(letter_rev)
+    contents2 = str("依據GE/CTCI 112年" + month + "月" + day + "日" + letter_num + "號辦理。")
+    contents3 = str("本文係統包商提送「" + letter_title + "」" + "Rev." + str(letter_rev)
                  + "，本組無意見，已Email通知" + consult_company + "，擬陳閱後文存。")
     print("----------------套印內容------------------")
     print(contents0)
@@ -43,9 +43,9 @@ def text_gen(letter_title, letter_rev, letter_num, letter_date) -> None:
     print("----------------依據------------------------------")
     print(contents2)
     print("----------------主辦簽辦--------------------------")
-    print(contents4)
+    print(contents3)
     input("enter any kesy to exit")
-    return None
+    return contents0, contents1, contents2, contents3
 
 def copy_plan_file(filepath) -> None:
     """複製套印文件到與file_path相同資料夾，注意temp_folder必須為資料夾路徑"""
@@ -138,11 +138,7 @@ def test_text_gen() -> None:
                 'A',
                 'TPC-TC(C0)-CD-23-0002',
                 '2023/02/02',)
-    input("Press enter to exit...")
     return None
 
-def test() -> None:
-    test_text_gen()
-
 if __name__ == '__main__':
-    test()
+    test_text_gen()
