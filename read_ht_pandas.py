@@ -71,6 +71,65 @@ def read_pandas(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01C
     workbook.close()
     return None
 
+def read_pandas_sec(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01Class/data.csv"):
+    """
+    # 輸入：讀取excel檔案路徑，輸出csv檔案路徑
+    # 1.讀取指定路徑檔案
+    # 2.新增到csv檔案中
+    """
+    # 建立空的 DataFrame
+    df = pd.DataFrame() 
+    file_path = []
+    drawing_no = []
+    draw_title = []
+    draw_vision = []
+    l_num = []
+    l_date = []
+    l_title = []
+    # 1.讀取 Excel 檔案
+    workbook = openpyxl.load_workbook(excel_path)
+    worksheet = workbook.active
+    # 讀取表格文件數量
+    drawings_nums = 0
+    for i in range(0, 19):
+        if worksheet["B"+str(2+i)].value:
+            drawings_nums = 1 + drawings_nums
+        else:
+            break
+    print("文件數量", drawings_nums)
+    # 讀取資料
+    for i in range(0, drawings_nums):
+        drawing_no.append(worksheet["E"+str(2+i)].value)
+        draw_title.append(worksheet["O"+str(2+i)].value)
+        draw_vision.append(worksheet["G"+str(2+i)].value)
+        l_num.append(worksheet["B2"].value)
+        l_date.append(worksheet["H2"].value)
+        l_title.append(worksheet["O2"].value)
+        file_path.append(excel_path)
+
+    # 將資料添加到DataFrame中
+    row_data = {
+        '批次序號': i,
+        '圖號:': drawing_no,
+        '圖名:': draw_title,
+        '版次:': draw_vision,
+        '來文號碼:': l_num,
+        '來文日期:': l_date,
+        '來文名稱:': l_title,
+        '路徑': file_path}
+
+    df = pd.DataFrame(row_data)
+    print(df)
+
+    # 分割檔案名稱、副檔名 > 儲存CSV檔案
+    filename, _ = os.path.splitext(excel_path)
+    # 將字串中的"_converted"剝離
+    csv_path = filename.replace("_converted", "") + "_csv.csv"
+    df.to_csv(csv_path, index=True)
+
+    workbook.close()
+    return None
+
 def combine_csv(src, dst):
     try:
         # 讀取源檔案
@@ -208,4 +267,4 @@ def to_df_analyze(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/0
 
 
 if __name__ == '__main__':
-    print("s")
+    print("請執行main_pandas.py")

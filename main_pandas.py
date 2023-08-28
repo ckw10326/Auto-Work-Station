@@ -6,7 +6,7 @@ import shutil
 import sys
 from file_process import move_document, files_list, check_plan, del_dest
 from read_ht import convert_xlsb
-from read_ht_pandas import read_pandas, read_csv, combine_csv
+from read_ht_pandas import read_pandas, read_pandas_sec, read_csv, combine_csv
 from read_tc import read_tc_excel
 
 '''
@@ -26,27 +26,6 @@ def test_map(excel_path):
     }
     # 輸入value，輸出key
 
-def main():
-    '''
-    1.設定目錄路徑  2.複製檔案  3.解析檔案pandas
-    '''
-    # 1.設定目錄路徑
-    root_path = os.path.dirname(os.path.abspath(__file__))
-    # 將根目錄路徑添加到 sys.path
-    sys.path.append(root_path)
-    source_folder = os.path.join(root_path, "00source")
-    destination_dir = os.path.join(root_path, "00dest")
-    # 檢查source_folder是否存在
-    excel_path = "/workspaces/Auto-Work-Station/00dest/00source/HT-D1-CTC-GEL-23-2710_converted.xlsx"
-    old_csv_path = "/workspaces/Auto-Work-Station/01Class/data.csv"
-    read_ctc_ht_excel(excel_path, old_csv_path)
-
-    def test_movedoc():
-        '''複製完整結構'''
-        path1 = "/workspaces/Auto-Work-Station/09Past"
-        path2 = "/workspaces/Auto-Work-Station/00dest"
-        move_document(path1, path2)
-
 def work_flow_pandas():
     '''
     讀取【一個】檔案
@@ -56,23 +35,14 @@ def work_flow_pandas():
     root_path = os.path.dirname(os.path.abspath(__file__))
     # 將根目錄路徑添加到 sys.path
     sys.path.append(root_path)
+    source_folder = os.path.join(root_path, "00source")
     dest_folder = os.path.join(root_path, "00dest")
-    if not os.path.exists(dest_folder):
-        os.mkdir(dest_folder)
-    source_test_ht_file0 = os.path.join(root_path, "08Reference_Files/HT/HT-D1-CTC-GEL-23-2710.xlsb")
-    source_test_ht_file = os.path.join(root_path, "08Reference_Files/HT/HT-D1-CTC-GEL-23-2867.xlsb")
-    # 測試檔案，並測試是否存在
-    if not os.path.exists(source_test_ht_file):  # 注意這裡的小寫 "n" in "not"
-        print("source_test_ht_file不存在，故結束")
-        sys.exit()
 
     # 2.複製檔案
-    dest_ht_file = os.path.join(dest_folder, os.path.split(source_test_ht_file)[1])
-    print(source_test_ht_file)
-    print(dest_ht_file)
-    shutil.copy(source_test_ht_file, dest_ht_file)
+    move_document(source_folder, dest_folder)
 
     # 3.分析plan檔案，興達返回1 台中返回2
+    # 【目前只有HT檔案測試，尚無TC測試】
     if str(check_plan(dest_folder)) == "1":
         # 讀取興達
         # 3.1 產生xlsb列表，並轉換成xlsx
@@ -85,7 +55,7 @@ def work_flow_pandas():
         xlsx_file_list = files_list(dest_folder, "converted.xlsx")
         if xlsx_file_list:
             for converted_path in xlsx_file_list:
-                read_pandas(converted_path)
+                read_pandas_sec(converted_path)
 
     elif str(check_plan(dest_folder)) == "2":
         pass
@@ -95,28 +65,36 @@ def work_flow_pandas():
         sys.exit()
 
 def test_combine_csv():
-    file1 = "/workspaces/Auto-Work-Station/01Class/HT-D1-CTC-GEL-23-2710.csv"
-    file2 = "/workspaces/Auto-Work-Station/01Class/HT-D1-CTC-GEL-23-2867.csv"
+    """
+    測試整合csv功能函數 2023/8/28完成
+    目前combine_csv(file1,rawdata)功能為【一對一】
+    """
+    # 設定目錄
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 複製標準檔案
+    file1 = os.path.join(root_path, "01Class/HT-D1-CTC-GEL-23-2710_csv.csv")
+    file2 = os.path.join(root_path, "01Class/HT-D1-CTC-GEL-23-2867_csv.csv")
     file_list = [file1, file2]
-    rawdata = "/workspaces/Auto-Work-Station/01Class/rawdata.csv"
-    os.remove(rawdata)
-    # 1.刪除rawdata
-    input("1刪除")
-    # 2.重新複製rawdata
-    shutil.copy(file2, rawdata)
+    rawdata = os.path.join(root_path, "01Class/rawdata.csv")
 
+    # 刪除rawdata
+    if os.path.exists(rawdata):
+        os.remove(rawdata)
+    # 重新複製rawdata
+    shutil.copy(file2, rawdata)
+    print("已經刪除初始檔案rawdata，並複製新的rawdata")
+    # 顯示合併前資料
     read_csv(rawdata)
+    # 合併檔案
     combine_csv(file1,rawdata)
+    # 顯示合併後資料
     read_csv(rawdata)
 
 if __name__ == '__main__':
-    # 刪除00dest
+    '''測試輸出dataframe'''
+    #刪除00dest
     del_dest()
-    if 0:
-        # 刪除data.csv
-        file_path = "/workspaces/Auto-Work-Station/01Class/data.csv"
-        if os.path.exists(file_path):
-            os.remove(file_path)
     work_flow_pandas()
+    
+    '''測試整合csv檔案'''
     #test_combine_csv()
-
