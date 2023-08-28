@@ -15,7 +15,7 @@ def del_dest():
     dest_foler = os.path.join(root_path, "00dest")
     if os.path.exists(dest_foler):
         shutil.rmtree(dest_foler)
-    input("plz enter any key")
+
 
 def files_list(xpath, search_str=None):
     """GPT 改良版本，輸入路徑、關鍵字"""
