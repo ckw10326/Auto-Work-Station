@@ -17,8 +17,8 @@ def read_pandas(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01C
     """
 
     # 建立首列DataFrame
-    df = pd.DataFrame(columns=['批次序號', '圖號:', '圖名:', '版次:', '來文號碼:',
-                               '來文日期:', '來文名稱:', '路徑'])
+    # df = pd.DataFrame(columns=['批次序號', '圖號:', '圖名:', '版次:', '來文號碼:',
+    #                            '來文日期:', '來文名稱:', '路徑'])
     # 遍歷所有資料夾、檔案
     file_type = ".xlsx"
     file_path = excel_path
@@ -51,7 +51,7 @@ def read_pandas(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01C
         letter_titl_value = worksheet["O2"].value
         # 將資料添加到DataFrame中
         row_data = {
-            '批次序號': i+1,
+            '批次序號': i,
             '圖號:': drawing_no_value,
             '圖名:': drawing_title_value,
             '版次:': drawing_vision_value,
@@ -60,8 +60,7 @@ def read_pandas(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01C
             '來文名稱:': letter_titl_value,
             '路徑': excel_path}
         # 合併儲存格
-        df = pd.concat([df, pd.DataFrame(row_data, index=[1])],
-                       ignore_index=True)
+        df = pd.DataFrame(row_data, index = [])
 
     # 分割檔案名稱、副檔名 > 儲存CSV檔案
     filename, _ = os.path.splitext(excel_path)

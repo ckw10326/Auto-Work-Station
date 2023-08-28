@@ -1,23 +1,10 @@
-import os
-import sys
-from file_process import files_list, check_plan
+import pandas as pd
 
-# 1.取目錄路徑
-root_path = os.path.dirname(os.path.abspath(__file__))
-# 將根目錄路徑添加到 sys.path
-sys.path.append(root_path)
-source_folder = os.path.join(root_path, "00source")
-destination_dir = os.path.join(root_path, "00dest")
+# 假設有兩個資料框 df1 和 df2，並且它們都有一個共同的欄位 'key'
+df1 = pd.DataFrame({'key': ['A', 'B', 'C'], 'value1': [1, 2, 3]})
+df2 = pd.DataFrame({'key': ['B', 'C', 'D'], 'value2': [4, 5, 6]})
 
-print(check_plan(destination_dir))
+# 使用 pd.merge() 函數根據 'key' 欄位將兩個資料框水平合併
+merged_df = pd.merge(df1, df2, on='key')
 
-
-#f for f in os.listdir(directory) if f.endswith('.' + extension)
-
-# 1. os.listdir(dir_path) 列表出路徑的檔案及資料夾名稱
-# print(os.listdir(dir_path))
-# 2. "f for f in list" 是一種列表推導式（List comprehension）的用法，用於快速創建新的列表。
-
-# for ss in os.listdir(dir_path):
-#     if ss.endswith(".py"):
-#         print(ss)
+print(merged_df)
