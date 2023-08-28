@@ -15,6 +15,63 @@ file_source_folder = "/workspaces/Auto-Work-Station/00source"
 file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
 
 
+def test_cloud_ht():
+    '''
+    測試雲端解析興達文件 Done 2023/07/20
+    1.複製資料夾  2.分析Excel檔案  3.生成套印文字
+    '''
+    sample_ht_folder = "/workspaces/Auto-Work-Station/08Reference_Files/HT"
+    destination_dir = "/workspaces/Auto-Work-Station/00dest"
+    # 複製Sample資料夾結構
+    shutil.copytree(sample_ht_folder, destination_dir)
+    # 列表，檔案清單
+    the_xlsb_file_list = files_list(destination_dir, ".xlsb")
+
+    # 列表，有轉換檔案後的清單
+    print("開始表列符合.xlsb清單")
+    for filepath in the_xlsb_file_list:
+        print("符合.xlsb清單", filepath)
+        convert_xlsb(filepath)
+    print("convered_xlsb Done\n")
+
+    # 列表，輸出符合條件"converted.xlsx"清單
+    the_xlsx_file_list = files_list(destination_dir, "converted.xlsx")
+    print("開始表列符合converted.xlsb清單")
+    for the_file in the_xlsx_file_list:
+        print("符合converted.xlsb清單:", the_file)
+        input("enter any keys to exit")
+        letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value = read_ctc_ht_excel(
+            the_file)
+        text_gen(letter_titl_value, drawing_vision_value,
+                 letter_num_value, letter_date_value)
+        input("enter any keys to exit")
+
+# 測試雲端解析台中文件 Done 2023/07/20
+# 1.複製資料夾  2.分析Excel檔案  3.生成套印文字
+
+def test_cloud_tc():
+    '''測試雲端台中檔案'''
+    sample_tc_folder = "/workspaces/Auto-Work-Station/08Reference_Files/TC"
+    destination_dir = "/workspaces/Auto-Work-Station/00dest"
+    # 複製Sample資料夾結構
+    shutil.copytree(sample_tc_folder, destination_dir)
+    # 列表，檔案清單
+    the_xlsm_file_list = files_list(destination_dir, ".xlsm")
+
+    # 列表，有符合條件清單
+    print("開始表列符合.xlsm清單")
+    for filepath in the_xlsm_file_list:
+        print("符合.xlsm清單", filepath)
+    input("enter any keys to exit")
+
+    # 讀取列表中的清單
+    for the_file in the_xlsm_file_list:
+        letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value = read_tc_excel(
+            the_file)
+        text_gen(letter_titl_value, drawing_vision_value,
+                 letter_num_value, letter_date_value)
+        input("enter any keys to exit")
+
 def cloud_total_run():
     """總流程測試"""
     root_git = r"/workspaces/Auto-Work-Station"
@@ -82,6 +139,20 @@ def cloud_total_run():
 
 if __name__ == '__main__':
     file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
+    # test_folder_path()
     if os.path.exists(file_dest_folder):
         shutil.rmtree(file_dest_folder)
+    # test_cloud_ht()
+
+    # shutil.rmtree(file_dest_folder)
+    # test_cloud_tc()
+
+    # test_path()
+
+    # test_text_gen()
+
+    # shutil.rmtree(file_dest_folder)
+
     cloud_total_run()
+
+    # 手動需要資料

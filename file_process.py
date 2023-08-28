@@ -1,14 +1,21 @@
 """
-模組提供 20230803
+模組提供 20230828，移動work_flow到更適合的位置
 1.files_list，表列清單
 2.move_document，複製完整結構檔案
-3.workflow，將所有流程統一化
 """
-
 import os
 import shutil
 import sys
-import read_ht_excel_cloud0712
+
+def del_dest():
+    # 刪除dest00內所有資料
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    dest_foler = os.path.join(root_path, "00dest")
+    if os.path.exists(dest_foler):
+        shutil.rmtree(dest_foler)
+    input("plz enter any key")
 
 def files_list(xpath, search_str=None):
     """GPT 改良版本，輸入路徑、關鍵字"""
@@ -56,67 +63,22 @@ def move_document(source_folder, dest_folder):
             shutil.copytree(source_folder, new_dest_folder, dirs_exist_ok=True)
     return None
 
-def work_flow():
-    '''
-    1.設定模組路徑  2.複製檔案  2.列出xlsb並轉換  3.製作表格存檔
-    目前只有HT
-    '''
-    sample_folder = "/workspaces/Auto-Work-Station/00source"
-    destination_dir = "/workspaces/Auto-Work-Station/00dest"
-
-    # 1.使用外部模組，獲取程式的根目錄路徑
-    root_path = os.path.dirname(os.path.abspath(__file__))
-    # 將根目錄路徑添加到 sys.path
-    sys.path.append(root_path)
-
-    # 2.複製檔案
-    move_document(sample_folder, destination_dir)
-
-    def check_ht(destination_dir):
-        """3.解析.xlsb(興達資料)，判斷是否有興達.xlsb檔案，轉換"""
-        xlsb_file_list = files_list(destination_dir, ".xlsb")
-        # 展生清單 轉換檔案
-        if xlsb_file_list:
-            for xlsb_path in xlsb_file_list:
-                read_ht_excel_cloud0712.convert_xlsb(xlsb_path)
-
-        # 將.xlsb轉換成.xlsx後，開始分析內容
-        xlsx_file_list = files_list(destination_dir, "converted.xlsx")
-        if xlsx_file_list:
-            for converted_path in xlsx_file_list:
-                print("符合興達計畫converted.xlsb路徑:", converted_path)
-                # ●●●●●●
-                list0 = read_ht_excel_cloud0712.read_ht_make_list(
-                    converted_path) if read_ht_excel_cloud0712.read_ht_make_list(converted_path) else 1
-                input("按任意鍵退出")
-                return list0
-
-    def check_tc(destination_dir):
-        """尚未完成功能"""
-        print("check_TC功能尚未完成，抱歉", destination_dir)
-
-    check_ht(destination_dir)
-    check_tc(destination_dir)
-
-def test_work_flow():
-    """main"""
-    dest_folder = "/workspaces/Auto-Work-Station/00dest"
-    if os.path.exists(dest_folder):
-        shutil.rmtree(dest_folder)
-    work_flow()
-
-def test():
-    """測試"""
-    excel_path = "/workspaces/Auto-Work-Station/00dest/00source/HT-D1-CTC-GEL-23-2710_converted.xlsx"
-    old_csv_path = "/workspaces/Auto-Work-Station/01Class/data.csv"
-    read_ht_excel_cloud0712.read_ht_make_list(excel_path, old_csv_path)
-
-    def test_movedoc():
-        '''複製完整結構'''
-        path1 = "/workspaces/Auto-Work-Station/09Past"
-        path2 = "/workspaces/Auto-Work-Station/00dest"
-        move_document(path1, path2)
-
+def check_plan(folder_path):
+    """
+    給予【母資料夾】路徑
+    檢查資料夾及其子資料夾中是否存在符合條件的檔案
+    興達返回1
+    台中返回2
+    """
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if "-CTC-" in file:  # 檢查【興達】關鍵字 "-CTC-"
+                return 1
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if "TPC-TC" in file:  # 檢查【台中】關鍵字 "-CTC-"
+                return 2
+    return False
 
 if __name__ == '__main__':
-    test_work_flow()
+    pass

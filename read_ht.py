@@ -6,14 +6,11 @@
 '''
 import os
 import shutil
-
 import openpyxl
 import pandas as pd
-
 import file_process
 
 # 使用openpyxl.load_workbook 讀取指定分頁，指定表格
-
 
 def read_ctc_ht_excel(def_dest_path):
     """讀取HT文件"""
@@ -94,9 +91,6 @@ def read_ctc_ht_excel(def_dest_path):
     # 輸出Excel檔案
     filename_without_extension = os.path.splitext(def_dest_path)[0]
     # 檢查是否有內容，有則輸出_Done，無則_Not
-    print("len(letter_num_block)", len(letter_num_block))
-    print("len(letter_title_block)", len(letter_title_block))
-    print("len(drawing_vision_block)", len(drawing_vision_block))
     if letter_num_block and letter_title_block and drawing_vision_block:
         output_path = filename_without_extension + "_Done.xlsx"
     else:
@@ -240,21 +234,6 @@ def read_ht_make_list(excel_path, combined_csv_path="/workspaces/Auto-Work-Stati
         df.to_csv(combined_csv_path, index=False)
     workbook.close()
     return None
-
-def read_ctc_ht_map(excel_path):
-    """測試映射值"""
-    field_mapping = {
-        'No': ['批次序號'],
-        'drawing_no_value': ['圖號:', 'CLIENTDOCNO', 'DOCVERSIONDESC'],
-        'drawing_title_value': ['圖名:', 'DESCRIPTION', 'DOCCLASS'],
-        'drawing_vision_value': ['版次:', 'DOCVERSIONDESC'],
-        'letter_num_value': ['來文號碼:', 'TRANSMITTALNO'],
-        'letter_date_value': ['來文日期:', 'REVDATE', 'PLANNEDCLIENTRETURNDATE'],
-        'letter_titl_value': ['來文名稱:', 'DESCRIPTION'],
-        'file_path': ['路徑']
-    }
-
-# 輸入value，輸出key
 
 
 '''

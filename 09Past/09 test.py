@@ -8,7 +8,7 @@ import shutil
 import class_format
 from file_process import files_list, move_document
 from read_ht_class import read_ctc_ht_excel
-from read_tc_excel_cloud0712 import read_tc_excel
+from read_tc import read_tc_excel
 from text_gen import file_path_process
 from text_gen import text_gen
 from text_gen import copy_stand_file

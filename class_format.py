@@ -1,7 +1,6 @@
 import csv
 import pandas as pd
 
-
 class DocItem:
     def __init__(self, drawing_no_value, drawing_title_value,
                  drawing_vision_value, letter_num_value, letter_date_value,
