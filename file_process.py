@@ -1,3 +1,4 @@
+# pylint: disable = w0612
 """
 模組提供 20230828，移動work_flow到更適合的位置
 1.files_list，表列清單
@@ -7,14 +8,24 @@ import os
 import shutil
 import sys
 
-def del_dest():
+
+def del_folder(keyword):
+    """刪除關鍵字資料夾"""
     # 刪除dest00內所有資料
     root_path = os.path.dirname(os.path.abspath(__file__))
     # 將根目錄路徑添加到 sys.path
     sys.path.append(root_path)
-    dest_foler = os.path.join(root_path, "00dest")
+    dest_foler = os.path.join(root_path, str(keyword))
     if os.path.exists(dest_foler):
         shutil.rmtree(dest_foler)
+
+
+def make_folder(keyword):
+    """創建空白資料夾"""
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    dest_foler = os.path.join(root_path, str(keyword))
+    if not os.path.exists(dest_foler):
+        os.makedirs(dest_foler)
 
 
 def files_list(xpath, search_str=None):
@@ -29,6 +40,7 @@ def files_list(xpath, search_str=None):
                 print("符合條件檔案", thefile)
                 the_file_list.append(thefile)
     return the_file_list
+
 
 def move_document(source_folder, dest_folder):
     """
@@ -63,6 +75,7 @@ def move_document(source_folder, dest_folder):
             shutil.copytree(source_folder, new_dest_folder, dirs_exist_ok=True)
     return None
 
+
 def check_plan(folder_path):
     """
     給予【母資料夾】路徑
@@ -79,6 +92,7 @@ def check_plan(folder_path):
             if "TPC-TC" in file:  # 檢查【台中】關鍵字 "-CTC-"
                 return 2
     return False
+
 
 if __name__ == '__main__':
     pass

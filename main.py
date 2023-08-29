@@ -6,13 +6,13 @@
 
 '''
 import os
-import shutil
 import sys
-from file_process import move_document, files_list, check_plan, del_dest
+from file_process import move_document, files_list, check_plan, del_folder
 from read_ht import convert_xlsb
 from read_ht import read_ctc_ht_excel
 from read_tc import read_tc_excel
 from text_gen import copy_plan_file, text_gen
+
 
 def work_flow():
     '''
@@ -60,14 +60,15 @@ def work_flow():
         if xlsm_list:
             for xlsm in xlsm_list:
                 draw_title, draw_vision, l_num, l_date = read_tc_excel(xlsm)
-                print(draw_title, draw_vision,l_num, l_date)
-                text_gen(draw_title, draw_vision, l_num,l_date)
+                print(draw_title, draw_vision, l_num, l_date)
+                text_gen(draw_title, draw_vision, l_num, l_date)
                 # 複製套印、傳真檔案
                 copy_plan_file(xlsm)
     else:
         print("沒有符合檔案")
         sys.exit()
 
+
 if __name__ == '__main__':
-    del_dest()
+    del_folder("00dest")
     work_flow()

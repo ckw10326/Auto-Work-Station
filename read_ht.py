@@ -7,6 +7,7 @@ import os
 import openpyxl
 import pandas as pd
 
+
 def read_ctc_ht_excel(def_dest_path):
     """讀取HT文件"""
     if "Done" in def_dest_path:
@@ -81,7 +82,7 @@ def read_ctc_ht_excel(def_dest_path):
             '來文名稱': letter_title_block,
             '路徑': file_path_block
             }
-    df = pd.DataFrame(data)
+    data_frame = pd.DataFrame(data)
 
     # 輸出Excel檔案
     filename_without_extension = os.path.splitext(def_dest_path)[0]
@@ -92,15 +93,11 @@ def read_ctc_ht_excel(def_dest_path):
         output_path = filename_without_extension + "_Not.xlsx"
     print("輸出路徑:", output_path)
     # 輸出成路徑 + "HT-D1-CTC-GEL-23-1171_Done.xlsx"
-    df.to_excel(output_path, index=False)
+    data_frame.to_excel(output_path, index=False)
     print("--------------.xlsx分析完成-----------------")
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
 
-'''
-輸入檔案名稱，函數內比對資格，轉換後輸出新路徑
-這邊比較麻煩的是，當執行return converter_xlsx，分一個檔案後就會退出
-'''
 def convert_xlsb(file_path):
     """轉換xlsb to xlsx"""
     if '.xlsb' in file_path:
@@ -124,6 +121,7 @@ def convert_xlsb(file_path):
                 return converter_xlsx
     else:
         return None
+
 
 if __name__ == '__main__':
     pass

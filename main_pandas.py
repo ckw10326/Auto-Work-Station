@@ -1,19 +1,21 @@
 '''
 執行pandas的excel
+1. work_flow_pandas，分析00source內的檔案，並解析出csv檔案
+2. test_combine_csv，整合單一csv檔案
+3. test_combine_csv_list，整合列表內合併到dst
+4. test_read_csv，顯示csv檔案
 '''
 import os
 import shutil
 import sys
-from file_process import move_document, files_list, check_plan, del_dest
+from file_process import move_document, files_list, check_plan, del_folder, make_folder
 from read_ht import convert_xlsb
-from read_ht_pandas import read_pandas, read_pandas_sec, read_csv, combine_csv
-from read_tc import read_tc_excel
+from table_process import combine_csv, combine_csv_list, read_csv
+from read_ht_pandas import read_pandas_sec
 
-'''
-分析EXCEL檔案，【批次】處理
-'''
+
 def test_map(excel_path):
-    """測試映射值"""
+    """測試映射值，【未完成】"""
     field_mapping = {
         'No': ['批次序號'],
         'drawing_no_value': ['圖號:', 'CLIENTDOCNO', 'DOCVERSIONDESC'],
@@ -25,6 +27,7 @@ def test_map(excel_path):
         'file_path': ['路徑']
     }
     # 輸入value，輸出key
+
 
 def work_flow_pandas():
     '''
@@ -59,10 +62,11 @@ def work_flow_pandas():
 
     elif str(check_plan(dest_folder)) == "2":
         pass
-        # 讀取台中  
+        # 讀取台中
     else:
         print("沒有符合檔案")
         sys.exit()
+
 
 def test_combine_csv():
     """
@@ -72,10 +76,11 @@ def test_combine_csv():
     # 設定目錄
     root_path = os.path.dirname(os.path.abspath(__file__))
     # 複製標準檔案
-    file1 = os.path.join(root_path, "01Class/HT-D1-CTC-GEL-23-2710_csv.csv")
-    file2 = os.path.join(root_path, "01Class/HT-D1-CTC-GEL-23-2867_csv.csv")
-    file_list = [file1, file2]
-    rawdata = os.path.join(root_path, "01Class/rawdata.csv")
+    file1 = os.path.join(
+        root_path, r"08Reference_Files/CSV/HT-D1-CTC-GEL-23-2710_csv.csv")
+    file2 = os.path.join(
+        root_path, r"08Reference_Files/CSV/HT-D1-CTC-GEL-23-2979_csv.csv")
+    rawdata = os.path.join(root_path, "00dest/rawdata.csv")
 
     # 刪除rawdata
     if os.path.exists(rawdata):
@@ -86,15 +91,70 @@ def test_combine_csv():
     # 顯示合併前資料
     read_csv(rawdata)
     # 合併檔案
-    combine_csv(file1,rawdata)
+    combine_csv(file1, rawdata)
     # 顯示合併後資料
     read_csv(rawdata)
 
+
+def test_combine_csv_list():
+    """
+    2023/8/29完成
+    combine_csv_list(scr, dst)
+    整合檔案列表所有csv檔案
+    scr需要為完整路徑的列表
+    dst需要為完整csv檔案
+    結果資料夾請看00dest
+    """
+    # 設定目錄
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 複製標準檔案
+    file2 = os.path.join(
+        root_path, r"08Reference_Files/CSV/HT-D1-CTC-GEL-23-2979_csv.csv")
+    dst_data = os.path.join(root_path, "00dest/dst_data.csv")
+    # 設定CSV檔案路徑
+    csv_path = os.path.join(root_path, "08Reference_Files/CSV")
+    if os.path.exists(csv_path):
+        # 刪除00dset資料夾
+        del_folder("00dest")
+        # 創造00dest資料夾
+        make_folder("00dest")
+        # 刪除dst_data
+        if os.path.exists(dst_data):
+            os.remove(dst_data)
+        # 重新複製dst_data
+        shutil.copy(file2, dst_data)
+        print("已經刪除初始檔案dst_data，並複製新的dst_data")
+        # 顯示合併前資料
+        read_csv(dst_data)
+        print("----------------------")
+        # 合併檔案
+        csv_lists = files_list(csv_path, ".csv")
+        combine_csv_list(csv_lists, dst_data)
+        # 顯示合併後資料
+        read_csv(dst_data)
+        print("----------------------")
+
+    else:
+        return False
+
+
+def test_read_csv():
+    """讀取csv檔案"""
+    # 設定目錄
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 複製標準檔案
+    filepath = os.path.join(
+        root_path, r"08Reference_Files/CSV/HT-D1-CTC-GEL-23-3046_csv.csv")
+    read_csv(filepath)
+
+
 if __name__ == '__main__':
-    '''測試輸出dataframe'''
-    #刪除00dest
-    del_dest()
+    # 刪除00dest
+    del_folder("00dest")
     work_flow_pandas()
-    
-    '''測試整合csv檔案'''
-    #test_combine_csv()
+    del_folder("00source")
+    make_folder("00source")
+
+    # test_read_csv()
+    # test_combine_csv()
+    # test_combine_csv_list()
