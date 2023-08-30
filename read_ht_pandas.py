@@ -70,7 +70,7 @@ def read_pandas_sec(excel_path):
     workbook.close()
     return csv_path
 
-def ht_to_csv(excel_path):
+def xlsx_to_csv(excel_path):
     """
     # 輸入，讀取excel檔案路徑
     # 1.直接將表格轉換成csv檔案，【不做指定位置輸出】
@@ -90,6 +90,29 @@ def ht_to_csv(excel_path):
     workbook.close()
     return csv_output_path
 
+def xlsb_to_csv(file_path):
+    """轉換xlsb to csv"""
+    if '.xlsb' in file_path:
+        print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
+        converter_csv = os.path.splitext(file_path)[0] + ".csv"
+        # 抓到隱藏檔案(檔名有關鍵字：~$H，不動作
+        if "~$" in file_path:
+            print(file_path, "2.convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+        else:
+            if os.path.exists(converter_csv):
+                # print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
+                pass
+            else:
+                # os.path.splitext [0] = 檔案名稱，讀取分頁名稱Data1
+                data_frame = pd.read_excel(
+                    file_path, sheet_name='Data1', engine='pyxlsb')
+                data_frame.to_csv(converter_csv)
+                print("2.convert_csv，輸出檔案：", converter_csv)
+                print(
+                    r"3.----------------------Convert_xlsb Done!------------------------\n")
+                return converter_csv
+    else:
+        return None
 
 def to_df_analyze(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01Class/data.csv"):
     """ 測試df = pd.read_excel格式是否會跑掉"""
