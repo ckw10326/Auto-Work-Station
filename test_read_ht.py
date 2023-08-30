@@ -4,7 +4,7 @@ cloud_total_run，雲端分析
 import sys
 import os
 import shutil
-from file_process import files_list, move_document
+from file_process import files_list, move_document, make_folder, del_folder
 from read_ht import convert_xlsb
 from read_ht import read_ctc_ht_excel
 from read_tc import read_tc_excel
@@ -71,6 +71,33 @@ def test_cloud_tc():
         text_gen(letter_titl_value, drawing_vision_value,
                  letter_num_value, letter_date_value)
         input("enter any keys to exit")
+
+def test_convert_xlsb():
+    '''
+    2023/08/30完成測試
+    轉換xlsb to xlsx
+    自動複製樣本到00dest
+    轉換檔案，並存在轉換檔案的位置所在
+    '''
+    del_folder("00dest")
+    make_folder("00dest")
+    # 1.設定目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    # 指定資料夾路徑
+    source_path = os.path.join(
+        root_path, "08Reference_Files/HT/HT-D1-CTC-GEL-23-2867.xlsb")
+    file_name = os.path.basename(source_path)
+    dest_folder = os.path.join(root_path, "00dest")
+    dest_path = os.path.join(dest_folder, file_name)
+    print(source_path)
+    print(dest_path)
+    # 複製指定檔案結構
+    shutil.copy2(source_path, dest_path)
+    # 開始轉換
+    convert_xlsb(dest_path)
+
 
 def cloud_total_run():
     """總流程測試"""
@@ -151,8 +178,11 @@ if __name__ == '__main__':
 
     # test_text_gen()
 
+    test_convert_xlsb()
+
     # shutil.rmtree(file_dest_folder)
 
-    cloud_total_run()
+    #主程式，用來分析檔案
+    #cloud_total_run()
 
     # 手動需要資料

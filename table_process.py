@@ -4,6 +4,7 @@ Table處理相關功能
 2. combine_csv_list 
 3. read_csv 讀取
 '''
+import os
 import pandas as pd
 
 
@@ -57,3 +58,40 @@ def read_csv(file_path):
         print("找不到文件")
     except Exception as error:
         print("發生錯誤:", str(error))
+
+def txt_to_df(txt_path = "08Reference_Files/data.txt"):
+    """
+    2023/08/30 完成測試
+    輸入txt檔案路徑
+    輸出dataframe
+    """
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    txt_path = os.path.join(root_path, "08Reference_Files/data.txt")
+    # 讀取文字檔案
+    with open(txt_path, 'r') as file:
+        lines = file.readlines()
+    print("lines：資料如下\n", lines)
+
+    # 解析資料並建立字典
+    data = {}
+
+    # .strip() 是一個字串方法，用於移除字串開頭和結尾的空白字符（例如空格、換行符等）
+    # .split('\t')，為切片
+    columns = lines[0].strip().split('\t')
+
+    # 創造data的key，並將內容設定為空白列表
+    for column in columns:
+        data[column] = []
+    print("lines：資料如下\n", data)
+
+    # 將lines的第二行後面的字串先做.strip()移除開頭、結尾的空白
+    for line in lines[1:]:
+        values = line.strip().split('\t')
+        for i, value in enumerate(values):
+            data[columns[i]].append(value)
+
+    # 建立 DataFrame
+    df = pd.DataFrame(data)
+    print(df.to_string())
+    print(data)
+    return df, data

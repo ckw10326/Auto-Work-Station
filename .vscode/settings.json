@@ -3,7 +3,7 @@
   "python.pythonPath": "C:\\Python_Env\\myenv\\Scripts",
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
   },
   "python.formatting.provider": "none"
 }

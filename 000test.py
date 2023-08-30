@@ -1,8 +1,6 @@
 # pylint: disable=invalid-name
-'''
-測試用
-'''
-import os
-excel_path = r"C:\Users\S\Documents\GitHub\Auto-Work-Station\00dest\HT-D1-CTC-GEL-23-2867.csv"
-filename, _ = os.path.splitext(excel_path)
-csv_path = filename+"_csv.csv"
+data1 = {'TRANSMITTALNO': ['HT-D1-CTC-GEL-23-2197'], 'CTCIDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'VENDORDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'CLIENTDOCNO': ['HT1-1-EMF01-D6055'], 'DOCVERSIONDESC': ['Drawing for 480V Motor Control Center For EMCC-ST1-UTY1'], 'DOCREV': ['1'], 'REVDATE': ['2023/05/24'], 'ISSUEPURPOSE': ['IFRA'], 'IFDPLAN': [''], 'ISSUEDATE': [''], 'RETUREDATE': ['2023/06/25'], 'TAGNO': [''], 'SUBMITENGINEER': [''], 'DESCRIPTION': ['Equipment Drawing for 480V EMCC-ST1-UTY一號機汽渦輪機房共用系統馬達控制中心盤體設備圖']}
+{'TRANSMITTALNO': ['HT-D1-CTC-GEL-23-2197'], 'CTCIDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'VENDORDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'CLIENTDOCNO': ['HT1-1-EMF01-D6055'], 'DOCVERSIONDESC': ['Drawing for 480V Motor Control Center For EMCC-ST1-UTY1'], 'DOCREV': ['1'], 'REVDATE': ['2023/05/24'], 'ISSUEPURPOSE': ['IFRA'], 'IFDPLAN': [''], 'ISSUEDATE': [''], 'RETUREDATE': ['2023/06/25'], 'TAGNO': [''], 'SUBMITENGINEER': [''], 'DESCRIPTION': ['Equipment Drawing for 480V EMCC-ST1-UTY一號機汽渦輪機房共用系統馬達控制中心盤體設備圖']}
+
+data2 = {'TRANSMITTALNO': ['HT-D1-CTC-GEL-22-0025'], 'ISSUEPURPOSE': ['IFA'], 'PLANNEDCLIENTRETURNDATE': ['2022/02/03'], 'ISSUEDATE': [''], 'DOCVERSIONNO': ['XK71B-0MST0-001'], 'DOCVERSIONDESC': ['PUBLIC ADDRESS SYSTEM LAYOUT FOR MICROWAVE STATION & MICROWAVE STEEL TOWER'], 'DOCREV': ['A'], 'DOCNATURE': [''], 'DOCCLASS': ['A'], 'TAGNO': [''], 'CLIENTDOCNO': ['HT0-1-EAE01-D5331'], 'DESCRIPTION': [' Public Address System Layout for Microwave Station & Microwave Steel Tower 微波電塔區廣播系統']}
+{'TRANSMITTALNO': ['HT-D1-CTC-GEL-22-0025'], 'ISSUEPURPOSE': ['IFA'], 'PLANNEDCLIENTRETURNDATE': ['2022/02/03'], 'ISSUEDATE': [''], 'DOCVERSIONNO': ['XK71B-0MST0-001'], 'DOCVERSIONDESC': ['PUBLIC ADDRESS SYSTEM LAYOUT FOR MICROWAVE STATION & MICROWAVE STEEL TOWER'], 'DOCREV': ['A'], 'DOCNATURE': [''], 'DOCCLASS': ['A'], 'TAGNO': [''], 'CLIENTDOCNO': ['HT0-1-EAE01-D5331'], 'DESCRIPTION': [' Public Address System Layout for Microwave Station & Microwave Steel Tower 微波電塔區廣播系統']}

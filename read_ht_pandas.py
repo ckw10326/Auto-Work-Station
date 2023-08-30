@@ -1,6 +1,7 @@
 '''
 轉換興達計畫excel檔案，大量使用pandas
-1.read_ht_pandas
+1.read_pandas_sec
+  輸入excel路徑，輸出csv檔案到路徑底下
 2.convert_xlsb      轉換符合條件的檔案，並輸出歷列表
 3.read_ctc_ht_excel 讀取轉換後檔案，並逐項輸出
 '''
@@ -9,11 +10,12 @@ import openpyxl
 import pandas as pd
 
 
-def read_pandas_sec(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01Class/data.csv"):
+def read_pandas_sec(excel_path):
     """
-    # 輸入：讀取excel檔案路徑，輸出csv檔案路徑
-    # 1.讀取指定路徑檔案
-    # 2.新增到csv檔案中
+    # 輸入，讀取excel檔案路徑，輸出csv檔案路徑
+    # 1.讀取指定路徑檔案，並讀取表格上指定位置
+    # 2.自訂義相關文字
+    # 3.新增到csv檔案中
     """
     # 建立空的 DataFrame
     df = pd.DataFrame()
@@ -66,7 +68,27 @@ def read_pandas_sec(excel_path, combined_csv_path="/workspaces/Auto-Work-Station
     df.to_csv(csv_path, index=True)
 
     workbook.close()
-    return None
+    return csv_path
+
+def ht_to_csv(excel_path):
+    """
+    # 輸入，讀取excel檔案路徑
+    # 1.直接將表格轉換成csv檔案，【不做指定位置輸出】
+    """
+    # 建立空的 DataFrame
+    workbook = openpyxl.load_workbook(excel_path)
+    worksheet = workbook.active
+
+    # 將工作表轉換成 DataFrame
+    data = worksheet.values
+    columns = next(data)  # 使用第一列作為欄位名稱
+    data_frame = pd.DataFrame(data, columns=columns)
+
+    # 儲存 DataFrame 為 CSV 檔案
+    csv_output_path = excel_path.replace("_converted.xlsx", ".csv")
+    data_frame.to_csv(csv_output_path, index=True)
+    workbook.close()
+    return csv_output_path
 
 
 def to_df_analyze(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01Class/data.csv"):
