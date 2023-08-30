@@ -1,3 +1,4 @@
+# pylint: disable=W0613
 '''
 執行pandas的excel
 1. work_flow_pandas，分析00source內的檔案，並解析出csv檔案
@@ -38,6 +39,46 @@ def work_flow_pandas():
     root_path = os.path.dirname(os.path.abspath(__file__))
     # 將根目錄路徑添加到 sys.path
     sys.path.append(root_path)
+    source_folder = os.path.join(root_path, "00source")
+    dest_folder = os.path.join(root_path, "00dest")
+
+    # 2.複製檔案
+    move_document(source_folder, dest_folder)
+
+    # 3.分析plan檔案，興達返回1 台中返回2
+    # 【目前只有HT檔案測試，尚無TC測試】
+    if str(check_plan(dest_folder)) == "1":
+        # 讀取興達
+        # 3.1 產生xlsb列表，並轉換成xlsx
+        xlsb_file_list = files_list(dest_folder, ".xlsb")
+        if xlsb_file_list:
+            for xlsb_path in xlsb_file_list:
+                convert_xlsb(xlsb_path)
+
+        # 3.2 產生converted.xlsx列表，開始分析內容
+        xlsx_file_list = files_list(dest_folder, "converted.xlsx")
+        if xlsx_file_list:
+            for converted_path in xlsx_file_list:
+                read_pandas_sec(converted_path)
+
+    elif str(check_plan(dest_folder)) == "2":
+        pass
+        # 讀取台中
+    else:
+        print("沒有符合檔案")
+        sys.exit()
+
+
+def analy_excel_folders():
+    '''
+    分析【指定】資料夾下所有Excel檔案
+    1.設定目錄路徑  2.複製檔案  3.解析檔案(HT TC皆完成)
+    '''
+    # 1.設定目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    # 指定資料夾路徑
     source_folder = os.path.join(root_path, "00source")
     dest_folder = os.path.join(root_path, "00dest")
 
@@ -149,11 +190,13 @@ def test_read_csv():
 
 
 if __name__ == '__main__':
-    # 刪除00dest
-    del_folder("00dest")
-    work_flow_pandas()
-    del_folder("00source")
-    make_folder("00source")
+    # 分析單Excel檔案，放置到00source資料價，並自動清空
+    xx_judge = 1
+    if xx_judge == 1:
+        del_folder("00dest")
+        work_flow_pandas()
+        del_folder("00source")
+        make_folder("00source")
 
     # test_read_csv()
     # test_combine_csv()
