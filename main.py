@@ -7,7 +7,7 @@
 '''
 import os
 import sys
-from file_process import move_document, files_list, check_plan, del_folder
+from file_process import move_document, files_list, check_plan, del_folder, make_folder
 from read_ht import convert_xlsb
 from read_ht import read_ctc_ht_excel
 from read_tc import read_tc_excel
@@ -72,3 +72,5 @@ def work_flow():
 if __name__ == '__main__':
     del_folder("00dest")
     work_flow()
+    del_folder("00source")
+    make_folder("00source")
