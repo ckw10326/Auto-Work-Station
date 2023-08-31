@@ -108,3 +108,20 @@ def txt_to_df(txt_path = "08Reference_Files/data.txt"):
     print(df.to_string())
     print(data)
     return df, data
+
+def add_column_dataframe(data: pd.DataFrame, index: str, content: str):
+    """
+    新增欄位以及內容
+    data，以data_frame格式
+    index，str格式
+    content，str格式
+    """
+    try:
+        # 新增一個名為 'index' 的欄位，其值為變數 'content'
+        data[str(index)] = str(content)
+        print(data.to_string())
+        return data
+    except FileNotFoundError:
+        print("找不到文件")
+    except Exception as error:
+        print("發生錯誤:", str(error))

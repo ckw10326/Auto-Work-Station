@@ -12,25 +12,9 @@ import sys
 import pandas as pd
 from file_process import move_document, files_list, check_plan, del_folder, make_folder
 from read_ht import convert_xlsb
-from table_process import combine_csv, combine_csv_list, read_csv, txt_to_df
+from table_process import combine_csv, combine_csv_list, read_csv, txt_to_df, add_column_dataframe
 from read_ht_pandas import read_pandas_sec, xlsx_to_csv, xlsb_to_csv
 from read_tc_pandas import xlsm_to_csv
-
-
-def test_map(excel_path):
-    """測試映射值，【未完成】"""
-    field_mapping = {
-        'No': ['批次序號'],
-        'drawing_no_value': ['圖號:', 'CLIENTDOCNO', 'DOCVERSIONDESC'],
-        'drawing_title_value': ['圖名:', 'DESCRIPTION', 'DOCCLASS'],
-        'drawing_vision_value': ['版次:', 'DOCVERSIONDESC'],
-        'letter_num_value': ['來文號碼:', 'TRANSMITTALNO'],
-        'letter_date_value': ['來文日期:', 'REVDATE', 'PLANNEDCLIENTRETURNDATE'],
-        'letter_titl_value': ['來文名稱:', 'DESCRIPTION'],
-        'file_path': ['路徑']
-    }
-    # 輸入value，輸出key
-
 
 def work_flow_pandas():
     '''
@@ -454,7 +438,7 @@ if __name__ == '__main__':
     # 代號24，家中大規模測試，批次處理，廠商xlsb > csv，批次產生csv檔案，index為原生
     # 代號3，務必先執行後generateCsvFilesBatch()後，才有可合併csv的檔案
     # 代號4，【新功能】原生excel分頁直接轉換成csv，開發中
-    ht_judge = 55
+    ht_judge = 1054
     if ht_judge == 1:
         del_folder("00dest")
         work_flow_pandas()
@@ -477,6 +461,7 @@ if __name__ == '__main__':
         source = r"C:\Users\S\Downloads\collectTC20230728"
         dest = r"C:\Users\S\Downloads\00dest"
         generateCsvFilesBatch4(source, dest)
+    
     if ht_judge == 3:
         # stander_csv為廠商原生index
         # 設定csv_list，一件自動合併
@@ -503,17 +488,21 @@ if __name__ == '__main__':
     # test_combine_csv()
     # test_combine_csv_list()
     # test_xlsb_to_csv()
-    # test_xlsm_to_csv()
+
     
     # show_tc_csv()
 
-
     # 代號50，批次產生TC的csv檔案
     # 代號51，批次合併標準檔案
-    tc_judge = 51
-    if ht_judge == 1:
-        batch_gen_tc_csv()
+    tc_judge = 52
+    if tc_judge == 50:
+        # 測試轉換csv檔案，須加上path路徑
+        test_xlsm_to_csv()
+
     if tc_judge == 51:
+        batch_gen_tc_csv()
+
+    if tc_judge == 52:
         # stander_csv為廠商原生index
         # 設定csv_list，一件自動合併
         # 1. 設定跟目錄路徑
