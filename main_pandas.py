@@ -59,6 +59,7 @@ def work_flow_pandas():
         if xlsx_file_list:
             for converted_path in xlsx_file_list:
                 read_pandas_sec(converted_path)
+        
 
     elif str(check_plan(dest_folder)) == "2":
         pass
@@ -274,7 +275,7 @@ if __name__ == '__main__':
     # 代號2，批次分析資料夾Excel檔案，批次產生csv檔案
     # 代號3，合併csv檔案
     # 代號4，【新功能】將excel分頁轉換成csv
-    xx_judge = 32
+    xx_judge = 1
     if xx_judge == 1:
         del_folder("00dest")
         work_flow_pandas()

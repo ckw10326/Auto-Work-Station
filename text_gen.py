@@ -34,8 +34,10 @@ def text_gen(letter_title, letter_rev, letter_num, letter_date) -> None:
                  + str(letter_rev) + "，" + company_name[my_company_num]
                  + "之審查意見（如附，共" + pages + "頁）供卓參，請查照。")
     contents2 = str("依據GE/CTCI 112年" + month + "月" + day + "日" + letter_num + "號辦理。")
-    contents3 = str("本文係統包商提送「" + letter_title + "」" + "Rev." + str(letter_rev)
-                 + "，本組無意見，已Email通知" + consult_company + "，擬陳閱後文存。")
+    contents3 = str("本文係統包商提送「" + letter_title + "」" + "Rev." + str(letter_rev) + 
+                    "，本組無意見，已Email通知" + consult_company + "，擬陳閱後文存。")
+    contents4 = str("本文係" + consult_company + "回復統包商文件「" + letter_title + "」" + "Rev." + str(letter_rev) + "，已反映" + company_name[my_company_num]
+                    + "審查意見，擬陳閱後文存。")
     print("----------------套印內容------------------")
     print(contents0)
     print("----------------傳真------------------------------")
@@ -44,6 +46,7 @@ def text_gen(letter_title, letter_rev, letter_num, letter_date) -> None:
     print(contents2)
     print("----------------主辦簽辦--------------------------")
     print(contents3)
+    print(contents4)
     input("enter any kesy to exit")
     return contents0, contents1, contents2, contents3
 
