@@ -14,6 +14,8 @@ from file_process import move_document, files_list, check_plan, del_folder, make
 from read_ht import convert_xlsb
 from table_process import combine_csv, combine_csv_list, read_csv, txt_to_df
 from read_ht_pandas import read_pandas_sec, xlsx_to_csv, xlsb_to_csv
+from read_tc_pandas import xlsm_to_csv
+
 
 def test_map(excel_path):
     """測試映射值，【未完成】"""
@@ -28,6 +30,7 @@ def test_map(excel_path):
         'file_path': ['路徑']
     }
     # 輸入value，輸出key
+
 
 def work_flow_pandas():
     '''
@@ -59,7 +62,6 @@ def work_flow_pandas():
         if xlsx_file_list:
             for converted_path in xlsx_file_list:
                 read_pandas_sec(converted_path)
-        
 
     elif str(check_plan(dest_folder)) == "2":
         pass
@@ -68,8 +70,9 @@ def work_flow_pandas():
         print("沒有符合檔案")
         sys.exit()
 
-def generateCsvFilesBatch(source_folder_str = "08Reference_Files/collectHT20230728", 
-                        dest_folder_str = "00dest"):
+
+def generateCsvFilesBatch(source_folder_str="08Reference_Files/collectHT20230728",
+                          dest_folder_str="00dest"):
     '''
     使用read_pandas_sec，該功能為暴力分析Excel(抓取指定位置)
     缺點是只是用新檔案，舊檔案會有index格不相容的問題
@@ -102,8 +105,9 @@ def generateCsvFilesBatch(source_folder_str = "08Reference_Files/collectHT202307
             os.remove(xlsx_path)
             print(csv_path)
 
-def generateCsvFilesBatch2(source_folder_str = "08Reference_Files/collectHT20230728", 
-                        dest_folder_str = "00dest"):
+
+def generateCsvFilesBatch2(source_folder_str="08Reference_Files/collectHT20230728",
+                           dest_folder_str="00dest"):
     '''
     改善新舊檔案不相容，直接將檔案分頁 xlsb > xlsx > csv
     分析【指定】資料夾下所有Excel檔案
@@ -135,8 +139,9 @@ def generateCsvFilesBatch2(source_folder_str = "08Reference_Files/collectHT20230
             os.remove(xlsx_path)
             print(csv_path)
 
-def generateCsvFilesBatch3(source_folder_str = "08Reference_Files/collectHT20230728", 
-                        dest_folder_str = "00dest"):
+
+def generateCsvFilesBatch3(source_folder_str="08Reference_Files/collectHT20230728",
+                           dest_folder_str="00dest"):
     '''
     優化分析路徑，
     舊處理方法 xlsb > xlsx > csv
@@ -167,8 +172,9 @@ def generateCsvFilesBatch3(source_folder_str = "08Reference_Files/collectHT20230
             csv_path = xlsb_to_csv(xlsbs)
             print(csv_path)
 
-def generateCsvFilesBatch4(source_folder_str = "08Reference_Files/collectHT20230728", 
-                        dest_folder_str = "00dest"):
+
+def generateCsvFilesBatch4(source_folder_str="08Reference_Files/collectHT20230728",
+                           dest_folder_str="00dest"):
     '''
     大規模 檔案分析開
     使用處理方法 xlsb > csv
@@ -177,34 +183,92 @@ def generateCsvFilesBatch4(source_folder_str = "08Reference_Files/collectHT20230
     3.解析路徑
     4.【將分頁產生csv檔案】
     '''
+    # 0.清除不需要資料夾
+    del_folder("00dest")
+    make_folder("00dest")
+
+    # 1.設定目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    # 指定資料夾路徑
+    source_folder = os.path.join(root_path, source_folder_str)
+    dest_folder = os.path.join(root_path, dest_folder_str)
     # 2.複製檔案
-    move_document(source_folder_str, dest_folder_str)
+    move_document(source_folder, dest_folder)
+    # 2.複製檔案
+    move_document(source_folder, dest_folder)
 
     # 3.1 解析路徑
     # 3.2 將xlsb檔案轉換為xlsx
     # 3.3 將xlsx轉換換為csv
-    xlsb_list = files_list(dest_folder_str, ".xlsb")
+    xlsb_list = files_list(dest_folder, ".xlsb")
     for xlsbs in xlsb_list:
         if "-CTC-" in xlsbs:
             csv_path = xlsb_to_csv(xlsbs)
             print(csv_path)
 
+def batch_gen_tc_csv(source_folder_str="08Reference_Files/collectTC20230728",
+                           dest_folder_str="00dest"):
+    '''
+    大規模 TC檔案分析
+    使用處理方法 xlsm > csv
+    1.設定目錄路徑 
+    2.複製檔案
+    3.解析路徑
+    4.【將分頁產生csv檔案】
+    '''
+    # 1.設定目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    # 指定資料夾路徑
+    source_folder = os.path.join(root_path, source_folder_str)
+    dest_folder = os.path.join(root_path, dest_folder_str)
+    # 2.複製檔案
+    move_document(source_folder, dest_folder)
+
+    # 3.1 解析路徑
+    # 3.2 將xlsb檔案轉換為xlsx
+    # 3.3 將xlsx轉換換為csv
+    xlsm_list = files_list(dest_folder_str, ".xlsm")
+    for xlsm in xlsm_list:
+        if "TPC-TC(C0)" in xlsm:
+            csv_path = xlsm_to_csv(xlsm)
+            if csv_path:
+                print(csv_path)
+
+def show_tc_csv():
+    # 1.設定目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    # 指定資料夾路徑
+    csv_folder = os.path.join(root_path, "00dest")
+    print(csv_folder)
+    tc_csv_list = files_list(csv_folder, ".csv")
+    print(tc_csv_list)
+    for csv in tc_csv_list:
+        print(csv)
+
 def make_stander_csv():
     """表列表頭清單"""
-    lista = ["TRANSMITTALNO","CTCIDOCNO","VENDORDOCNO","CLIENTDOCNO","DOCVERSIONDESC","DOCREV","REVDATE","ISSUEPURPOSE","IFDPLAN","ISSUEDATE","RETUREDATE","TAGNO","SUBMITENGINEER","DESCRIPTION"]
-    listb = ["TRANSMITTALNO","ISSUEPURPOSE","PLANNEDCLIENTRETURNDATE","ISSUEDATE","DOCVERSIONNO","DOCVERSIONDESC","DOCREV","DOCNATURE","DOCCLASS","TAGNO","CLIENTDOCNO","DESCRIPTION"]
+    lista = ["TRANSMITTALNO", "CTCIDOCNO", "VENDORDOCNO", "CLIENTDOCNO", "DOCVERSIONDESC", "DOCREV", "REVDATE",
+             "ISSUEPURPOSE", "IFDPLAN", "ISSUEDATE", "RETUREDATE", "TAGNO", "SUBMITENGINEER", "DESCRIPTION"]
+    listb = ["TRANSMITTALNO", "ISSUEPURPOSE", "PLANNEDCLIENTRETURNDATE", "ISSUEDATE", "DOCVERSIONNO",
+             "DOCVERSIONDESC", "DOCREV", "DOCNATURE", "DOCCLASS", "TAGNO", "CLIENTDOCNO", "DESCRIPTION"]
     union_list = list(set(lista).union(set(listb)))
     print(union_list)
 
     # 建立一個空的 DataFrame
-    df = pd.DataFrame(columns=union_list)
+    data_frame = pd.DataFrame(columns=union_list)
     # 指定輸出的 CSV 檔案名稱
     root_path = os.path.dirname(os.path.abspath(__file__))
     stander_csv_path = os.path.join(root_path, r"00dest/stander_csv.csv")
     if os.path.exists(stander_csv_path):
         os.remove(stander_csv_path)
     print(stander_csv_path)
-    df.to_csv(stander_csv_path, index=False)  # 將 DataFrame 寫入 CSV 檔案
+    data_frame.to_csv(stander_csv_path, index=False)  # 將 DataFrame 寫入 CSV 檔案
     print("CSV 檔案已成功輸出。")
 
 def test_combine_csv():
@@ -233,6 +297,7 @@ def test_combine_csv():
     combine_csv(file1, rawdata)
     # 顯示合併後資料
     read_csv(rawdata)
+
 
 def test_combine_csv_list():
     """
@@ -275,6 +340,7 @@ def test_combine_csv_list():
     else:
         return False
 
+
 def test_read_csv():
     """讀取csv檔案"""
     # 設定目錄
@@ -284,14 +350,16 @@ def test_read_csv():
         root_path, r"08Reference_Files/CSV/HT-D1-CTC-GEL-23-3046_csv.csv")
     read_csv(filepath)
 
+
 def test_txt_to_df():
     """
     2023/08/30 完成測試
     輸入txt檔案路徑
     輸出dataframe
     """
-    df, data = txt_to_df()
-    print(df)
+    data_frame, ss = txt_to_df()
+    print(data_frame)
+
 
 def test_xlsx_to_csv():
     """
@@ -305,13 +373,15 @@ def test_xlsx_to_csv():
     sys.path.append(root_path)
     # 指定資料夾路徑
     dest_folder = os.path.join(root_path, "00dest")
-    xlsb_path = os.path.join(root_path, "08Reference_Files/HT/HT-D1-CTC-GEL-23-2867.xlsb")
-    dest_path = os.path.join(root_path, ("00dest/" + os.path.basename(xlsb_path)))
+    xlsb_path = os.path.join(
+        root_path, "08Reference_Files/HT/HT-D1-CTC-GEL-23-2867.xlsb")
+    dest_path = os.path.join(
+        root_path, ("00dest/" + os.path.basename(xlsb_path)))
     # 複製檔案
     del_folder("00dest")
     make_folder("00dest")
     shutil.copy(xlsb_path, dest_path)
-    
+
     # 2.抓取xlsb路徑
     xlsb_list = files_list(dest_folder, ".xlsb")
     for xlsbs in xlsb_list:
@@ -321,6 +391,7 @@ def test_xlsx_to_csv():
             # 讀取後，xlsx便沒有使用，故刪除
             os.remove(xlsx_path)
             print(csv_path)
+
 
 def test_xlsb_to_csv():
     '''
@@ -350,48 +421,74 @@ def test_xlsb_to_csv():
     # 4. 開始轉換
     xlsb_to_csv(dest_path)
 
+def test_xlsm_to_csv():
+    "輸入xlsm路徑，輸出csv檔案"
+    # 1.設定目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    # 指定資料夾路徑
+    source_path = os.path.join(
+        root_path, "08Reference_Files/TC/TPC-TC(C0)-CD-23-2078/TPC-TC(C0)-CD-23-2078.xlsm")
+    file_name = os.path.basename(source_path)
+    dest_folder = os.path.join(root_path, "00dest")
+    dest_path = os.path.join(dest_folder, file_name)
+
+    # 2. 刪除並創建新資料夾
+    del_folder("00dest")
+    make_folder("00dest")
+
+    # 3. 複製指定檔案
+    shutil.copy2(source_path, dest_path)
+
+    # 4. 開始轉換
+    xlsm_to_csv(dest_path)
+
 
 if __name__ == '__main__':
-    # 代號1，分析單Excel檔案，放置到00source資料夾，並自動清空
-    # 代號2，批次分析資料夾Excel檔案，批次產生csv檔案
-    # 代號3，合併csv檔案
-    # 代號4，【新功能】將excel分頁轉換成csv
-    xx_judge = 32
-    if xx_judge == 1:
+    # 代號1，辦文專用，使用work_flow_pandas()抓取指定位置，暴力法辦文
+    #       分析檔案後，產生1表格，放置到00source資料夾，並自動清空
+    # 代號21，批次處理，廠商xlsb > xlsx > 抓取表格指定位置(read_pandas_sec) > csv，簡稱暴力抓取，批次產生csv檔案，index較好看
+    # 代號22，批次處理，廠商xlsb > xlsx > 將分頁轉乘csv(xlsx_to_csv)，批次產生csv檔案，index為原生
+    # 代號23，主要使用，批次處理，廠商xlsb > csv，批次產生csv檔案，index為原生
+    # 代號24，家中大規模測試，批次處理，廠商xlsb > csv，批次產生csv檔案，index為原生
+    # 代號3，務必先執行後generateCsvFilesBatch()後，才有可合併csv的檔案
+    # 代號4，【新功能】原生excel分頁直接轉換成csv，開發中
+    ht_judge = 55
+    if ht_judge == 1:
         del_folder("00dest")
         work_flow_pandas()
         del_folder("00source")
         make_folder("00source")
 
-    if xx_judge == 21:
+    if ht_judge == 21:
         del_folder("00dest")
         generateCsvFilesBatch()
 
-    if xx_judge == 22:
+    if ht_judge == 22:
         del_folder("00dest")
         generateCsvFilesBatch2()
 
-    if xx_judge == 23:
+    if ht_judge == 23:
         del_folder("00dest")
         generateCsvFilesBatch3()
 
-    if xx_judge == 24:
-        source_folder = r"C:\Users\S\Downloads\collectTC20230728"
-        dest_folder = r"C:\Users\S\Downloads\00dest"
-        generateCsvFilesBatch4(source_folder, dest_folder)
-    if xx_judge == 3:
-        '''
-        stander_csv為廠商原生index
-        設定csv_list，一件自動合併
-        '''
+    if ht_judge == 24:
+        source = r"C:\Users\S\Downloads\collectTC20230728"
+        dest = r"C:\Users\S\Downloads\00dest"
+        generateCsvFilesBatch4(source, dest)
+    if ht_judge == 3:
+        # stander_csv為廠商原生index
+        # 設定csv_list，一件自動合併
         # 1. 設定跟目錄路徑
-        root_path = os.path.dirname(os.path.abspath(__file__))
+        root = os.path.dirname(os.path.abspath(__file__))
         # 抓取清單
-        csv_path = os.path.join(root_path, "00dest/collectHT20230728")
-        csv_list = files_list(csv_path, ".csv")
+        m_csv_path = os.path.join(root, "00dest/collectHT20230728")
+        csv_list = files_list(m_csv_path, ".csv")
         # 複製標準樣本
-        sample_csv_path = os.path.join(root_path, "08Reference_Files/stander_csv.csv")
-        test_csv_path = os.path.join(root_path, "00dest/stander_csv.csv")
+        sample_csv_path = os.path.join(
+            root, "08Reference_Files/stander_csv.csv")
+        test_csv_path = os.path.join(root, "00dest/stander_csv.csv")
         if not os.path.exists(test_csv_path):
             shutil.copy2(sample_csv_path, test_csv_path)
         # 合併清單中檔案
@@ -406,3 +503,31 @@ if __name__ == '__main__':
     # test_combine_csv()
     # test_combine_csv_list()
     # test_xlsb_to_csv()
+    # test_xlsm_to_csv()
+    
+    # show_tc_csv()
+
+
+    # 代號50，批次產生TC的csv檔案
+    # 代號51，批次合併標準檔案
+    tc_judge = 51
+    if ht_judge == 1:
+        batch_gen_tc_csv()
+    if tc_judge == 51:
+        # stander_csv為廠商原生index
+        # 設定csv_list，一件自動合併
+        # 1. 設定跟目錄路徑
+        root = os.path.dirname(os.path.abspath(__file__))
+        # 抓取清單
+        m_csv_path = os.path.join(root, "00dest/collectTC20230728")
+        csv_list = files_list(m_csv_path, ".csv")
+        # 複製標準樣本
+        sample_csv_path = os.path.join(
+            root, "08Reference_Files/stander_csv.csv")
+        test_csv_path = os.path.join(root, "00dest/stander_csv.csv")
+        if not os.path.exists(test_csv_path):
+            shutil.copy2(sample_csv_path, test_csv_path)
+        # 合併清單中檔案
+        combine_csv_list(csv_list, test_csv_path)
+        # 查看清單檔案
+        read_csv(test_csv_path)

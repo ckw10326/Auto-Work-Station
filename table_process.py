@@ -55,8 +55,18 @@ def combine_csv_list(scr_list, dst):
 def read_csv(file_path):
     """讀取CSV文件"""
     try:
-        data_frame = pd.read_csv(file_path)
+        # 嘗試使用 UTF-8 編碼讀取 CSV 文件
+        data_frame = pd.read_csv(file_path, encoding='utf-8')
         print(data_frame.to_string())
+    except UnicodeDecodeError:
+        try:
+            # 若無法使用 UTF-8 編碼，嘗試使用 Latin-1 編碼讀取 CSV 文件
+            data_frame = pd.read_csv(file_path, encoding='latin-1')
+            print(data_frame.to_string())
+        except FileNotFoundError:
+            print("找不到文件")
+        except Exception as error:
+            print("發生錯誤:", str(error))
     except FileNotFoundError:
         print("找不到文件")
     except Exception as error:

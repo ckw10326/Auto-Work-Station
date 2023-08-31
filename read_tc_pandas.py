@@ -96,6 +96,33 @@ def read_tc_excel(def_dest_path):
     print("--------------.xlsx分析完成-----------------")
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
+def xlsm_to_csv(file_path):
+    """
+    輸入xlsm路徑，產生csv檔案，並輸出該路徑
+    台中計畫轉換xlsm to csv
+    """
+    if '.xlsm' in file_path:
+        print(file_path, "，符合「.xlsm」的檔案")
+        # 產生新檔名
+        csv_path = os.path.splitext(file_path)[0] + ".csv"
+        # 抓到隱藏檔案(檔名有關鍵字：~$H，不動作
+        if "~$" in file_path:
+            print(file_path, "抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+        else:
+            if os.path.exists(csv_path):
+                print(csv_path, "檔案已存在，不動作")
+                return False
+            else:
+                sheet_name = 'Data1' 
+                data_frame = pd.read_excel(file_path, sheet_name=sheet_name)
+                data_frame.to_csv(csv_path, encoding='utf-8', index=True)
+                print("輸出檔案：", csv_path)
+                print(
+                    r"3.----------------------Convert_xlsm to csv Done!------------------------\n")
+                return csv_path
+    else:
+        return None
+
 def test2() -> None:
     '''測試二'''
     path = r"/workspaces/Auto-Work-Station/00source"
@@ -217,4 +244,4 @@ def to_df_analyze(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/0
 
 
 if __name__ == '__main__':
-    pass
+    print("請執行main_pandas.py")
