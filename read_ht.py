@@ -111,7 +111,7 @@ def convert_xlsb(file_path):
                 # print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
                 pass
             else:
-                # os.path.splitext [0] = 檔案名稱
+                # os.path.splitext [0] = 檔案名稱，讀取分頁名稱Data1
                 data_frame = pd.read_excel(
                     file_path, sheet_name='Data1', engine='pyxlsb')
                 data_frame.to_excel(converter_xlsx)

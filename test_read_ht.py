@@ -9,7 +9,6 @@ from read_ht import convert_xlsb
 from read_ht import read_ctc_ht_excel
 from read_tc import read_tc_excel
 
-
 file_doc_num = ""
 file_source_folder = "/workspaces/Auto-Work-Station/00source"
 file_dest_folder = "/workspaces/Auto-Work-Station/00dest"
@@ -79,9 +78,8 @@ def test_convert_xlsb():
     自動複製樣本到00dest
     轉換檔案，並存在轉換檔案的位置所在
     '''
-    del_folder("00dest")
-    make_folder("00dest")
-    # 1.設定目錄路徑
+
+    # 1. 設定目錄路徑
     root_path = os.path.dirname(os.path.abspath(__file__))
     # 將根目錄路徑添加到 sys.path
     sys.path.append(root_path)
@@ -91,13 +89,16 @@ def test_convert_xlsb():
     file_name = os.path.basename(source_path)
     dest_folder = os.path.join(root_path, "00dest")
     dest_path = os.path.join(dest_folder, file_name)
-    print(source_path)
-    print(dest_path)
-    # 複製指定檔案結構
-    shutil.copy2(source_path, dest_path)
-    # 開始轉換
-    convert_xlsb(dest_path)
 
+    # 2. 刪除並創建新資料夾
+    del_folder("00dest")
+    make_folder("00dest")
+
+    # 3. 複製指定檔案
+    shutil.copy2(source_path, dest_path)
+
+    # 4. 開始轉換
+    convert_xlsb(dest_path)
 
 def cloud_total_run():
     """總流程測試"""
@@ -178,7 +179,7 @@ if __name__ == '__main__':
 
     # test_text_gen()
 
-    test_convert_xlsb()
+    #test_convert_xlsb()
 
     # shutil.rmtree(file_dest_folder)
 

@@ -39,7 +39,10 @@ def combine_csv_list(scr_list, dst):
             df_element = pd.read_csv(element)
             df_dst = pd.read_csv(dst)
             combined_df = pd.concat([df_element, df_dst], ignore_index=True)
-            combined_df.to_csv(dst, index=True)
+            #索引列出了"Unnamed: 0.27 Unnamed: 0.26 Unnamed: 0.25 Unnamed: 0.24 Unnamed: 0.23"
+            #等未命名的列。這通常是由於將索引列寫入CSV文件時產生的
+            #combined_df.to_csv(dst, index=True)
+            combined_df.to_csv(dst, index=None)
             print(combined_df)
             print("----------------整合第", element, "的檔案-----------------")
         print("完成")
