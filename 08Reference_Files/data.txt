@@ -1,2 +1,17 @@
-TRANSMITTALNO	ISSUEPURPOSE	PLANNEDCLIENTRETURNDATE	ISSUEDATE	DOCVERSIONNO	DOCVERSIONDESC	DOCREV	DOCNATURE	DOCCLASS	TAGNO	CLIENTDOCNO	DESCRIPTION
-HT-D1-CTC-GEL-22-0025	IFA	2022/02/03		XK71B-0MST0-001	PUBLIC ADDRESS SYSTEM LAYOUT FOR MICROWAVE STATION & MICROWAVE STEEL TOWER	A		A		HT0-1-EAE01-D5331	 Public Address System Layout for Microwave Station & Microwave Steel Tower 微波電塔區廣播系統
+																											
+																											
+																											
+GE II and CTCI Consortium																											
+Pacific Engineers & Constructors, Ltd.																					Date  :		2023/06/19				
+14th Fl, 333 Tun Hua South Road,																					Our Ref. No.  :		TPC-TC(C0)-CD-23-2078				
+Project : Tai Chung Combined Cycle Power Plant Project																											
+(Contract No. : 63308633011 / Spec. No. : 1007-141-MS-01)																											
+                                    	Drawing for LCP of Sump Pump (TYPE B/C/D/E)																										
+	□	none (0) print, two (2) electronic files (DVD/CD), and two (2) copies of transmittal letter (for "as built drawing")																									
+Class : A: approval,  I: Information,  C: Construction,  D: Design,  F: Final,   AB: As-Built,  Z: Other. 																											
+Customer Drawing No.						Rev. 	Title of Description															Class	Drawing No.				
+TC0-1-EQE02-D9001						D	Drawing for LCP of Sump Pump (TYPE B)															A	TC0-1-EQE02-D9001				
+TC0-1-EQE02-D9002						D	Drawing for LCP of Sump Pump (TYPE C)															A	TC0-1-EQE02-D9002				
+TC0-1-EQE02-D9003						D	Drawing for LCP of Sump Pump (TYPE D)															A	TC0-1-EQE02-D9003				
+TC0-1-EQE02-D9004						D	Drawing for LCP of Sump Pump (TYPE E)															A	TC0-1-EQE02-D9004				
+Contact Person:          			程正維  Ext.:28057				VDR-M0063-MJE-0025														CTCI Corporation						

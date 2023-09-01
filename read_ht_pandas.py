@@ -90,7 +90,7 @@ def xlsx_to_csv(excel_path):
     workbook.close()
     return csv_output_path
 
-def xlsb_to_csv(file_path):
+def xlsb_to_csv(file_path, workbook = None):
     """轉換xlsb to csv"""
     if '.xlsb' in file_path:
         print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
@@ -104,15 +104,45 @@ def xlsb_to_csv(file_path):
                 pass
             else:
                 # os.path.splitext [0] = 檔案名稱，讀取分頁名稱Data1
-                data_frame = pd.read_excel(
-                    file_path, sheet_name='Data1', engine='pyxlsb')
+                # 若有指定分頁名稱，則使用sheetname功能
+                if workbook:
+                    data_frame = pd.read_excel(file_path, sheet_name = workbook, engine='pyxlsb')
+                else:
+                    data_frame = pd.read_excel(file_path, engine='pyxlsb')
                 data_frame.to_csv(converter_csv)
+                print(data_frame)
                 print("2.convert_csv，輸出檔案：", converter_csv)
                 print(
                     r"3.----------------------Convert_xlsb Done!------------------------\n")
                 return converter_csv
     else:
         return None
+
+def clean_csv(file_path, 
+              threshold = None, 
+              null_num = 1):
+    '''
+    threshold，用於指定保留至少多少個非空值的行或列
+    nullnum，用於保留那些缺少值數量少於2的行
+    '''
+    # 讀取 CSV 檔案
+    df = pd.read_csv(file_path)
+
+    if threshold is not None:
+        # 如果 `threshold` 不是 `None`，即有指定閾值
+        clean_df = df.dropna(thresh=threshold)
+    
+    elif null_num is not None:
+        # 只保留缺少值數量少於 null_num 的行
+        clean_df = df[df.isnull().sum(axis=1) < null_num]
+    
+    print(clean_df.to_string)
+    return clean_df
+
+    # 將只包含完整資料的資料行寫入新的 CSV 檔案
+    #clean_df.to_csv('cleaned_data.csv', index=False)
+    #print("已整理並輸出整潔的資料到 cleaned_data.csv 檔案中。")
+
 
 def to_df_analyze(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01Class/data.csv"):
     """ 測試df = pd.read_excel格式是否會跑掉"""

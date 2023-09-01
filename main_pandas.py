@@ -12,8 +12,8 @@ import sys
 import pandas as pd
 from file_process import move_document, files_list, check_plan, del_folder, make_folder
 from read_ht import convert_xlsb
-from table_process import combine_csv, combine_csv_list, read_csv, txt_to_df, add_column_dataframe
-from read_ht_pandas import read_pandas_sec, xlsx_to_csv, xlsb_to_csv
+from table_process import combine_csv, combine_csv_list, read_csv, txt_to_df
+from read_ht_pandas import read_pandas_sec, xlsx_to_csv, xlsb_to_csv, clean_csv
 from read_tc_pandas import xlsm_to_csv
 
 def work_flow_pandas():
@@ -282,7 +282,6 @@ def test_combine_csv():
     # 顯示合併後資料
     read_csv(rawdata)
 
-
 def test_combine_csv_list():
     """
     2023/8/29完成
@@ -324,7 +323,6 @@ def test_combine_csv_list():
     else:
         return False
 
-
 def test_read_csv():
     """讀取csv檔案"""
     # 設定目錄
@@ -334,16 +332,15 @@ def test_read_csv():
         root_path, r"08Reference_Files/CSV/HT-D1-CTC-GEL-23-3046_csv.csv")
     read_csv(filepath)
 
-
 def test_txt_to_df():
     """
     2023/08/30 完成測試
     輸入txt檔案路徑
     輸出dataframe
     """
-    data_frame, ss = txt_to_df()
+    txt_path = "08Reference_Files/data.txt"
+    data_frame, ss = txt_to_df(txt_path )
     print(data_frame)
-
 
 def test_xlsx_to_csv():
     """
@@ -376,7 +373,6 @@ def test_xlsx_to_csv():
             os.remove(xlsx_path)
             print(csv_path)
 
-
 def test_xlsb_to_csv():
     '''
     轉換xlsb to csv
@@ -403,7 +399,12 @@ def test_xlsb_to_csv():
     shutil.copy2(source_path, dest_path)
 
     # 4. 開始轉換
-    xlsb_to_csv(dest_path)
+    # 讀取Data1分頁
+    judgement = 1
+    if judgement:
+        xlsb_to_csv(dest_path)
+    else:
+        xlsb_to_csv(dest_path, "Data1")
 
 def test_xlsm_to_csv():
     "輸入xlsm路徑，輸出csv檔案"
@@ -428,6 +429,24 @@ def test_xlsm_to_csv():
     # 4. 開始轉換
     xlsm_to_csv(dest_path)
 
+def test_clean_csv():
+    del_folder("00dest")
+    make_folder("00dest")
+    # 1.設定目錄路徑
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    # 將根目錄路徑添加到 sys.path
+    sys.path.append(root_path)
+    # 指定資料夾路徑
+    source_path = os.path.join(
+        root_path, "08Reference_Files/HTindex.csv")
+    basename = os.path.basename(source_path) # 結果應為HTindex.csv
+    dest_folder = os.path.join(root_path, "00dest")
+    dest_path = os.path.join(dest_folder, basename)
+    shutil.copyfile(source_path, dest_path)
+    # 用於已知【有幾列資料】，保留每列數量大於6的資料
+    #clean_csv(dest_path, threshold = 6)
+    # 用於已不知【有幾列資料】，但保留每列n/a數量小於2的資料
+    clean_csv(dest_path, null_num = 2)
 
 if __name__ == '__main__':
     # 代號1，辦文專用，使用work_flow_pandas()抓取指定位置，暴力法辦文
@@ -488,13 +507,12 @@ if __name__ == '__main__':
     # test_combine_csv()
     # test_combine_csv_list()
     # test_xlsb_to_csv()
-
-    
+    test_clean_csv()
     # show_tc_csv()
 
     # 代號50，批次產生TC的csv檔案
     # 代號51，批次合併標準檔案
-    tc_judge = 52
+    tc_judge = 5200
     if tc_judge == 50:
         # 測試轉換csv檔案，須加上path路徑
         test_xlsm_to_csv()
