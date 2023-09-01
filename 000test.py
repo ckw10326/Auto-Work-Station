@@ -1,10 +1,26 @@
-# pylint: disable=invalid-name
-data1 = {'TRANSMITTALNO': ['HT-D1-CTC-GEL-23-2197'], 'CTCIDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'VENDORDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'CLIENTDOCNO': ['HT1-1-EMF01-D6055'], 'DOCVERSIONDESC': ['Drawing for 480V Motor Control Center For EMCC-ST1-UTY1'], 'DOCREV': ['1'], 'REVDATE': ['2023/05/24'], 'ISSUEPURPOSE': ['IFRA'], 'IFDPLAN': [''], 'ISSUEDATE': [''], 'RETUREDATE': ['2023/06/25'], 'TAGNO': [''], 'SUBMITENGINEER': [''], 'DESCRIPTION': ['Equipment Drawing for 480V EMCC-ST1-UTY一號機汽渦輪機房共用系統馬達控制中心盤體設備圖']}
-{'TRANSMITTALNO': ['HT-D1-CTC-GEL-23-2197'], 'CTCIDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'VENDORDOCNO': ['AEC-11011136-0-MCC-EMCC-ST1-UTY1'], 'CLIENTDOCNO': ['HT1-1-EMF01-D6055'], 'DOCVERSIONDESC': ['Drawing for 480V Motor Control Center For EMCC-ST1-UTY1'], 'DOCREV': ['1'], 'REVDATE': ['2023/05/24'], 'ISSUEPURPOSE': ['IFRA'], 'IFDPLAN': [''], 'ISSUEDATE': [''], 'RETUREDATE': ['2023/06/25'], 'TAGNO': [''], 'SUBMITENGINEER': [''], 'DESCRIPTION': ['Equipment Drawing for 480V EMCC-ST1-UTY一號機汽渦輪機房共用系統馬達控制中心盤體設備圖']}
+import pandas as pd
 
-data2 = {'TRANSMITTALNO': ['HT-D1-CTC-GEL-22-0025'], 'ISSUEPURPOSE': ['IFA'], 'PLANNEDCLIENTRETURNDATE': ['2022/02/03'], 'ISSUEDATE': [''], 'DOCVERSIONNO': ['XK71B-0MST0-001'], 'DOCVERSIONDESC': ['PUBLIC ADDRESS SYSTEM LAYOUT FOR MICROWAVE STATION & MICROWAVE STEEL TOWER'], 'DOCREV': ['A'], 'DOCNATURE': [''], 'DOCCLASS': ['A'], 'TAGNO': [''], 'CLIENTDOCNO': ['HT0-1-EAE01-D5331'], 'DESCRIPTION': [' Public Address System Layout for Microwave Station & Microwave Steel Tower 微波電塔區廣播系統']}
-{'TRANSMITTALNO': ['HT-D1-CTC-GEL-22-0025'], 'ISSUEPURPOSE': ['IFA'], 'PLANNEDCLIENTRETURNDATE': ['2022/02/03'], 'ISSUEDATE': [''], 'DOCVERSIONNO': ['XK71B-0MST0-001'], 'DOCVERSIONDESC': ['PUBLIC ADDRESS SYSTEM LAYOUT FOR MICROWAVE STATION & MICROWAVE STEEL TOWER'], 'DOCREV': ['A'], 'DOCNATURE': [''], 'DOCCLASS': ['A'], 'TAGNO': [''], 'CLIENTDOCNO': ['HT0-1-EAE01-D5331'], 'DESCRIPTION': [' Public Address System Layout for Microwave Station & Microwave Steel Tower 微波電塔區廣播系統']}
+# 原始資料
+data = {
+    'Unnamed: 0': [6, 7],
+    'Unnamed: 1': ['NO.', '1'],
+    'Unnamed: 2': ['CUSTOMER DRAWING NO.', 'HT0-1-UMM01-T6933'],
+    'Unnamed: 3': ['REV.', 'A'],
+    'Unnamed: 4': ['DOCUMENT TITLE', 'SAT procedure for Ammonia Vaporizer and Local ...'],
+    'Unnamed: 5': ['CLASS', 'A'],
+    'Unnamed: 6': ['CONTRACTOR DOCUMENT NO.', 'HT0-1-UMM01-T6933'],
+    'Unnamed: 7': ['REMARK', 'NaN']
+}
 
-a = "A"
-b = "B"
-c = a+b
+# 轉換為DataFrame
+df = pd.DataFrame(data)
+print(df,"\n\n\n")
+
+# 指定第一列為表頭
+df.columns = df.iloc[0]
+
+# 刪除第一列
+df = df[1:]
+
+# 顯示DataFrame
+print(df)

@@ -91,52 +91,86 @@ def xlsx_to_csv(excel_path):
     return csv_output_path
 
 def xlsb_to_csv(file_path, workbook = None):
-    """轉換xlsb to csv"""
-    if '.xlsb' in file_path:
-        print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
-        converter_csv = os.path.splitext(file_path)[0] + ".csv"
-        # 抓到隱藏檔案(檔名有關鍵字：~$H，不動作
-        if "~$" in file_path:
-            print(file_path, "2.convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
-        else:
-            if os.path.exists(converter_csv):
-                # print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
-                pass
-            else:
-                # os.path.splitext [0] = 檔案名稱，讀取分頁名稱Data1
-                # 若有指定分頁名稱，則使用sheetname功能
-                if workbook:
-                    data_frame = pd.read_excel(file_path, sheet_name = workbook, engine='pyxlsb')
-                else:
-                    data_frame = pd.read_excel(file_path, engine='pyxlsb')
-                data_frame.to_csv(converter_csv)
-                print(data_frame)
-                print("2.convert_csv，輸出檔案：", converter_csv)
-                print(
-                    r"3.----------------------Convert_xlsb Done!------------------------\n")
-                return converter_csv
-    else:
+    """
+    將 xlsb 文件轉換為 csv
+    Parameters:
+        file_path (str): xlsb 文件的路徑
+        workbook (str or None): 指定要讀取的工作簿名稱
+    Returns:
+        str or None: 轉換後的 csv 文件路徑，如果不是 xlsb 文件則返回 None
+    """
+    if not file_path.endswith('.xlsb'):
         return None
+    
+    print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
+    converter_csv = os.path.splitext(file_path)[0] + ".csv"
 
-def clean_csv(file_path, 
+    # 抓到隱藏檔案(檔名有關鍵字：~$H，不動作
+    if "~$" in file_path:
+        print(file_path, "2.convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+    else:
+        if os.path.exists(converter_csv):
+            # print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
+            pass
+        else:
+            # os.path.splitext [0] = 檔案名稱，讀取分頁名稱Data1
+            # 若有指定分頁名稱，則使用sheetname功能
+            if workbook:
+                data_frame = pd.read_excel(file_path, sheet_name = workbook, engine='pyxlsb')
+            else:
+                data_frame = pd.read_excel(file_path, engine='pyxlsb')
+            data_frame.to_csv(converter_csv)
+            print(data_frame)
+            print("2.convert_csv，輸出檔案：", converter_csv)
+            print(
+                r"3.----------------------Convert_xlsb Done!------------------------\n")
+            return converter_csv
+    return None
+
+def read_xlsb_df(file_path, workbook = None):
+    """
+    將 xlsb 文件轉換為 csv
+    Parameters:
+        file_path (str): xlsb 文件的路徑
+        workbook (str or None): 指定要讀取的工作簿名稱
+    Returns:
+        str or None: 轉換後的 csv 文件路徑，如果不是 xlsb 文件則返回 None
+    """
+    if not file_path.endswith('.xlsb'):
+        # 若檔案不存在則不動作
+        return None
+    if workbook:
+        data_frame = pd.read_excel(file_path, sheet_name = workbook, engine='pyxlsb')
+    else:
+        data_frame = pd.read_excel(file_path, engine='pyxlsb')
+    return data_frame
+
+def clean_csv_letter_cover(data_frame, 
               threshold = None, 
               null_num = 1):
     '''
+    輸入data_frame，輸出dataf_frame
     threshold，用於指定保留至少多少個非空值的行或列
     nullnum，用於保留那些缺少值數量少於2的行
+    重新設定表頭
     '''
-    # 讀取 CSV 檔案
-    df = pd.read_csv(file_path)
+    # 讀取df
+    temp_data_frame = data_frame
 
     if threshold is not None:
         # 如果 `threshold` 不是 `None`，即有指定閾值
-        clean_df = df.dropna(thresh=threshold)
+        clean_df = temp_data_frame.dropna(thresh=threshold)
     
     elif null_num is not None:
         # 只保留缺少值數量少於 null_num 的行
-        clean_df = df[df.isnull().sum(axis=1) < null_num]
+        clean_df = temp_data_frame[temp_data_frame.isnull().sum(axis=1) < null_num]
     
-    print(clean_df.to_string)
+    # 指定第一列為表頭
+    # 設定 DataFrame 中df.iloc[0] 用於選取 DataFrame 的第一列數據
+    clean_df.columns = clean_df.iloc[0]
+    # 刪除第一列
+    clean_df = clean_df[1:]
+
     return clean_df
 
     # 將只包含完整資料的資料行寫入新的 CSV 檔案
