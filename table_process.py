@@ -83,7 +83,7 @@ def txt_to_df(txt_path = "08Reference_Files/data.txt"):
     # 讀取文字檔案
     with open(txt_path, 'r') as file:
         lines = file.readlines()
-    print("lines：資料如下\n", lines)
+    print("每一行的資料如下\n", lines)
 
     # 解析資料並建立字典
     data = {}
@@ -95,7 +95,7 @@ def txt_to_df(txt_path = "08Reference_Files/data.txt"):
     # 創造data的key，並將內容設定為空白列表
     for column in columns:
         data[column] = []
-    print("lines：資料如下\n", data)
+    print("轉換成【字典】資料如下\n", data)
 
     # 將lines的第二行後面的字串先做.strip()移除開頭、結尾的空白
     for line in lines[1:]:
@@ -105,9 +105,40 @@ def txt_to_df(txt_path = "08Reference_Files/data.txt"):
 
     # 建立 DataFrame
     df = pd.DataFrame(data)
-    print(df.to_string())
-    print(data)
+    print("Dataframe資料如下\n", df.to_string())
     return df, data
+
+def clean_df(data_frame, threshold=None, null_num=1):
+    '''
+    輸入data_frame，輸出dataf_frame
+    threshold，用於指定保留至少多少個非空值的行或列
+    nullnum，用於保留那些缺少值數量少於2的行
+    重新設定表頭
+    '''
+    # 讀取df
+    temp_data_frame = data_frame.copy()
+    clean_df = None
+
+    if threshold is not None:
+        # 如果 `threshold` 不是 `None`，即有指定閾值
+        clean_df = temp_data_frame.dropna(thresh=threshold)
+
+    elif null_num is not None:
+        # 只保留缺少值數量少於 null_num 的行
+        clean_df = temp_data_frame[temp_data_frame.isnull().sum(
+            axis=1) < null_num]
+
+    # 指定第一列為表頭
+    # 設定 DataFrame 中df.iloc[0] 用於選取 DataFrame 的第一列數據
+    clean_df.columns = clean_df.iloc[0]
+    # 刪除第一列
+    clean_df = clean_df[1:]
+    clean_df = clean_df.reset_index(drop=True)
+    return clean_df
+
+    # 將只包含完整資料的資料行寫入新的 CSV 檔案
+    # clean_df.to_csv('cleaned_data.csv', index=False)
+    # print("已整理並輸出整潔的資料到 cleaned_data.csv 檔案中。")
 
 def add_column_dataframe(data: pd.DataFrame, index: str, content: str):
     """

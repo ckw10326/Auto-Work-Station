@@ -18,7 +18,7 @@ def read_pandas_sec(excel_path):
     # 3.新增到csv檔案中
     """
     # 建立空的 DataFrame
-    df = pd.DataFrame()
+    data_frame = pd.DataFrame()
     file_path = []
     drawing_no = []
     draw_title = []
@@ -58,17 +58,18 @@ def read_pandas_sec(excel_path):
         '來文名稱:': l_title,
         '路徑': file_path}
 
-    df = pd.DataFrame(row_data)
-    print(df)
+    data_frame = pd.DataFrame(row_data)
+    print(data_frame)
 
     # 分割檔案名稱、副檔名 > 儲存CSV檔案
     filename, _ = os.path.splitext(excel_path)
     # 將字串中的"_converted"剝離
     csv_path = filename.replace("_converted", "") + "_csv.csv"
-    df.to_csv(csv_path, index=True)
+    data_frame.to_csv(csv_path, index=True)
 
     workbook.close()
     return csv_path
+
 
 def xlsx_to_csv(excel_path):
     """
@@ -90,7 +91,8 @@ def xlsx_to_csv(excel_path):
     workbook.close()
     return csv_output_path
 
-def xlsb_to_csv(file_path, workbook = None):
+
+def xlsb_to_csv(file_path, workbook=None):
     """
     將 xlsb 文件轉換為 csv
     Parameters:
@@ -101,7 +103,7 @@ def xlsb_to_csv(file_path, workbook = None):
     """
     if not file_path.endswith('.xlsb'):
         return None
-    
+
     print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
     converter_csv = os.path.splitext(file_path)[0] + ".csv"
 
@@ -116,7 +118,8 @@ def xlsb_to_csv(file_path, workbook = None):
             # os.path.splitext [0] = 檔案名稱，讀取分頁名稱Data1
             # 若有指定分頁名稱，則使用sheetname功能
             if workbook:
-                data_frame = pd.read_excel(file_path, sheet_name = workbook, engine='pyxlsb')
+                data_frame = pd.read_excel(
+                    file_path, sheet_name=workbook, engine='pyxlsb')
             else:
                 data_frame = pd.read_excel(file_path, engine='pyxlsb')
             data_frame.to_csv(converter_csv)
@@ -127,7 +130,8 @@ def xlsb_to_csv(file_path, workbook = None):
             return converter_csv
     return None
 
-def read_xlsb_df(file_path, workbook = None):
+
+def read_xlsb_df(file_path, workbook=None):
     """
     將 xlsb 文件轉換為 csv
     Parameters:
@@ -140,14 +144,41 @@ def read_xlsb_df(file_path, workbook = None):
         # 若檔案不存在則不動作
         return None
     if workbook:
-        data_frame = pd.read_excel(file_path, sheet_name = workbook, engine='pyxlsb')
+        data_frame = pd.read_excel(
+            file_path, sheet_name=workbook, engine='pyxlsb')
     else:
         data_frame = pd.read_excel(file_path, engine='pyxlsb')
     return data_frame
 
-def clean_csv_letter_cover(data_frame, 
-              threshold = None, 
-              null_num = 1):
+
+def read_all_xlsb_df(file_path):
+    '''
+    1.讀取XLSB全分業
+    2.合併不同表格，
+    3.轉換xlsb to csv 文在檔案的位置所在
+    '''
+    if not file_path.endswith('.xlsb'):
+        # 若檔案不存在則不動作
+        print("非xlsb檔案，請在確認")
+        return None
+
+    # 4.讀取檔案分頁
+    df1 = read_xlsb_df(file_path, "Data1")
+    # 新增path欄位
+    df1['path'] = "dest_path"
+
+    df2 = read_xlsb_df(file_path)
+    df2 = clean_csv_letter_cover(df2, null_num=2)
+    df2 = df2.reset_index(drop=True)
+
+    # 進行合併操作
+    merged_df = pd.concat([df1, df2], axis=1)
+    return merged_df
+
+
+def clean_csv_letter_cover(data_frame,
+                           threshold=None,
+                           null_num=1):
     '''
     輸入data_frame，輸出dataf_frame
     threshold，用於指定保留至少多少個非空值的行或列
@@ -160,11 +191,12 @@ def clean_csv_letter_cover(data_frame,
     if threshold is not None:
         # 如果 `threshold` 不是 `None`，即有指定閾值
         clean_df = temp_data_frame.dropna(thresh=threshold)
-    
+
     elif null_num is not None:
         # 只保留缺少值數量少於 null_num 的行
-        clean_df = temp_data_frame[temp_data_frame.isnull().sum(axis=1) < null_num]
-    
+        clean_df = temp_data_frame[temp_data_frame.isnull().sum(
+            axis=1) < null_num]
+
     # 指定第一列為表頭
     # 設定 DataFrame 中df.iloc[0] 用於選取 DataFrame 的第一列數據
     clean_df.columns = clean_df.iloc[0]
@@ -174,107 +206,8 @@ def clean_csv_letter_cover(data_frame,
     return clean_df
 
     # 將只包含完整資料的資料行寫入新的 CSV 檔案
-    #clean_df.to_csv('cleaned_data.csv', index=False)
-    #print("已整理並輸出整潔的資料到 cleaned_data.csv 檔案中。")
-
-
-def to_df_analyze(excel_path, combined_csv_path="/workspaces/Auto-Work-Station/01Class/data.csv"):
-    """ 測試df = pd.read_excel格式是否會跑掉"""
-    if "Done" in excel_path:
-        print("包含Done檔案，已處理過不再處理")
-        return None
-
-    # 建立首列DataFrame
-    df = pd.DataFrame(columns=['批次序號', '圖號:', '圖名:', '版次:', '來文號碼:',
-                               '來文日期:', '來文名稱:', '路徑'])
-    # 表格映射值
-    field_mapping = {
-        'No': ['批次序號'],
-        'drawing_no_value': ['圖號', 'CLIENTDOCNO', 'DOCVERSIONDESC'],
-        'drawing_title_value': ['圖名', 'DESCRIPTION', 'DOCCLASS'],
-        'drawing_vision_value': ['版次', 'DOCVERSIONDESC'],
-        'letter_num_value': ['來文號碼', 'TRANSMITTALNO'],
-        'letter_date_value': ['來文日期', 'REVDATE', 'PLANNEDCLIENTRETURNDATE'],
-        'letter_titl_value': ['來文名稱', 'DESCRIPTION'],
-        'file_path': ['路徑']
-    }
-
-    # 1.讀取 Excel 檔案，設置為df
-    df = pd.read_excel(excel_path)
-    print(df, '\n------------------------------------')
-
-    field_mapping = {
-        'No': ['批次序號'],
-        'drawing_no_value': ['圖號', 'CLIENTDOCNO', 'DOCVERSIONDESC'],
-        'drawing_title_value': ['圖名', 'DESCRIPTION', 'DOCCLASS'],
-        'drawing_vision_value': ['版次', 'DOCVERSIONDESC'],
-        'letter_num_value': ['來文號碼', 'TRANSMITTALNO'],
-        'letter_date_value': ['來文日期', 'REVDATE', 'PLANNEDCLIENTRETURNDATE'],
-        'letter_titl_value': ['來文名稱', 'DESCRIPTION'],
-        'file_path': ['路徑']
-    }
-
-    # 指定要移動到第一列和第二列的表頭
-    code_headers = ['No', 'drawing_no_value', 'drawing_title_value', 'drawing_vision_value',
-                    'letter_num_value', 'letter_date_value', 'letter_titl_value', 'file_path']
-    zh_headers = ['批次序號', '圖號', '圖名', '版次', '來文號碼', '來文日期', '來文名稱', '路徑']
-    vender1_zh_headers = ['', 'CLIENTDOCNO', 'DESCRIPTION',
-                          'DOCVERSIONDESC', 'TRANSMITTALNO', 'REVDATE', 'DESCRIPTION', '']
-    vender2_zh_headers = ['', 'DOCVERSIONDESC', 'DOCCLASS',
-                          '', '', 'PLANNEDCLIENTRETURNDATE', '', '']
-
-    # 使用 reindex() 函數重新排序列
-    df1 = df.reindex(columns=vender1_zh_headers)
-    df2 = df.reindex(columns=vender2_zh_headers)
-    print("start")
-    print(df1, '\n------------------------------------')
-    print(df2, '\n------------------------------------')
-
-    # worksheet = workbook.active
-    # # 讀取表格文件數量
-    # drawings_nums = 0
-    # for i in range(0, 19):
-    #     if worksheet["B"+str(2+i)].value:
-    #         drawings_nums = 1 + drawings_nums
-    #     else:
-    #         break
-    # print("文件數量", drawings_nums)
-    # # 讀取資料
-    # for i in range(0, drawings_nums):
-    #     # print("讀取路徑", file_path, "第",i+1,"個檔案", )
-    #     drawing_no_value = worksheet["E"+str(2+i)].value
-    #     drawing_title_value = worksheet["O"+str(2+i)].value
-    #     drawing_vision_value = worksheet["G"+str(2+i)].value
-    #     letter_num_value = worksheet["B2"].value
-    #     letter_date_value = worksheet["H2"].value
-    #     letter_titl_value = worksheet["O2"].value
-    #     # 將資料添加到DataFrame中
-    #     row_data = {
-    #         '批次序號': i+1,
-    #         '圖號:': drawing_no_value,
-    #         '圖名:': drawing_title_value,
-    #         '版次:': drawing_vision_value,
-    #         '來文號碼:': letter_num_value,
-    #         '來文日期:': letter_date_value,
-    #         '來文名稱:': letter_titl_value,
-    #         '路徑': excel_path}
-    #     # 合併儲存格
-    #     df = pd.concat([df, pd.DataFrame(row_data, index=[0])], ignore_index=True)
-
-    # # 分割檔案名稱、副檔名 > 儲存CSV檔案
-    # filename, extension = os.path.splitext(excel_path)
-    # csv_path = filename.replace("_converted", ".csv")
-    # df.to_csv(csv_path, mode='a', header=False, index=False)
-    # print(df, "\n----------------以上為讀取表格-----------------")
-    # # 整合舊資料與新資料
-    # if os.path.exists(combined_csv_path):
-    #     df.to_csv(combined_csv_path, mode='a', header=False, index=False)
-    #     combined_df = pd.read_csv(combined_csv_path)
-    #     print(combined_df, "\n----------------整合後表格-----------------")
-    # else:
-    #     df.to_csv(combined_csv_path, index=False)
-    # workbook.close()
-    # return None
+    # clean_df.to_csv('cleaned_data.csv', index=False)
+    # print("已整理並輸出整潔的資料到 cleaned_data.csv 檔案中。")
 
 
 if __name__ == '__main__':

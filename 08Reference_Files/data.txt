@@ -1,17 +1,2 @@
-																											
-																											
-																											
-GE II and CTCI Consortium																											
-Pacific Engineers & Constructors, Ltd.																					Date  :		2023/06/19				
-14th Fl, 333 Tun Hua South Road,																					Our Ref. No.  :		TPC-TC(C0)-CD-23-2078				
-Project : Tai Chung Combined Cycle Power Plant Project																											
-(Contract No. : 63308633011 / Spec. No. : 1007-141-MS-01)																											
-                                    	Drawing for LCP of Sump Pump (TYPE B/C/D/E)																										
-	□	none (0) print, two (2) electronic files (DVD/CD), and two (2) copies of transmittal letter (for "as built drawing")																									
-Class : A: approval,  I: Information,  C: Construction,  D: Design,  F: Final,   AB: As-Built,  Z: Other. 																											
-Customer Drawing No.						Rev. 	Title of Description															Class	Drawing No.				
-TC0-1-EQE02-D9001						D	Drawing for LCP of Sump Pump (TYPE B)															A	TC0-1-EQE02-D9001				
-TC0-1-EQE02-D9002						D	Drawing for LCP of Sump Pump (TYPE C)															A	TC0-1-EQE02-D9002				
-TC0-1-EQE02-D9003						D	Drawing for LCP of Sump Pump (TYPE D)															A	TC0-1-EQE02-D9003				
-TC0-1-EQE02-D9004						D	Drawing for LCP of Sump Pump (TYPE E)															A	TC0-1-EQE02-D9004				
-Contact Person:          			程正維  Ext.:28057				VDR-M0063-MJE-0025														CTCI Corporation						
+           TRANSMITTALNO          CTCIDOCNO        VENDORDOCNO        CLIENTDOCNO  ...  RETUREDATE TAGNO SUBMITENGINEER                                        DESCRIPTION
+0  HT-D1-CTC-GEL-23-2867  HT0-1-UMM01-T6933  HT0-1-UMM01-T6933  HT0-1-UMM01-T6933  ...  2023/08/20   NaN            NaN  SAT procedure  and LCP for AmmoniaVaporizer 蒸發...

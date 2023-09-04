@@ -6,7 +6,7 @@
 import os
 import openpyxl
 import pandas as pd
-from table_process import add_column_dataframe
+from table_process import add_column_dataframe, clean_df
 
 def read_tc_excel(file_path):
     """讀取台中文件"""
@@ -124,6 +124,62 @@ def xlsm_to_csv(file_path):
     else:
         return None
 
+def all_xlsm_to_csv(file_path):
+    """
+    1. 轉換所需分頁資訊
+    2. 對未隱藏分頁(report_sheet)，整理格式，reset index
+    3. df_Data1新增path欄位以及內容
+    4. 合併 Data1、report_sheet
+    
+    """
+    if '.xlsm' in file_path:
+        print(file_path, "，符合「.xlsm」的檔案")
+        # 產生新檔名
+        csv_path = os.path.splitext(file_path)[0] + ".csv"
+        csv_folder_path = os.path.dirname(file_path)
+
+        path_company = r"//10.162.10.58/全處共用區/_Dwg/台中發電廠新建燃氣機組計畫/"
+        path_cloud = csv_folder_path.replace(r"00dest/collectTC20230728/", "")
+        dest_folder = os.path.join(path_company, path_cloud)
+
+
+        # 抓到隱藏檔案(檔名有關鍵字：~$H，不動作
+        if "~$" in file_path:
+            print(file_path, "抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+        else:
+            if os.path.exists(csv_path):
+                print(csv_path, "檔案已存在，不動作")
+                return False
+            else:
+                # 先使用openpyxl.load_workbook()函數打開Excel文件
+                # 我們遍歷工作簿中的所有工作表，檢查每個工作表的狀態
+                # 是否為非隱藏（sheet_state不等於"hidden
+
+                workbook = openpyxl.load_workbook(file_path, read_only=True)
+                visible_sheet_names = workbook.sheetnames
+                df_report_sheet = None
+
+                for sheet_name in visible_sheet_names:
+                    if not workbook[sheet_name].sheet_state == "hidden":
+                        df_report_sheet = pd.read_excel(file_path, sheet_name=sheet_name)
+                workbook.close()
+                
+                # 將report頁重新整理格式
+                df_report_sheet = clean_df(df_report_sheet, threshold=5)
+                # 新增路徑位置
+                df_report_sheet['path'] = dest_folder
+                print(df_report_sheet)
+                df_data1 = pd.read_excel(file_path, sheet_name="Data1")
+                print(df_data1)
+
+                # 整併分頁
+                merged_df = pd.concat([df_report_sheet, df_data1], axis=1)
+                merged_df.to_csv(csv_path, encoding='utf-8', index=True)
+                print("輸出檔案：", csv_path)
+                print(r"3.-----------------Convert_xlsm to csv Done!------------------\n")
+                return csv_path
+    else:
+        return None
 
 def main():
     '''主程式，目前沒作用'''
