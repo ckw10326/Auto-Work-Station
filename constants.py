@@ -31,6 +31,7 @@ TEMP_FOLDER = r"/workspaces/Auto-Work-Station/()Temp"
 # 套印文件 [1興達2台中]+[0雲端 1家庭 2公司 ]
 HT_PRINT_STD_FILE =  os.path.join(current_dir, "08Reference_Files/HT套印標準.rtf")
 TC_PRINT_STD_FILE = os.path.join(current_dir, "08Reference_Files/TC套印標準.rtf")
+PRINT_FILE = os.path.join(current_dir, "08Reference_Files/標準套印文件.docx")
 HT_PRINT_STD_FILE12 = r"D:\00 興達計劃\05 EPC提供資料\HT套印標準.rtf"
 TC_PRINT_STD_FILE22 = r"D:\00 台中計劃\05 EPC提供資料\TC套印標準.rtf"
 # 傳真文件

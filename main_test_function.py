@@ -3,17 +3,16 @@
 1.雲端分析檔案，產生套印、傳真資料(2023/8/28完成)
 2.分析一個檔案(2023/8/28完成)
 3.具有將資料夾【所有符合關鍵字】的檔案分析能力
-
 '''
 import os
 import sys
-import docx
 from file_process import move_document, files_list, check_plan, del_folder, make_folder
-from docx_process import replace_text_in_docx
+from docx_process import read_docx_file, replace_keyword_in_docx
 from read_ht import convert_xlsb
 from read_ht import read_ctc_ht_excel
 from read_tc import read_tc_excel
-from text_gen import copy_plan_file, text_gen, copy_plan_file2
+from text_gen import copy_plan_file, text_gen
+
 
 def work_flow():
     '''
@@ -50,21 +49,25 @@ def work_flow():
                 draw_title, draw_vision, l_num, letter_date = read_ctc_ht_excel(
                     converted_path)
                 print(draw_title, draw_vision, l_num, letter_date)
-                text_gen(draw_title, draw_vision, l_num, letter_date)
+                contents0, contents1, contents2, contents3, contents4 = text_gen(draw_title, draw_vision, l_num, letter_date)
+                new_contents = contents0 + "\n" + contents3 + "\n" + contents4
                 # 複製套印、傳真檔案
-                copy_plan_file(converted_path)
+                print_dest_file, fax_dest_file = copy_plan_file(converted_path)
+                if os.path.exists(print_dest_file):
+                    new_docx_file = replace_keyword_in_docx(print_dest_file, "123" , new_contents)
+                    read_docx_file(new_docx_file)
+
 
     elif str(check_plan(dest_folder)) == "2":
         # 讀取台中
-        # 3.1 產生xlsb列表，並轉換成xlsx
         xlsm_list = files_list(dest_folder, ".xlsm")
         if xlsm_list:
             for xlsm in xlsm_list:
                 draw_title, draw_vision, l_num, l_date = read_tc_excel(xlsm)
                 print(draw_title, draw_vision, l_num, l_date)
-                text_gen(draw_title, draw_vision, l_num, l_date)
+                contents0, contents1, contents2, contents3, contents4 = text_gen(draw_title, draw_vision, l_num, l_date)
                 # 複製套印、傳真檔案
-                copy_plan_file(xlsm)
+                print_dest_file, fax_dest_file = copy_plan_file(xlsm)
     else:
         print("沒有符合檔案")
         sys.exit()
@@ -73,8 +76,8 @@ def work_flow():
 if __name__ == '__main__':
     del_folder("00dest")
     work_flow()
-    del_folder("00source")
-    make_folder("00source")
+    #del_folder("00source")
+    #make_folder("00source")
 
     #新測試流程
     # del_folder("00dest")

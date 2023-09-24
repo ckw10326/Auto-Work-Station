@@ -23,6 +23,7 @@ def text_gen(letter_title, letter_rev, letter_num, letter_date) -> None:
     consult_company = "泰興公司" if "-TC" in letter_num else "吉興公司"
     # 判斷計畫別
     plan_name = "興達" if "CTC" in letter_num else "台中"
+    print("letter_date:", letter_date)
     date_obj = datetime.datetime.strptime(letter_date, "%Y/%m/%d")
     month = date_obj.strftime("%m")
     day = date_obj.strftime("%d")
@@ -48,7 +49,7 @@ def text_gen(letter_title, letter_rev, letter_num, letter_date) -> None:
     print(contents3)
     print(contents4)
     input("enter any kesy to exit")
-    return contents0, contents1, contents2, contents3
+    return contents0, contents1, contents2, contents3, contents4
 
 def copy_plan_file(filepath) -> None:
     """複製套印文件到與file_path相同資料夾，注意temp_folder必須為資料夾路徑"""
@@ -58,7 +59,9 @@ def copy_plan_file(filepath) -> None:
     file_name = file_allname.split(".")[0]
 
     # 套印、傳真文件名稱
-    print_dest_file = os.path.join(file_folder, f"套印_{file_name}.rtf")
+    #print_dest_file = os.path.join(file_folder, f"套印_{file_name}.rtf")
+    # 新測試使用
+    print_dest_file = os.path.join(file_folder, f"套印_{file_name}.docx")
     fax_dest_file = os.path.join(file_folder, f"傳真_{file_name}.doc")
     print("套印檔案名稱:", file_allname)
     print("目標資料夾路徑:", file_folder)
@@ -69,10 +72,14 @@ def copy_plan_file(filepath) -> None:
     print_file = ""
     fax_file = ""
     if "HT-" in str(filepath):
-        print_file = constants.HT_PRINT_STD_FILE
+        #print_file = constants.HT_PRINT_STD_FILE
+        # 新測試使用docx檔案
+        print_file = constants.PRINT_FILE
         fax_file = constants.HT_FAX_FILE
     elif "-TC" in str(filepath):
-        print_file = constants.TC_PRINT_STD_FILE
+        #print_file = constants.TC_PRINT_STD_FILE
+        # 新測試使用docx檔案
+        print_file = constants.PRINT_FILE
         fax_file = constants.TC_FAX_FILE
     else:
         print("---------------檔名不符合關鍵字，不動作-----------------")
@@ -80,7 +87,8 @@ def copy_plan_file(filepath) -> None:
     shutil.copy2(print_file, print_dest_file)
     shutil.copy2(fax_file, fax_dest_file)
     print("--------複製 套印、傳真文件 完成---------------")
-    return None
+    return print_dest_file, fax_dest_file
+
 
 def file_path_process():
     """收集關鍵字，生成文號，生成路徑"""
