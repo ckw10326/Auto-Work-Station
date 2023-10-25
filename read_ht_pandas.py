@@ -8,14 +8,17 @@
 import os
 import openpyxl
 import pandas as pd
+from function_file_process import move_document, files_list, check_plan, del_folder, make_folder
 
-
-def read_pandas_sec(excel_path):
+def r_ht_ctc_xlsx_sheet_tocsv(converted_xlsx_path):
     """
-    # 輸入，讀取excel檔案路徑，輸出csv檔案路徑
-    # 1.讀取指定路徑檔案，並讀取表格上指定位置
-    # 2.自訂義相關文字
-    # 3.新增到csv檔案中
+    前置動作    convert_xlsb(XLSB>XLSX)
+    讀取計畫    HT
+    讀取關鍵字  CTC-GEL
+    讀取類型    XLSX
+    方法        SHEET代表讀取表格指定位置
+    結果        在原始路徑輸出CSV檔案
+    輸出        csv檔案路徑
     """
     # 建立空的 DataFrame
     data_frame = pd.DataFrame()
@@ -27,7 +30,7 @@ def read_pandas_sec(excel_path):
     l_date = []
     l_title = []
     # 1.讀取 Excel 檔案
-    workbook = openpyxl.load_workbook(excel_path)
+    workbook = openpyxl.load_workbook(converted_xlsx_path)
     worksheet = workbook.active
     # 讀取表格文件數量
     drawings_nums = 0
@@ -45,7 +48,7 @@ def read_pandas_sec(excel_path):
         l_num.append(worksheet["B2"].value)
         l_date.append(worksheet["H2"].value)
         l_title.append(worksheet["O2"].value)
-        file_path.append(excel_path)
+        file_path.append(converted_xlsx_path)
 
     # 將資料添加到DataFrame中
     row_data = {
@@ -62,7 +65,7 @@ def read_pandas_sec(excel_path):
     print(data_frame)
 
     # 分割檔案名稱、副檔名 > 儲存CSV檔案
-    filename, _ = os.path.splitext(excel_path)
+    filename, _ = os.path.splitext(converted_xlsx_path)
     # 將字串中的"_converted"剝離
     csv_path = filename.replace("_converted", "") + "_csv.csv"
     data_frame.to_csv(csv_path, index=True)
@@ -70,6 +73,18 @@ def read_pandas_sec(excel_path):
     workbook.close()
     return csv_path
 
+def gei_xlsx(excel_path):
+    """
+    測試HT-D1-GEI-GEL-23-0290
+    輸入路徑，輸出df表格，表格應包含關鍵字
+    """
+    # 讀取xlsx檔案
+    
+    # 刪除無用
+
+def test_gei_xlsx():
+    excel_path = "/workspaces/Auto-Work-Station/08Reference_Files/HT/HT-D1-GEI-GEL-23-0290.xlsx"
+    gei_xlsx(excel_path)
 
 def xlsx_to_csv(excel_path):
     """
@@ -94,61 +109,53 @@ def xlsx_to_csv(excel_path):
 
 def xlsb_to_csv(file_path, workbook=None):
     """
-    將 xlsb 文件轉換為 csv
+    功能：將 xlsb 文件轉換為 csv
+    注意：具備分頁選擇功能
     Parameters:
         file_path (str): xlsb 文件的路徑
         workbook (str or None): 指定要讀取的工作簿名稱
     Returns:
         str or None: 轉換後的 csv 文件路徑，如果不是 xlsb 文件則返回 None
     """
-    if not file_path.endswith('.xlsb'):
-        return None
 
-    print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
-    converter_csv = os.path.splitext(file_path)[0] + ".csv"
+    # 檢查輸入參數合法性
 
-    # 抓到隱藏檔案(檔名有關鍵字：~$H，不動作
+    assert os.path.isfile(file_path), "Invalid file path"
+    assert file_path.endswith(".xlsb"), "File format is not xlsb"
+
+    # 處理隱藏檔案
+
     if "~$" in file_path:
         print(file_path, "2.convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
-    else:
-        if os.path.exists(converter_csv):
-            # print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
-            pass
-        else:
-            # os.path.splitext [0] = 檔案名稱，讀取分頁名稱Data1
-            # 若有指定分頁名稱，則使用sheetname功能
-            if workbook:
-                data_frame = pd.read_excel(
-                    file_path, sheet_name=workbook, engine='pyxlsb')
-            else:
-                data_frame = pd.read_excel(file_path, engine='pyxlsb')
-            data_frame.to_csv(converter_csv)
-            print(data_frame)
-            print("2.convert_csv，輸出檔案：", converter_csv)
-            print(
-                r"3.----------------------Convert_xlsb Done!------------------------\n")
-            return converter_csv
-    return None
-
-
-def read_xlsb_df(file_path, workbook=None):
-    """
-    將 xlsb 文件轉換為 csv
-    Parameters:
-        file_path (str): xlsb 文件的路徑
-        workbook (str or None): 指定要讀取的工作簿名稱
-    Returns:
-        str or None: 轉換後的 csv 文件路徑，如果不是 xlsb 文件則返回 None
-    """
-    if not file_path.endswith('.xlsb'):
-        # 若檔案不存在則不動作
         return None
-    if workbook:
-        data_frame = pd.read_excel(
-            file_path, sheet_name=workbook, engine='pyxlsb')
-    else:
-        data_frame = pd.read_excel(file_path, engine='pyxlsb')
-    return data_frame
+
+    # 生成輸出檔案名稱
+
+    converter_csv = os.path.splitext(file_path)[0] + ".csv"
+
+    # 讀取 xlsb 文件
+
+    try:
+        if workbook:
+            data_frame = pd.read_excel(
+                file_path, sheet_name=workbook, engine='pyxlsb')
+        else:
+            data_frame = pd.read_excel(file_path, engine='pyxlsb')
+    except Exception as e:
+        print(e)
+        return None
+
+    # 寫入 csv 文件
+
+    with open(converter_csv, 'w', newline='') as f:
+        data_frame.to_csv(f)
+
+    return converter_csv
+def test_xlsb_to_csv():
+    file_path = "/workspaces/Auto-Work-Station/00source/HT-D1-CTC-GEL-23-0005.xlsb"
+    workbook = "Data1"
+    converter_csv = xlsb_to_csv(file_path, workbook)
+    print(f"4.轉換完成，輸出檔案：{converter_csv}")
 
 
 def read_all_xlsb_df(file_path):
@@ -180,9 +187,13 @@ def clean_csv_letter_cover(data_frame,
                            threshold=None,
                            null_num=1):
     '''
-    輸入data_frame，輸出dataf_frame
-    threshold，用於指定保留至少多少個非空值的行或列
-    nullnum，用於保留那些缺少值數量少於2的行
+    似乎沒有使用必要，重要資訊Data1分頁都擁有
+    目的：將複雜的cover頁轉化為DataFrame當輸入，輸出純淨的表格
+    輸入：data_frame
+    輸出：dataf_frame
+    參數
+    threshold：用於指定保留至少多少個非空值的行或列
+    nullnum：用於保留那些缺少值數量少於2的行
     重新設定表頭
     '''
     # 讀取df
@@ -211,4 +222,7 @@ def clean_csv_letter_cover(data_frame,
 
 
 if __name__ == '__main__':
-    print("請執行main_pandas.py")
+    if 0:
+        print("請執行main_pandas.py")
+    else:
+        test_xlsb_to_csv()

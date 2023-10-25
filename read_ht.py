@@ -1,14 +1,14 @@
 '''
 轉換興達計畫excel檔案 2023/08/28
-2.convert_xlsb      轉換符合條件的檔案，並輸出歷列表
-3.read_ctc_ht_excel 讀取轉換後檔案，並逐項輸出
+1.r_ctc_xlsb_sheet
+    輸入xlsx檔案，依照位置分析頁首
+2.convert_xlsb      轉換符合條件的檔案，並輸出轉換後路徑
 '''
 import os
 import openpyxl
 import pandas as pd
 
-
-def read_ctc_ht_excel(def_dest_path):
+def r_ctc_xlsx_sheet(def_dest_path):
     """讀取HT文件"""
     if "Done" in def_dest_path:
         print("包含Done檔案，已處理過不再處理")
@@ -97,15 +97,23 @@ def read_ctc_ht_excel(def_dest_path):
     print("--------------.xlsx分析完成-----------------")
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
-
 def convert_xlsb(file_path):
-    """轉換xlsb to xlsx"""
-    if '.xlsb' in file_path:
-        print("1.convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
+    """
+    轉換xlsb to xlsx
+    讀取計畫    HT
+    讀取關鍵字  CTC-GEL
+    讀取類型    XLSB
+    方法        engine = pyxlsb,  分頁DATA1
+    結果        在原始路徑輸出CSV檔案
+    輸出        csv檔案路徑
+    """
+    if ".xlsb" in file_path:
+        print(" (1).convert_xlsb，檔案路徑：", file_path, "，符合「.xlsb」的檔案")
         converter_xlsx = os.path.splitext(file_path)[0] + "_converted.xlsx"
+        print("converter_xlsx=" ,converter_xlsx)
         # 抓到隱藏檔案(檔名有關鍵字：~$H，不動作
         if "~$" in file_path:
-            print(file_path, "2.convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
+            print(file_path, " (2).convert_xlsb，抓到隱藏檔案(檔名有關鍵字：~$H，不動作")
         else:
             if os.path.exists(converter_xlsx):
                 # print("3.convert_xlsb，_converted.xlsx" + "檔案已存在，不動作")
@@ -115,13 +123,12 @@ def convert_xlsb(file_path):
                 data_frame = pd.read_excel(
                     file_path, sheet_name='Data1', engine='pyxlsb')
                 data_frame.to_excel(converter_xlsx)
-                print("2.convert_xlsb，輸出檔案：", converter_xlsx)
+                print(" (2).convert_xlsb，輸出檔案：", converter_xlsx)
                 print(
-                    r"3.----------------------Convert_xlsb Done!------------------------\n")
+                    r" (3).------Convert_xlsb Done!--------\n")
                 return converter_xlsx
     else:
         return None
 
-
 if __name__ == '__main__':
-    pass
+    print("請運行main.py")

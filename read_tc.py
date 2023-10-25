@@ -1,16 +1,18 @@
 '''
 轉換台中計畫excel檔案
-1.files_list        表列所有檔案，並輸出列表
-2.read_tc_excel     讀取轉換後檔案，並逐項輸出
+read_tc_excel     讀取轉換後檔案，並逐項輸出
 '''
 import os
 import openpyxl
 import pandas as pd
-import file_process
 
-
-def read_tc_excel(def_dest_path):
-    """讀取台中文件"""
+def r_tc_xlsm_sheet(def_dest_path):
+    """
+    讀取台中文件
+    輸出
+        列表各字串列表
+        產生excel檔案
+    """
     if "Done" in def_dest_path:
         print("包含Done檔案，已處理過不再處理")
         return None
@@ -94,21 +96,5 @@ def read_tc_excel(def_dest_path):
     return letter_titl_value, drawing_vision_value, letter_num_value, letter_date_value
 
 
-def test2() -> None:
-    '''測試二'''
-    path = r"/workspaces/Auto-Work-Station/00source"
-    # 列表，檔案清單
-    the_xlsb_file_list = file_process.files_list(path, ".xlsm")
-
-    # 讀取列表中的清單
-    for the_file in the_xlsb_file_list:
-        read_tc_excel(the_file)
-
-
-def main():
-    "main"
-    return None
-
-
 if __name__ == '__main__':
-    test2()
+    print("請運行main.py")

@@ -45,3 +45,5 @@ def replace_keyword_in_docx(file_path, keyword, replacement):
         return new_file_path
     except Exception as e:
         print("處理文件時發生錯誤:", str(e))
+
+read_docx_file("/workspaces/Auto-Work-Station/00dest/00source/套印_TPC-TC(C0)-CD-23-3019.docx")

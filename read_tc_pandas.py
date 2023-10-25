@@ -6,7 +6,7 @@
 import os
 import openpyxl
 import pandas as pd
-from table_process import add_column_dataframe, clean_df
+from function_table_process import add_column_dataframe, clean_df
 
 def read_tc_excel(file_path):
     """讀取台中文件"""

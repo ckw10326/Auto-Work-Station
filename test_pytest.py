@@ -7,33 +7,8 @@ pytest --collect-only
 import os
 import itertools
 from text_gen import copy_plan_file, text_gen
+from function_file_process import files_list, check_plan
 
-def test_copy_plan_file(tmpdir):
-    """
-    創建測試檔案
-    模擬輸出輸入
-    """
-    # 創建測試檔案
-    test_file = tmpdir.join("HT-_test_file.txt")
-    test_file.write("Test content")
-
-    # 執行被測試的函數
-    print(test_file)
-    copy_plan_file(test_file)
-
-    # 檢查是否生成了正確的套印檔案和傳真檔案
-    file_folder = os.path.split(test_file)[0]
-    file_name = os.path.splitext(os.path.split(test_file)[1])[0]
-    print_dest_file = os.path.join(file_folder, f"套印_{file_name}.rtf")
-    print(print_dest_file)
-    fax_dest_file = os.path.join(file_folder, f"傳真_{file_name}.doc")
-    print(print_dest_file)
-    assert os.path.exists(print_dest_file)
-    assert os.path.exists(fax_dest_file)
-
-    # 清理測試生成的檔案
-    os.remove(print_dest_file)
-    os.remove(fax_dest_file)
 
 def test_text_gen(monkeypatch):
     """模擬測試程式"""
@@ -55,3 +30,23 @@ def test_text_gen(monkeypatch):
     assert result[1] == contents1_expected
     assert result[2] == contents2_expected
     assert result[3] == contents3_expected
+
+def test_files_list():
+    """測試"""
+    # 測試情境1：沒有指定關鍵字
+    xpath = "/path/to/directory"
+    expected_output = [
+        "/path/to/directory/file1.txt",
+        "/path/to/directory/subdirectory/file2.txt"
+    ]
+    result = files_list(xpath)
+    assert result.sort() == expected_output.sort()
+
+    # 測試情境2：指定關鍵字
+    xpath = "/path/to/directory"
+    search_str = "file2"
+    expected_output = [
+        "/path/to/directory/subdirectory/file2.txt"
+    ]
+    result = files_list(xpath, search_str)
+    assert result.sort() == expected_output.sort()

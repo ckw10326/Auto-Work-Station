@@ -8,12 +8,12 @@
 import os
 import sys
 import docx
-from file_process import move_document, files_list, check_plan, del_folder, make_folder
-from docx_process import replace_text_in_docx
+from function_file_process import move_document, files_list, check_plan, del_folder, make_folder
+
 from read_ht import convert_xlsb
-from read_ht import read_ctc_ht_excel
-from read_tc import read_tc_excel
-from text_gen import copy_plan_file, text_gen, copy_plan_file2
+from read_ht import r_ctc_xlsx_sheet
+from read_tc import r_tc_xlsm_sheet
+from text_gen import copy_plan_file, text_gen
 
 def work_flow():
     '''
@@ -47,7 +47,7 @@ def work_flow():
         xlsx_file_list = files_list(dest_folder, "converted.xlsx")
         if xlsx_file_list:
             for converted_path in xlsx_file_list:
-                draw_title, draw_vision, l_num, letter_date = read_ctc_ht_excel(
+                draw_title, draw_vision, l_num, letter_date = r_ctc_xlsx_sheet(
                     converted_path)
                 print(draw_title, draw_vision, l_num, letter_date)
                 text_gen(draw_title, draw_vision, l_num, letter_date)
@@ -60,7 +60,7 @@ def work_flow():
         xlsm_list = files_list(dest_folder, ".xlsm")
         if xlsm_list:
             for xlsm in xlsm_list:
-                draw_title, draw_vision, l_num, l_date = read_tc_excel(xlsm)
+                draw_title, draw_vision, l_num, l_date = r_tc_xlsm_sheet(xlsm)
                 print(draw_title, draw_vision, l_num, l_date)
                 text_gen(draw_title, draw_vision, l_num, l_date)
                 # 複製套印、傳真檔案

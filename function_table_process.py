@@ -1,15 +1,46 @@
 '''
 Table處理相關功能
-1. combine_csv
-2. combine_csv_list 
+    csv_to_df，附帶顯示功能
+    combine_csv(src, dst)，將src資料接到dst"下"面
+    combine_csv_list 
 3. read_csv 讀取
 '''
 import os
 import pandas as pd
 
+def csv_to_df(file_path):
+    """
+    讀取CSV文件
+    輸入：csv路徑
+    輸出：dataframe
+    顯示文件
+    """
+    try:
+        # 嘗試使用 UTF-8 編碼讀取 CSV 文件
+        data_frame = pd.read_csv(file_path, encoding='utf-8')
+        print(data_frame.to_string())
+        return data_frame
+    except UnicodeDecodeError:
+        try:
+            # 若無法使用 UTF-8 編碼，嘗試使用 Latin-1 編碼讀取 CSV 文件
+            data_frame = pd.read_csv(file_path, encoding='latin-1')
+            print(data_frame.to_string())
+            return data_frame
+        except FileNotFoundError:
+            print("找不到文件")
+        except Exception as error:
+            print("發生錯誤:", str(error))
+    except FileNotFoundError:
+        print("找不到文件")
+    except Exception as error:
+        print("發生錯誤:", str(error))
 
 def combine_csv(src, dst):
-    """整合單一csv檔案"""
+    """
+    整合src csv檔案
+    到dst csv檔案
+    覆蓋法，僅能接受兩個檔案
+    """
     try:
         # 讀取源檔案
         df_src = pd.read_csv(src)
@@ -27,13 +58,13 @@ def combine_csv(src, dst):
     except Exception as error:
         print("發生錯誤:", str(error))
 
-
 def combine_csv_list(scr_list, dst):
     """
     整合檔案列表所有csv檔案
     scr需要為完整路徑的列表
     dst需要為完整csv檔案
     """
+    # 檢查輸入是否為LIST
     if isinstance(scr_list, list):
         for element in scr_list:
             df_element = pd.read_csv(element)
@@ -50,27 +81,6 @@ def combine_csv_list(scr_list, dst):
     else:
         print("輸入源不是一個列表")
         return False
-
-
-def read_csv(file_path):
-    """讀取CSV文件"""
-    try:
-        # 嘗試使用 UTF-8 編碼讀取 CSV 文件
-        data_frame = pd.read_csv(file_path, encoding='utf-8')
-        print(data_frame.to_string())
-    except UnicodeDecodeError:
-        try:
-            # 若無法使用 UTF-8 編碼，嘗試使用 Latin-1 編碼讀取 CSV 文件
-            data_frame = pd.read_csv(file_path, encoding='latin-1')
-            print(data_frame.to_string())
-        except FileNotFoundError:
-            print("找不到文件")
-        except Exception as error:
-            print("發生錯誤:", str(error))
-    except FileNotFoundError:
-        print("找不到文件")
-    except Exception as error:
-        print("發生錯誤:", str(error))
 
 def txt_to_df(txt_path = "08Reference_Files/data.txt"):
     """

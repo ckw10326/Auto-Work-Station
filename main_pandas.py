@@ -10,10 +10,10 @@ import os
 import shutil
 import sys
 import pandas as pd
-from file_process import move_document, files_list, check_plan, del_folder, make_folder
+from function_file_process import move_document, files_list, check_plan, del_folder, make_folder
 from read_ht import convert_xlsb
-from table_process import combine_csv, combine_csv_list, read_csv, txt_to_df, clean_df
-from read_ht_pandas import read_pandas_sec, xlsx_to_csv, xlsb_to_csv,  clean_csv_letter_cover, read_all_xlsb_df
+from function_table_process import combine_csv, combine_csv_list, csv_to_df, txt_to_df, clean_df
+from read_ht_pandas import r_ht_ctc_xlsx_sheet_tocsv, xlsx_to_csv, xlsb_to_csv,  clean_csv_letter_cover, read_all_xlsb_df
 from read_tc_pandas import xlsm_to_csv, all_xlsm_to_csv
 
 
@@ -46,7 +46,7 @@ def work_flow_pandas():
         xlsx_file_list = files_list(dest_folder, "converted.xlsx")
         if xlsx_file_list:
             for converted_path in xlsx_file_list:
-                read_pandas_sec(converted_path)
+                r_ht_ctc_xlsx_sheet_tocsv(converted_path)
 
     elif str(check_plan(dest_folder)) == "2":
         pass
@@ -54,7 +54,6 @@ def work_flow_pandas():
     else:
         print("沒有符合檔案")
         sys.exit()
-
 
 def generateCsvFilesBatch(source_folder_str="08Reference_Files/collectHT20230728",
                           dest_folder_str="00dest"):
@@ -85,7 +84,7 @@ def generateCsvFilesBatch(source_folder_str="08Reference_Files/collectHT20230728
     for xlsbs in xlsb_list:
         if "-CTC-" in xlsbs:
             xlsx_path = convert_xlsb(xlsbs)
-            csv_path = read_pandas_sec(xlsx_path)
+            csv_path = r_ht_ctc_xlsx_sheet_tocsv(xlsx_path)
             # 讀取後，xlsx便沒有使用，故刪除
             os.remove(xlsx_path)
             print(csv_path)
@@ -262,7 +261,6 @@ def make_stander_csv():
     data_frame.to_csv(stander_csv_path, index=False)  # 將 DataFrame 寫入 CSV 檔案
     print("CSV 檔案已成功輸出。")
 
-
 def test_combine_csv():
     """
     測試整合csv功能函數 2023/8/28完成
@@ -284,12 +282,11 @@ def test_combine_csv():
     shutil.copy(file2, rawdata)
     print("已經刪除初始檔案rawdata，並複製新的rawdata")
     # 顯示合併前資料
-    read_csv(rawdata)
+    csv_to_df(rawdata)
     # 合併檔案
     combine_csv(file1, rawdata)
     # 顯示合併後資料
-    read_csv(rawdata)
-
+    csv_to_df(rawdata)
 
 def test_combine_csv_list():
     """
@@ -320,18 +317,17 @@ def test_combine_csv_list():
         shutil.copy(file2, dst_data)
         print("已經刪除初始檔案dst_data，並複製新的dst_data")
         # 顯示合併前資料
-        read_csv(dst_data)
+        csv_to_df(dst_data)
         print("----------------------")
         # 合併檔案
         csv_lists = files_list(csv_path, ".csv")
         combine_csv_list(csv_lists, dst_data)
         # 顯示合併後資料
-        read_csv(dst_data)
+        csv_to_df(dst_data)
         print("----------------------")
 
     else:
         return False
-
 
 def test_read_csv():
     """讀取csv檔案"""
@@ -340,8 +336,7 @@ def test_read_csv():
     # 複製標準檔案
     filepath = os.path.join(
         root_path, r"08Reference_Files/CSV/HT-D1-CTC-GEL-23-3046_csv.csv")
-    read_csv(filepath)
-
+    csv_to_df(filepath)
 
 def test_txt_to_df():
     """
@@ -352,7 +347,6 @@ def test_txt_to_df():
     txt_path = "08Reference_Files/data.txt"
     data_frame, ss = txt_to_df(txt_path)
     print(data_frame)
-
 
 def test_xlsx_to_csv():
     """
@@ -384,7 +378,6 @@ def test_xlsx_to_csv():
             # 讀取後，xlsx便沒有使用，故刪除
             os.remove(xlsx_path)
             print(csv_path)
-
 
 def test_xlsb_to_csv():
     '''
@@ -594,8 +587,10 @@ def tc_total_table():
         # 合併清單中檔案
         combine_csv_list(csv_list, test_csv_path)
         # 查看清單檔案
-        read_csv(test_csv_path)
+        csv_to_df(test_csv_path)
 
+    step_first()
+    step_sec()
     step_third()
 
 if __name__ == '__main__':
@@ -659,7 +654,7 @@ if __name__ == '__main__':
         # 合併清單中檔案
         combine_csv_list(csv_list, test_csv_path)
         # 查看清單檔案
-        read_csv(test_csv_path)
+        csv_to_df(test_csv_path)
 
     # make_stander_csv()
     # test_xlsx_to_csv()
@@ -677,6 +672,7 @@ if __name__ == '__main__':
     
     # 代號50，批次產生TC的csv檔案
     # 代號51，批次合併標準檔案
+    # 代號52，合併csV檔案內容
     tc_judge = 500
     if tc_judge == 50:
         # 測試轉換csv檔案，須加上path路徑
@@ -703,4 +699,4 @@ if __name__ == '__main__':
         # 合併清單中檔案
         combine_csv_list(csv_list, test_csv_path)
         # 查看清單檔案
-        read_csv(test_csv_path)
+        csv_to_df(test_csv_path)
